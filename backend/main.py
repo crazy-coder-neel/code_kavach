@@ -177,7 +177,22 @@ async def read_payload(request, limit):
     if lines:
         return lines
 
-    raise IntakeError('Invalid JSON, JSONL, or file input.', 400)
+    # 3. CSV Support (if evaluator uploads a .csv dataset)
+    try:
+        import csv
+        import io
+        reader = csv.DictReader(io.StringIO(text))
+        csv_rows = []
+        for idx, row in enumerate(reader):
+            code_val = row.get('code') or row.get('snippet') or row.get('content') or (list(row.values())[0] if row else None)
+            if code_val and isinstance(code_val, str) and code_val.strip():
+                csv_rows.append({'id': row.get('id') or f'csv_{idx+1}', 'code': code_val.strip()})
+        if csv_rows:
+            return csv_rows
+    except Exception:
+        pass
+
+    raise IntakeError('Invalid JSON, JSONL, or CSV file input.', 400)
 
 
 async def read_json(request, limit):
