@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from hashlib import sha256
 import json
+import math
 from time import perf_counter
 from uuid import uuid4
 
@@ -112,6 +113,64 @@ class IntakeError(Exception):
         self.message, self.status = message, status
 
 
+async def read_payload(request, limit):
+    content_type = request.headers.get('content-type', '')
+    if 'multipart/form-data' in content_type:
+        try:
+            form = await request.form()
+            file_obj = form.get('file') or form.get('dataset')
+            if file_obj:
+                raw = await file_obj.read()
+                text = raw.decode('utf-8', errors='replace')
+            else:
+                raise IntakeError('No file attached in form upload.', 400)
+        except IntakeError:
+            raise
+        except Exception:
+            raise IntakeError('Error reading uploaded form file.', 400)
+    else:
+        try:
+            async with asyncio.timeout(BODY_TIMEOUT_SECONDS):
+                body = bytearray()
+                async for chunk in request.stream():
+                    if len(body) + len(chunk) > limit:
+                        raise IntakeError('Request exceeds configured size limit.', 413)
+                    body.extend(chunk)
+                text = body.decode('utf-8')
+        except IntakeError:
+            raise
+        except TimeoutError:
+            raise IntakeError('Request intake timed out; analysis unavailable.', 200)
+        except (ValueError, UnicodeError, RecursionError):
+            raise IntakeError('Invalid JSON or UTF-8 input.', 400)
+
+    text = text.strip()
+    if not text:
+        raise IntakeError('Empty request payload.', 400)
+
+    # 1. Standard JSON (dict or list)
+    try:
+        val = json.loads(text, parse_constant=lambda _: None)
+        return val
+    except Exception:
+        pass
+
+    # 2. JSON Lines (JSONL)
+    lines = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        try:
+            lines.append(json.loads(line))
+        except Exception:
+            continue
+    if lines:
+        return lines
+
+    raise IntakeError('Invalid JSON, JSONL, or file input.', 400)
+
+
 async def read_json(request, limit):
     try:
         async with asyncio.timeout(BODY_TIMEOUT_SECONDS):
@@ -199,8 +258,17 @@ async def guard(request: Request):
 @app.post('/v1/guard/batch')
 async def batch_guard(request: Request):
     try:
-        body = await read_json(request, MAX_BATCH_BYTES)
-        items = body.get('items') if body.get('items') is not None else body.get('snippets', body.get('codes'))
+        raw_input = await read_payload(request, MAX_BATCH_BYTES)
+        if isinstance(raw_input, list):
+            items = raw_input
+        elif isinstance(raw_input, dict):
+            items = raw_input.get('items')
+            if items is None:
+                items = raw_input.get('snippets', raw_input.get('codes', raw_input.get('dataset', raw_input.get('samples'))))
+            if items is None and 'code' in raw_input:
+                items = [raw_input]
+        else:
+            items = None
         if not isinstance(items, list) or not 1 <= len(items) <= 500:
             raise IntakeError('Provide between 1 and 500 batch items.', 400)
     except IntakeError as error:
@@ -230,6 +298,152 @@ async def batch_guard(request: Request):
         results.append({'id': item_id, **payload})
     request.state.decision = {'batch': decisions}
     return JSONResponse({'results': results}, headers={'X-CodeGuard-Degraded': '1' if degraded else '0'})
+
+
+@app.post('/v1/guard/file')
+@app.post('/v1/evaluate/file')
+async def guard_file(request: Request):
+    """
+    Ingests an entire JSON/JSONL dataset file (via raw body or multipart form-data upload),
+    evaluates every code snippet, and returns complete XAI insights, decision cards,
+    all 17 pipeline execution steps, vulnerable lines, Noisy-OR traces, ML probabilities,
+    and aggregate dataset performance metrics.
+    """
+    try:
+        raw_input = await read_payload(request, MAX_BATCH_BYTES)
+        if isinstance(raw_input, list):
+            items = raw_input
+        elif isinstance(raw_input, dict):
+            items = raw_input.get('items')
+            if items is None:
+                items = raw_input.get('snippets', raw_input.get('codes', raw_input.get('dataset', raw_input.get('samples'))))
+            if items is None and 'code' in raw_input:
+                items = [raw_input]
+        else:
+            items = None
+        if not isinstance(items, list) or not 1 <= len(items) <= 500:
+            raise IntakeError('Provide between 1 and 500 batch items in uploaded dataset.', 400)
+    except IntakeError as error:
+        return JSONResponse({'error': error.message}, status_code=error.status)
+
+    results = []
+    latencies = []
+    category_counts = {}
+    vulnerable_lines_total = 0
+    allow_count = 0
+    block_count = 0
+    degraded_count = 0
+    tp = fp = tn = fn = 0
+    has_ground_truth = False
+
+    for idx, item in enumerate(items):
+        item_id = item.get('id') if isinstance(item, dict) else str(idx)
+        if not isinstance(item_id, str):
+            item_id = str(idx)
+
+        label = item.get('label') if isinstance(item, dict) else None
+        expected_cat = item.get('category') if isinstance(item, dict) else None
+
+        t0 = perf_counter()
+        try:
+            code = validate_code(item.get('code') if isinstance(item, dict) else item)
+            item_session = item.get('session_id') if isinstance(item, dict) else None
+            result = await run_in_threadpool(analyze_request, code, item_session)
+        except IntakeError as error:
+            result = blocked(error.message)
+
+        elapsed_ms = round((perf_counter() - t0) * 1000, 3)
+        latencies.append(elapsed_ms)
+
+        is_degraded = bool(result.get('degraded') or result.get('analysis_complete') is False)
+        if is_degraded:
+            degraded_count += 1
+            result['verdict'] = 'block'
+            result['degraded'] = True
+
+        verdict = result.get('verdict', 'block')
+        if verdict == 'allow':
+            allow_count += 1
+        else:
+            block_count += 1
+
+        vulnerable_lines_total += len(result.get('vulnerable_lines', []))
+        for cat in result.get('categories', []):
+            category_counts[cat] = category_counts.get(cat, 0) + 1
+
+        if label is not None:
+            has_ground_truth = True
+            expected = 'block' if label == 1 else 'allow'
+            if expected == 'block' and verdict == 'block':
+                tp += 1
+            elif expected == 'allow' and verdict == 'block':
+                fp += 1
+            elif expected == 'allow' and verdict == 'allow':
+                tn += 1
+            elif expected == 'block' and verdict == 'allow':
+                fn += 1
+
+        detailed_item = {
+            'id': item_id,
+            'verdict': verdict,
+            'risk_score': result.get('risk_score', 0.0),
+            'categories': result.get('categories', []),
+            'code_language': result.get('code_language', 'unknown'),
+            'reason': result.get('reason', ''),
+            'vulnerable_lines': result.get('vulnerable_lines', []),
+            'analysis_complete': result.get('analysis_complete', True),
+            'degraded': is_degraded,
+            'latency_ms': elapsed_ms,
+            'findings': result.get('findings', []),
+            'decision_cards': decision_detail(result).get('decision_cards', []),
+            'score_trace': result.get('score_trace', {}),
+            'runtime_trace': decision_detail(result).get('runtime_trace', []),
+            'audit_meta': {
+                'code_sha256': sha256(item.get('code', '').encode('utf-8', errors='replace')).hexdigest() if isinstance(item, dict) and 'code' in item else None,
+                'code_bytes': len(item.get('code', '').encode('utf-8', errors='replace')) if isinstance(item, dict) and 'code' in item else 0,
+            }
+        }
+        if label is not None:
+            detailed_item['ground_truth'] = {'label': label, 'expected': 'block' if label == 1 else 'allow', 'category': expected_cat}
+
+        results.append(detailed_item)
+
+    sorted_lat = sorted(latencies)
+    pct = lambda q: sorted_lat[max(0, math.ceil(len(sorted_lat) * q) - 1)] if sorted_lat else 0.0
+
+    summary = {
+        'total_samples': len(results),
+        'allowed_count': allow_count,
+        'blocked_count': block_count,
+        'degraded_count': degraded_count,
+        'total_vulnerable_lines': vulnerable_lines_total,
+        'category_breakdown': category_counts,
+        'latencies_ms': {
+            'total': round(sum(latencies), 3),
+            'avg': round(sum(latencies) / len(latencies), 3) if latencies else 0.0,
+            'p50': round(pct(0.50), 3),
+            'p95': round(pct(0.95), 3),
+            'p99': round(pct(0.99), 3),
+        }
+    }
+
+    if has_ground_truth:
+        total_eval = tp + fp + tn + fn
+        accuracy = round((tp + tn) / total_eval, 4) if total_eval else 0.0
+        precision = round(tp / (tp + fp), 4) if (tp + fp) else 0.0
+        recall = round(tp / (tp + fn), 4) if (tp + fn) else 0.0
+        f1 = round((2 * precision * recall) / (precision + recall), 4) if (precision + recall) else 0.0
+        fpr = round(fp / (fp + tn), 4) if (fp + tn) else 0.0
+        summary['ground_truth_metrics'] = {
+            'tp': tp, 'fp': fp, 'tn': tn, 'fn': fn,
+            'accuracy': accuracy,
+            'precision': precision,
+            'recall': recall,
+            'f1_score': f1,
+            'fpr': fpr
+        }
+
+    return JSONResponse({'summary': summary, 'results': results})
 
 
 @app.post('/v1/evaluation')
