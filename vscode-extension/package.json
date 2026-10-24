@@ -1,0 +1,58 @@
+{
+  "name": "codeguard-safety-gate",
+  "displayName": "CodeGuard (Code Kavach)",
+  "description": "Deterministic Pre-Execution Safety Firewall for AI-Generated Code",
+  "version": "1.0.0",
+  "publisher": "codeguard",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Linters",
+    "Programming Languages",
+    "Security"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:python",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:shellscript",
+    "onLanguage:sql",
+    "onLanguage:yaml",
+    "onLanguage:markdown"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "codeguard.scanCurrentFile",
+        "title": "CodeGuard: Scan Active File",
+        "icon": "$(shield)"
+      },
+      {
+        "command": "codeguard.toggleSync",
+        "title": "CodeGuard: Toggle Live Dashboard Sync"
+      }
+    ],
+    "configuration": {
+      "title": "CodeGuard",
+      "properties": {
+        "codeguard.apiUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:8000",
+          "description": "CodeGuard Backend Server URL"
+        },
+        "codeguard.scanOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically scan files when saved"
+        },
+        "codeguard.highlightLines": {
+          "type": "boolean",
+          "default": true,
+          "description": "Highlight vulnerable lines with red background"
+        }
+      }
+    }
+  }
+}

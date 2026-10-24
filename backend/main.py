@@ -51,6 +51,7 @@ app = FastAPI(title='CodeGuard', version=ENGINE_VERSION, lifespan=lifespan)
 app.state.ready = False
 app.state.audit = AuditQueue()
 app.state.metrics = Metrics()
+app.state.latest_live_scan = None
 
 
 def full_detail(request):
@@ -252,7 +253,21 @@ async def guard(request: Request):
         return response_for(request, blocked(error.message), error.status)
     result = await run_in_threadpool(analyze_request, code, session_id)
     request.state.decision = audit_decision(code, result)
+    if body.get('source') == 'vscode' or request.headers.get('X-CodeGuard-Source') == 'vscode':
+        app.state.latest_live_scan = {
+            'active': True,
+            'filename': body.get('filename', 'editor.py'),
+            'code': code,
+            'result': {**result, **decision_detail(result)},
+            'timestamp': datetime.now(timezone.utc).isoformat()
+        }
     return response_for(request, result)
+
+
+@app.get('/v1/live/latest')
+def get_latest_live_scan():
+    """Returns the most recent scan pushed from VS Code or external IDE."""
+    return getattr(app.state, 'latest_live_scan', None) or {'active': False}
 
 
 @app.post('/v1/guard/batch')

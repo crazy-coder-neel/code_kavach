@@ -10,7 +10,8 @@ import { CodeEditor, CodeEditorRef } from '../components/editor/CodeEditor';
 import { AnalysisPanel } from '../components/findings/AnalysisPanel';
 import { CodeLanguage, GuardResponse } from '../types/guard';
 import { SAMPLE_SNIPPETS } from '../lib/constants/taxonomy';
-import { scanCode } from '../lib/api/guard';
+import { scanCode, normalizeGuardResponse } from '../lib/api/guard';
+import { apiClient } from '../lib/api/client';
 import { saveScanToHistory } from '../lib/storage/history';
 
 export const ScanPage: React.FC = () => {
@@ -22,16 +23,43 @@ export const ScanPage: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [activeHighlightLine, setActiveHighlightLine] = useState<number | null>(null);
   const [interceptSimulationOpen, setInterceptSimulationOpen] = useState(false);
+  const [vsCodeSync, setVsCodeSync] = useState(false);
+  const lastLiveTimestamp = useRef<string | null>(null);
 
   const editorRef = useRef<CodeEditorRef>(null);
 
   const currentInput = useRef({ code, language: selectedLanguage });
   currentInput.current = { code, language: selectedLanguage };
   const scanInFlight = useRef(false);
+
   useEffect(() => {
+    if (!vsCodeSync) return;
+    const interval = setInterval(async () => {
+      try {
+        const res = await apiClient.fetchWithTimeout('/v1/live/latest', { method: 'GET' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.active && data.timestamp !== lastLiveTimestamp.current) {
+            lastLiveTimestamp.current = data.timestamp;
+            setCode(data.code);
+            if (data.result) {
+              const normalized = normalizeGuardResponse(data.result);
+              setAnalysisResult(normalized);
+            }
+          }
+        }
+      } catch {
+        // quiet live poll
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [vsCodeSync]);
+
+  useEffect(() => {
+    if (vsCodeSync) return;
     setAnalysisResult(null);
     setActiveHighlightLine(null);
-  }, [code, selectedLanguage]);
+  }, [code, selectedLanguage, vsCodeSync]);
 
   // Handle sample selection
   const handleSelectSample = (sampleId: string) => {
@@ -190,6 +218,19 @@ export const ScanPage: React.FC = () => {
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Reset</span>
+          </button>
+
+          <button
+            onClick={() => setVsCodeSync(!vsCodeSync)}
+            className={`px-2.5 py-1 text-xs rounded-md transition-colors flex items-center gap-1.5 border font-medium ${
+              vsCodeSync
+                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] border-transparent hover:border-[var(--border)]'
+            }`}
+            title="Mirror code and live scans from VS Code in real-time"
+          >
+            <span className={`w-2 h-2 rounded-full ${vsCodeSync ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`} />
+            <span>VS Code Sync</span>
           </button>
 
           <button
