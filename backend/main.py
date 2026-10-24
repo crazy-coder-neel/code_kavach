@@ -11,11 +11,15 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, PlainTextResponse
 from starlette.concurrency import run_in_threadpool
 from feat_1_scan.analyzer import MAX_BYTES
-from feat_6_runtime.audit import AuditQueue
+from feat_1_scan.signals import PROVIDER, text_injection
+from feat_6_runtime.audit import AuditQueue, verify_chain
 from feat_6_runtime.contract import FIELDS, blocked, valid
 from feat_6_runtime.runtime import scan, ENGINE_VERSION
 from feat_6_runtime.versions import RULES_VERSION, POLICY_VERSION, MODEL_VERSION
 from feat_6_runtime.metrics import Metrics
+from feat_7_governance import feedback
+from feat_7_governance.catalogue import catalogue
+from feat_7_governance.report import model_card, policy, rai_report
 
 SCAN_DEADLINE_MS = 25
 # JSON escaping can expand each source byte up to six bytes.
@@ -228,3 +232,82 @@ def evaluate_public_set():
         raise HTTPException(503, 'The bundled evaluation dataset is unavailable or invalid.') from error
     finally:
         RUN_LOCK.release()
+
+
+@app.get('/v1/rules')
+def rules():
+    items = catalogue()
+    return {'rules_version': RULES_VERSION, 'count': len(items), 'rules': items}
+
+
+@app.get('/v1/policy')
+def get_policy():
+    return policy()
+
+
+@app.get('/v1/audit/verify')
+def audit_verify():
+    return verify_chain()
+
+
+@app.get('/v1/rai/report')
+def responsible_ai():
+    return rai_report(app.state.metrics.snapshot(), app.state.audit.stats())
+
+
+@app.get('/v1/docs/model-card')
+def get_model_card():
+    return model_card()
+
+
+@app.post('/v1/verify-output')
+async def verify_output(request: Request):
+    """Post-tool checkpoint: scan tool output before it is fed back to an LLM."""
+    try:
+        body = await read_json(request, MAX_BODY_BYTES)
+        text = body.get('output', body.get('code'))
+        if not isinstance(text, str) or not text.strip():
+            raise IntakeError('Provide non-empty tool output as a string.', 400)
+        if len(text.encode('utf-8')) > MAX_BYTES:
+            raise IntakeError('Output exceeds the 64 KiB limit.', 413)
+    except IntakeError as error:
+        return JSONResponse({'verdict': 'block', 'categories': [], 'reason': error.message,
+                             'code_language': 'text', 'degraded': True}, status_code=error.status)
+    findings = []
+    if text_injection(text):
+        findings.append({'rule_id': 'CG-AIT-001', 'category': 'ai_targeted_instructions',
+                         'line': 1, 'why': 'Tool output contains instructions aimed at an AI reader.'})
+    match = PROVIDER.search(text)
+    if match:
+        line = text[:match.start()].count('\n') + 1
+        findings.append({'rule_id': 'CG-SEC-001', 'category': 'secret_access', 'line': line,
+                         'why': 'Tool output contains a provider-format credential.'})
+    categories = sorted({f['category'] for f in findings})
+    payload = {
+        'verdict': 'block' if findings else 'allow',
+        'categories': categories,
+        'code_language': 'text',
+        'reason': ('Tool output is unsafe to forward: ' + '; '.join(f['why'] for f in findings))
+                  if findings else 'No injected instructions or leaked provider credentials found.',
+        'findings': findings,
+        'request_id': request.state.request_id,
+    }
+    return JSONResponse(payload)
+
+
+@app.post('/v1/feedback')
+async def submit_feedback(request: Request):
+    try:
+        body = await read_json(request, 256 * 1024)
+        record = feedback.submit(body.get('request_id'), body.get('kind'),
+                                 body.get('note', ''), body.get('code'))
+    except IntakeError as error:
+        raise HTTPException(error.status, error.message)
+    except ValueError as error:
+        raise HTTPException(400, str(error))
+    return JSONResponse(record, status_code=201)
+
+
+@app.get('/v1/feedback')
+def feedback_summary():
+    return feedback.summary()

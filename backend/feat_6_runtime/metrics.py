@@ -20,6 +20,13 @@ class Metrics:
             for i, bound in enumerate(self.bounds):
                 self.buckets[i] += int(duration_ms <= bound)
 
+    def snapshot(self):
+        with self.lock:
+            return {'requests': self.count, 'degraded': self.degraded,
+                    'cache_hits': self.hits,
+                    'avg_ms': round(self.total_ms / self.count, 3) if self.count else None,
+                    'cache_hit_ratio': round(self.hits / self.count, 3) if self.count else None}
+
     def render(self):
         with self.lock:
             lines = ['# TYPE codeguard_http_duration_ms histogram']
