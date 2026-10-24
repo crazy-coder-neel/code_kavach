@@ -6,18 +6,44 @@ import shlex
 from collections import Counter
 from urllib.parse import urlsplit
 
-PROVIDER = re.compile(r'(?<![\w])(?:A(?:KIA|SIA)[A-Z0-9]{16}|AIza[\w-]{35}|gh[pousr]_[A-Za-z0-9]{36}|xox[bpa]-\d{8,14}-\d{8,14}-[A-Za-z0-9]{20,48}|(?:sk|rk)_live_[A-Za-z0-9]{16,64}|glpat-[\w-]{20}|npm_[A-Za-z0-9]{36})(?![\w])')
+PROVIDER = re.compile(r'''(?<![\w])(?:
+    A(?:KIA|SIA)[A-Z0-9]{16}                     # AWS access key id
+  | AIza[\w-]{35}                               # Google API key
+  | gh[pousr]_[A-Za-z0-9]{36}                   # GitHub classic token
+  | github_pat_[A-Za-z0-9_]{60,}                # GitHub fine-grained PAT
+  | xox[bpa]-\d{8,14}-\d{8,14}-[A-Za-z0-9]{20,48}  # Slack
+  | (?:sk|rk)_live_[A-Za-z0-9]{16,64}           # Stripe
+  | sk-ant-[A-Za-z0-9_\-]{20,}                  # Anthropic
+  | sk-(?:proj-)?[A-Za-z0-9_\-]{20,}            # OpenAI
+  | glpat-[\w-]{20}                             # GitLab
+  | npm_[A-Za-z0-9]{36}                         # npm
+  | pypi-[A-Za-z0-9_\-]{40,}                    # PyPI
+  | hf_[A-Za-z0-9]{30,}                         # Hugging Face
+  | SG\.[A-Za-z0-9_\-]{16,}\.[A-Za-z0-9_\-]{16,}  # SendGrid
+  | ya29\.[A-Za-z0-9_\-]{20,}                   # Google OAuth
+  | SK[0-9a-fA-F]{32}                           # Twilio
+)(?![\w])''', re.X)
+JWT = re.compile(r'(?<![\w])eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}')
 SECRET_PATH = re.compile(r'(?:\.aws/credentials|\.docker/config\.json|\.kube/config|\.npmrc|\.pypirc|\.netrc|\.git-credentials|\.config/gcloud|\.azure/|(?:^|/)\.env(?:$|\.)|/etc/shadow|id_rsa|id_ed25519|\.(?:pem|p12|pfx|kdbx)$|Login Data|wallet\.dat|logins\.json|/proc/(?:self|\d+)/environ)', re.I)
 PERSIST_PATH = re.compile(r'(?:/etc/(?:sudoers|cron|systemd|init\.d|ld\.so\.preload|pam\.d)|/var/spool/cron|authorized_keys|sshd_config|\.(?:bashrc|profile|zshrc)|rc\.local|sitecustomize\.py|usercustomize\.py|\.pth$|\.git/hooks/|LaunchAgents/)', re.I)
 SECRET_NAME = re.compile(r'key|token|secret|password|credential', re.I)
 # Small curated vocabulary, not a complete registry or malicious-package feed.
 TOP_PACKAGES = frozenset('requests urllib3 numpy pandas scipy colorama click rich tabulate flask django fastapi pydantic pytest setuptools wheel pip boto3 botocore httpx pyyaml pillow cryptography torch tensorflow opensearch-dashboards-plugin react express lodash'.split())
+# Offline snapshot of well-known malicious / typosquatted names (illustrative, not a feed).
+MALICIOUS_PACKAGES = frozenset((
+    'colourama', 'python3-dateutil', 'jeiilyfish', 'jellyfish', 'reqeusts', 'request',
+    'urlib3', 'urllib', 'crypt', 'crypto', 'pycrypto', 'setup-tools', 'setuptools-scm',
+    'discordpy', 'python-openssl', 'mysql-connector', 'pandas-dev', 'numpyy', 'tenserflow',
+    'beautifulsoup', 'beautifulsoup4', 'djanga', 'flask-sqlalchemy', 'crossenv',
+    'django-requests', 'mailfetch', 'openvc', 'opencv-python-headless', 'libpeshka',
+    'telegram-python', 'electrum', 'bitcoinlib', 'pynput', 'keylogger',
+))
 
 
 def secret_literal(value, context=''):
     if not isinstance(value, str):
         return False
-    if PROVIDER.search(value) or '-----BEGIN PRIVATE KEY-----' in value or '-----BEGIN RSA PRIVATE KEY-----' in value:
+    if PROVIDER.search(value) or JWT.search(value) or '-----BEGIN PRIVATE KEY-----' in value or '-----BEGIN RSA PRIVATE KEY-----' in value:
         return True
     if re.search(r'\w+://[^\s/:]+:[^\s@]+@[^\s/]+', value) and not re.search(r'localhost|<|\$\{|YOUR_|password@', value):
         return True
@@ -37,7 +63,12 @@ def network_risk(url):
         host = (parsed.hostname or '').lower().rstrip('.')
         if parsed.scheme in ('gopher', 'file', 'dict', 'ldap', 'tftp', 'jar', 'ftp'):
             return 'NET-003'
-        if host in ('localhost', 'metadata.google.internal', 'host.docker.internal', 'localtest.me') or host.endswith(('.internal', '.local', '.svc.cluster.local', '.nip.io', '.sslip.io')):
+        if host in ('localhost', 'metadata.google.internal', 'host.docker.internal',
+                    'localtest.me', '0.0.0.0', '::', '[::]', '100.100.100.200',
+                    'fd00:ec2::254', 'instance-data'):
+            return 'NET-001'
+        if host.endswith(('.internal', '.local', '.svc.cluster.local', '.nip.io',
+                          '.sslip.io', '.ngrok.io', '.ngrok-free.app', '.cloudflared.com')):
             return 'NET-001'
         try:
             address = ipaddress.ip_address(host)
