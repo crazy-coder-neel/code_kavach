@@ -22,26 +22,7 @@ CWE = {
     'INJ': ['CWE-611', 'CWE-1336'],
 }
 
-CRITICAL = frozenset((
-    'SEC-002', 'SEC-007', 'EXF-001', 'DES-001', 'DES-002', 'DES-006',
-    'PER-001', 'PER-003', 'PER-004', 'PER-007', 'PER-009', 'OBF-001',
-    'DEP-007', 'RES-002', 'RES-003', 'NET-001', 'AIT-002', 'AIT-004',
-))
-
-MEDIUM = frozenset((
-    'SEC-005', 'SEC-009', 'EXF-006', 'EXF-009', 'PER-010', 'OBF-005',
-    'OBF-011', 'DEP-004', 'DEP-005', 'DEP-008', 'RES-007', 'RES-009',
-    'RES-010', 'RES-011', 'RES-012', 'NET-008', 'NET-009', 'AIT-006',
-    'AIT-009', 'CRY-001', 'CRY-002',
-))
-
-
-def _severity(rule):
-    if rule in CRITICAL:
-        return 'critical'
-    if rule in MEDIUM:
-        return 'medium'
-    return 'high'
+from feat_2_results.scoring import severity as _severity
 
 
 def catalogue():

@@ -12,6 +12,7 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from starlette.concurrency import run_in_threadpool
 from feat_1_scan.analyzer import MAX_BYTES
 from feat_1_scan.signals import PROVIDER, text_injection
+from feat_2_results.explain import decision_detail
 from feat_6_runtime.audit import AuditQueue, verify_chain
 from feat_6_runtime.contract import FIELDS, blocked, valid
 from feat_6_runtime.runtime import scan, ENGINE_VERSION
@@ -53,6 +54,7 @@ app.state.metrics = Metrics()
 
 def full_detail(request):
     return (request.query_params.get('detail') == 'full'
+            or request.query_params.get('trace') == '1'
             or request.headers.get('X-CodeGuard-Detail') == 'full')
 
 
@@ -62,7 +64,7 @@ def response_for(request, result, status=200):
         result = {**result, 'verdict': 'block', 'degraded': True}
     payload = {key: result[key] for key in FIELDS}
     if full_detail(request):
-        payload = {**result, 'degraded': degraded,
+        payload = {**result, **decision_detail(result), 'degraded': degraded,
                    'request_id': request.state.request_id, 'engine_version': ENGINE_VERSION,
                    'rules_version': RULES_VERSION, 'policy_version': POLICY_VERSION,
                    'model_version': MODEL_VERSION}

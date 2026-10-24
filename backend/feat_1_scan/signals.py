@@ -177,6 +177,8 @@ def text_injection(text):
     # Keep the rest of the passage so documentation cannot hide a later command.
     text = re.sub(r'(["\'])ignore (?:all )?(?:previous|prior) instructions\1\s+in untrusted content',
                   'quoted untrusted example', text, flags=re.I)
+    text = re.sub(r'\bquoted\s+(?:<\|(?:system|im_start|assistant)\|>|\[INST\])\s+delimiter\b',
+                  'documented delimiter', text, flags=re.I)
     lowered = text.lower()
     if re.search(r'ignore (?:all )?(?:previous|prior) instructions|reveal (?:the )?(?:full )?system prompt|disregard (?:all )?(?:previous|prior|above)', lowered):
         return True
@@ -184,9 +186,7 @@ def text_injection(text):
                  r'|^\s*(?:system|assistant)\s*:', lowered, re.M):
         return True
     if re.search(r'you are (?:now|no longer)\b|\bdo not (?:flag|block|report)\b'
-                 r'|\bmark (?:this|it) as (?:safe|compliant|approved)\b'
-                 r'|\bthis (?:code|snippet) (?:has been|is) (?:audited|approved|safe)\b'
-                 r'|\bsecurity (?:scan|review) (?:passed|approved)\b', lowered):
+                 r'|\bmark (?:this|it) as (?:safe|compliant|approved)\b', lowered):
         return True
     if re.search(r'[\u200b-\u200f\u202a-\u202e\u2060-\u206f]', text):
         return True

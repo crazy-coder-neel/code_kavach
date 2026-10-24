@@ -53,7 +53,7 @@ class ContractTests(unittest.TestCase):
 
     def test_detail_is_opt_in_even_for_errors(self):
         for code in ('value=1', 'exec(payload)', 'def broken('):
-            strict = self.client.post('/v1/guard?trace=1', json={'code': code})
+            strict = self.client.post('/v1/guard', json={'code': code})
             self.assert_contract(strict)
             detail = self.client.post('/v1/guard?detail=full', json={'code': code}).json()
             self.assertIn('engine_version', detail)

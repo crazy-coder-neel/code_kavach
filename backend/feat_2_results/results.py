@@ -1,4 +1,6 @@
 """Deterministic finding descriptions; no generated explanations."""
+from feat_2_results.scoring import aggregate, severity
+
 MESSAGES = {
     'secret_access': ('Sensitive credentials accessed', 'Use a narrowly scoped secret provider and keep credentials out of returned data.'),
     'data_exfiltration': ('Sensitive data reaches an outbound request', 'Remove credentials from the payload and enforce destination and data-access policy.'),
@@ -104,8 +106,10 @@ def finding(category, lines, evidence, reason):
     return {'category': category, 'severity': 'high', 'lines': sorted(set(lines)),
             'title': title, 'why': reason, 'remediation': remediation,
             'evidence': evidence, 'rule_id': 'CG-' + category.upper(),
-            'decision': 'block', 'impact': title + '.',
-            'guards_checked': GUARDS[category],
+            'decision': 'risk_finding', 'impact': title + '.',
+            'guards_checked': [],
+            'guard_candidates': GUARDS[category],
+            'guard_evidence_status': 'Individual guard outcomes are not instrumented by this analyzer.',
             'alternatives_considered': ALTERNATIVES[category],
             'fix': suggested_fix(category, reason)}
 
@@ -113,26 +117,18 @@ def finding(category, lines, evidence, reason):
 def assemble(findings, language, complete=True):
     categories = sorted({f['category'] for f in findings})
     lines = sorted({line for f in findings for line in f['lines']})
-    risk = min(.98, .8 + .04 * (len(categories) - 1)) if findings else 0.0
+    for item in findings:
+        item['severity'] = severity(item['rule_id'])
+    verdict, risk, score_trace = aggregate(findings, complete)
     reason = ' '.join(f"Line {f['lines'][0]}: {f['why']}" for f in findings[:2])
     if not complete:
         reason = 'Blocked because this input could not be fully checked by the initial analyzer. ' + reason
-    return {'verdict': 'block' if findings or not complete else 'allow',
+    return {'verdict': verdict,
             'risk_score': round(risk, 2), 'categories': categories,
             'code_language': language,
             'reason': reason or 'No blocking findings in the completed baseline checks.',
             'vulnerable_lines': lines, 'findings': findings,
             'analysis_complete': complete,
-            'score_trace': {
-                'method': 'baseline-category-count-v1',
-                'calibrated_probability': False,
-                'formula': '0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))',
-                'base': 0.8 if findings else 0.0,
-                'category_bonus': round(0.04 * max(0, len(categories) - 1), 2),
-                'cap': 0.98, 'final_score': round(risk, 2),
-                'distinct_categories': categories,
-                'contributors': [{'rule_id': f['rule_id'], 'category': f['category'], 'lines': f['lines']} for f in findings],
-                'decision_basis': 'incomplete_analysis' if not complete else ('findings_present' if findings else 'no_findings'),
-                'policy': 'Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.',
-                'limitations': 'Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses.'},
+            'score_trace': score_trace,
+            'decision_basis': score_trace['decision_basis'],
             'coverage': 'Initial static baseline; bounded, intraprocedural Python checks. No runtime safety guarantee.'}

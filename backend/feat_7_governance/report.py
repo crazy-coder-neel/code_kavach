@@ -12,7 +12,7 @@ from feat_6_runtime.versions import ENGINE_VERSION, MODEL_VERSION, POLICY_VERSIO
 from feat_7_governance import feedback
 from feat_7_governance.catalogue import catalogue
 
-BLOCK_THRESHOLD = 0.5
+from feat_2_results.scoring import BLOCK_THRESHOLD, WEIGHTS, METHOD
 GRAY_BAND = (0.35, 0.65)
 RULES = catalogue()
 
@@ -29,7 +29,8 @@ def policy():
         'mode': 'enforce',
         'block_threshold': BLOCK_THRESHOLD,
         'gray_band': {'low': GRAY_BAND[0], 'high': GRAY_BAND[1]},
-        'decision_rule': 'block when any finding is present or analysis is incomplete; '
+        'scoring_method': METHOD, 'severity_weights': WEIGHTS,
+        'decision_rule': 'block when score >= threshold or analysis is incomplete; '
                          'critical findings cannot be overridden by a model score',
         'categories_enabled': sorted(set(PREFIX.values())),
         'limits': {'max_source_bytes': MAX_BYTES, 'max_batch_items': 500,
@@ -77,7 +78,8 @@ def rai_report(metrics_snapshot=None, audit_stats=None):
         'engine_version': ENGINE_VERSION, 'rules_version': RULES_VERSION,
         'policy_version': POLICY_VERSION, 'model_version': MODEL_VERSION,
         'transparency': {
-            'trace_available': True, 'trace_flag': '?detail=full or ?trace=1',
+            'trace_available': False, 'score_trace_available': True,
+            'trace_status': 'Scoring trace available; per-stage pipeline timings pending',
             'rule_catalogue_size': len(RULES),
             'model_card': '/v1/docs/model-card',
             'decision_cards': 'per-finding cards are returned in detail mode',
@@ -110,7 +112,8 @@ def rai_report(metrics_snapshot=None, audit_stats=None):
             'raw_code_stored_by_default': False,
             'stored_fields': ['request_id', 'code_sha256', 'verdict', 'categories',
                               'risk_score', 'timestamps', 'versions'],
-            'retention_days': 30,
+            'retention_days': None,
+            'retention_status': 'TTL purge not implemented; local audit uses size-based rotation',
             'feedback_raw_code_stored': False,
             'note': 'Audit and feedback rows contain a SHA-256 digest, never source text.',
         },
@@ -122,7 +125,7 @@ def rai_report(metrics_snapshot=None, audit_stats=None):
         'accountability': {
             'audit_chain_verify': '/v1/audit/verify',
             'chain_valid': chain['valid'], 'records': chain['records'],
-            'review_queue': 'blocks flagged degraded are returned as needs_review in detail mode',
+            'review_queue': 'not implemented',
         },
         'contestability': {'feedback': feed, 'endpoint': '/v1/feedback'},
         'honest_limits': [

@@ -59,6 +59,13 @@ FIXTURES = {
 'WEB-001': ('const target=document.body;\ntarget.innerHTML = user;', 'const target=document.body;\ntarget.textContent = user;'),
 'INJ-001': ('from lxml import etree\netree.XMLParser(resolve_entities=True)', 'from lxml import etree\netree.XMLParser(resolve_entities=False)'),
 }
+from feat_6_runtime.test_dependency_instructions import FIXTURES as SUPPLEMENTAL_FIXTURES
+FIXTURES = {**SUPPLEMENTAL_FIXTURES, **FIXTURES}
+# The helper's private-index negative is clean for DEP-005 specifically but
+# correctly triggers the separate untrusted-index policy. Use a globally benign
+# counterexample here; retain that scoped negative in the helper tests.
+FIXTURES['DEP-005'] = (FIXTURES['DEP-005'][0],
+    'import subprocess\nsubprocess.run(["pip","install","requests==2.32.0"])')
 
 
 class RuleTests(unittest.TestCase):

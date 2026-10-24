@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { GuardResponse, ThreatCategory } from '../../types/guard';
 import { THREAT_TAXONOMY } from '../../lib/constants/taxonomy';
+import { ScoreExplanation } from './ScoreExplanation';
 
 interface AnalysisPanelProps {
   response: GuardResponse | null;
@@ -29,7 +30,7 @@ export const AnalysisPanel: React.FC<AnalysisPanelProps> = ({
   onRescan,
   onClear,
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'findings' | 'flow' | 'technical'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'findings' | 'flow' | 'technical' | 'scoring'>('overview');
   const [copiedSummary, setCopiedSummary] = useState(false);
   const [copiedJson, setCopiedJson] = useState(false);
 
@@ -174,7 +175,11 @@ export const AnalysisPanel: React.FC<AnalysisPanelProps> = ({
       </div>
 
       {/* Tabs Bar - Clean White Surface */}
-      <div className="flex items-center px-3 border-b border-[var(--border)] bg-[var(--surface)] text-xs font-medium">
+      <div className="flex flex-wrap items-center px-3 border-b border-[var(--border)] bg-[var(--surface)] text-xs font-medium">
+        <button onClick={() => setActiveTab('scoring')} aria-pressed={activeTab === 'scoring'}
+          className={`py-2 px-3 border-b-2 ${activeTab === 'scoring' ? 'border-[var(--primary)] font-semibold' : 'border-transparent'}`}>
+          Score &amp; reasoning
+        </button>
         <button
           onClick={() => setActiveTab('overview')}
           className={`py-2 px-3 border-b-2 transition-colors ${
@@ -229,6 +234,7 @@ export const AnalysisPanel: React.FC<AnalysisPanelProps> = ({
 
       {/* Tab Panels Body - White dominant */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[var(--surface)]">
+        {activeTab === 'scoring' && <ScoreExplanation response={response} onSelectLine={onSelectLine} />}
         {activeTab === 'overview' && (
           <div className="space-y-4">
             {/* Threat Categories Detected */}

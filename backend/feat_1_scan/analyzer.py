@@ -8,6 +8,7 @@ from time import perf_counter
 from feat_1_scan.signals import (SECRET_NAME, SECRET_PATH, PERSIST_PATH, secret_literal,
     network_risk, command_findings, text_injection, package_risk)
 from feat_2_results.results import assemble, finding
+from feat_1_scan import dependency_instructions as supplemental
 
 MAX_BYTES = 64 * 1024
 _INVISIBLE = re.compile(r'[\u200b-\u200f\u202a-\u202e\u2060-\u206f]')
@@ -68,6 +69,7 @@ REASONS = {
  'WEB-001': 'Untrusted content is assigned to an executable HTML sink.',
  'INJ-001': 'An XML parser explicitly enables external entity resolution.',
 }
+REASONS.update(supplemental.REASONS)
 
 
 def analyze(code, _depth=0, _deadline=None):
@@ -99,6 +101,9 @@ def analyze(code, _depth=0, _deadline=None):
         if _INVISIBLE.search(line_text):
             add('OBF-011', index)
 
+    if re.search(r'^name:', code, re.M) and re.search(r'^(?:jobs|on):', code, re.M):
+        return non_python(code, add, found, deadline)
+
     try:
         tree = ast.parse(code.lstrip('\ufeff'))
     except (SyntaxError, ValueError, RecursionError):
@@ -123,9 +128,11 @@ def analyze(code, _depth=0, _deadline=None):
             self.count = 0
             self.depth = 0
             self.loop_depth = 0
+            self.nodes = []
 
         def visit(self, node):
             self.count += 1
+            self.nodes.append(node)
             self.depth += 1
             try:
                 if self.count > 12000 or self.depth > 80 or perf_counter() > deadline:
@@ -417,6 +424,7 @@ def analyze(code, _depth=0, _deadline=None):
     analyzer = Analyzer()
     try:
         analyzer.visit(tree)
+        supplemental.inspect(tree, code, add, deadline, nodes=analyzer.nodes, comments=comments)
         # Query collected call facts; one range fact is sufficient to identify large handle bursts.
         large_ranges = [node for name,node in analyzer.calls if name=='range' and node.args and type(analyzer.value(node.args[0])) is int and analyzer.value(node.args[0])>=10000]
         for node in large_ranges:
@@ -465,11 +473,15 @@ def non_python(code,add,found,deadline):
         language='sql'
     elif re.search(r'\b(?:const|let|function)\s',code):
         language='javascript'
-    elif stripped.startswith('# '):
-        language='markdown'
     elif re.search(r'^\w+:',code,re.M):
         language='yaml'
+    elif stripped.startswith('# '):
+        language='markdown'
     lines=code.splitlines()
+    try:
+        supplemental.inspect_text(code, language, add, deadline)
+    except (TimeoutError, RecursionError, MemoryError):
+        return assemble(found, language, complete=False)
     if language=='sql':
         offset=0
         for statement in code.split(';'):

@@ -1,0 +1,3581 @@
+{
+  "generated_at": "2026-10-24T00:29:55.019830+00:00",
+  "engine_version": "0.5.0-scoring",
+  "policy_version": "severity-noisy-or-1",
+  "categories": [
+    {
+      "category": "ai_targeted_instructions",
+      "specified_rules": 9,
+      "live_rules": 1,
+      "positive_and_benign_pass": 1,
+      "missing_rules": [
+        "AIT-002",
+        "AIT-003",
+        "AIT-004",
+        "AIT-005",
+        "AIT-006",
+        "AIT-007",
+        "AIT-008",
+        "AIT-009"
+      ]
+    },
+    {
+      "category": "data_exfiltration",
+      "specified_rules": 9,
+      "live_rules": 3,
+      "positive_and_benign_pass": 3,
+      "missing_rules": [
+        "EXF-002",
+        "EXF-004",
+        "EXF-006",
+        "EXF-007",
+        "EXF-008",
+        "EXF-009"
+      ]
+    },
+    {
+      "category": "dependency_risk",
+      "specified_rules": 8,
+      "live_rules": 5,
+      "positive_and_benign_pass": 5,
+      "missing_rules": [
+        "DEP-005",
+        "DEP-007",
+        "DEP-008"
+      ]
+    },
+    {
+      "category": "destructive_command",
+      "specified_rules": 9,
+      "live_rules": 7,
+      "positive_and_benign_pass": 7,
+      "missing_rules": [
+        "DES-006",
+        "DES-009"
+      ]
+    },
+    {
+      "category": "obfuscated_execution",
+      "specified_rules": 12,
+      "live_rules": 8,
+      "positive_and_benign_pass": 8,
+      "missing_rules": [
+        "OBF-004",
+        "OBF-005",
+        "OBF-008",
+        "OBF-010"
+      ]
+    },
+    {
+      "category": "persistence_or_privesc",
+      "specified_rules": 10,
+      "live_rules": 7,
+      "positive_and_benign_pass": 7,
+      "missing_rules": [
+        "PER-006",
+        "PER-008",
+        "PER-009"
+      ]
+    },
+    {
+      "category": "resource_exhaustion",
+      "specified_rules": 12,
+      "live_rules": 8,
+      "positive_and_benign_pass": 8,
+      "missing_rules": [
+        "RES-009",
+        "RES-010",
+        "RES-011",
+        "RES-012"
+      ]
+    },
+    {
+      "category": "secret_access",
+      "specified_rules": 10,
+      "live_rules": 5,
+      "positive_and_benign_pass": 5,
+      "missing_rules": [
+        "SEC-002",
+        "SEC-005",
+        "SEC-006",
+        "SEC-008",
+        "SEC-010"
+      ]
+    },
+    {
+      "category": "ssrf_network_exfil",
+      "specified_rules": 9,
+      "live_rules": 3,
+      "positive_and_benign_pass": 3,
+      "missing_rules": [
+        "NET-004",
+        "NET-005",
+        "NET-006",
+        "NET-007",
+        "NET-008",
+        "NET-009"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "SEC-001",
+      "category": "secret_access",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "SEC-002",
+      "category": "secret_access",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "SEC-003",
+      "category": "secret_access",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "SEC-004",
+      "category": "secret_access",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "SEC-005",
+      "category": "secret_access",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "SEC-006",
+      "category": "secret_access",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "SEC-007",
+      "category": "secret_access",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "SEC-008",
+      "category": "secret_access",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "SEC-009",
+      "category": "secret_access",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "SEC-010",
+      "category": "secret_access",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "EXF-001",
+      "category": "data_exfiltration",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "EXF-002",
+      "category": "data_exfiltration",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "EXF-003",
+      "category": "data_exfiltration",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "EXF-004",
+      "category": "data_exfiltration",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "EXF-005",
+      "category": "data_exfiltration",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "EXF-006",
+      "category": "data_exfiltration",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "EXF-007",
+      "category": "data_exfiltration",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "EXF-008",
+      "category": "data_exfiltration",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "EXF-009",
+      "category": "data_exfiltration",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "DES-001",
+      "category": "destructive_command",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DES-002",
+      "category": "destructive_command",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DES-003",
+      "category": "destructive_command",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DES-004",
+      "category": "destructive_command",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DES-005",
+      "category": "destructive_command",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DES-006",
+      "category": "destructive_command",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "DES-007",
+      "category": "destructive_command",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DES-008",
+      "category": "destructive_command",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DES-009",
+      "category": "destructive_command",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "PER-001",
+      "category": "persistence_or_privesc",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "PER-002",
+      "category": "persistence_or_privesc",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "PER-003",
+      "category": "persistence_or_privesc",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "PER-004",
+      "category": "persistence_or_privesc",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "PER-005",
+      "category": "persistence_or_privesc",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "PER-006",
+      "category": "persistence_or_privesc",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "PER-007",
+      "category": "persistence_or_privesc",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "PER-008",
+      "category": "persistence_or_privesc",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "PER-009",
+      "category": "persistence_or_privesc",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "PER-010",
+      "category": "persistence_or_privesc",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "OBF-001",
+      "category": "obfuscated_execution",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "OBF-002",
+      "category": "obfuscated_execution",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "OBF-003",
+      "category": "obfuscated_execution",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "OBF-004",
+      "category": "obfuscated_execution",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "OBF-005",
+      "category": "obfuscated_execution",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "OBF-006",
+      "category": "obfuscated_execution",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "OBF-007",
+      "category": "obfuscated_execution",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "OBF-008",
+      "category": "obfuscated_execution",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "OBF-009",
+      "category": "obfuscated_execution",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "OBF-010",
+      "category": "obfuscated_execution",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "OBF-011",
+      "category": "obfuscated_execution",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "OBF-012",
+      "category": "obfuscated_execution",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DEP-001",
+      "category": "dependency_risk",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DEP-002",
+      "category": "dependency_risk",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DEP-003",
+      "category": "dependency_risk",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DEP-004",
+      "category": "dependency_risk",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DEP-005",
+      "category": "dependency_risk",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "DEP-006",
+      "category": "dependency_risk",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "DEP-007",
+      "category": "dependency_risk",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "DEP-008",
+      "category": "dependency_risk",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "RES-001",
+      "category": "resource_exhaustion",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "RES-002",
+      "category": "resource_exhaustion",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "RES-003",
+      "category": "resource_exhaustion",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "RES-004",
+      "category": "resource_exhaustion",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "RES-005",
+      "category": "resource_exhaustion",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "RES-006",
+      "category": "resource_exhaustion",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "RES-007",
+      "category": "resource_exhaustion",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "RES-008",
+      "category": "resource_exhaustion",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "RES-009",
+      "category": "resource_exhaustion",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "RES-010",
+      "category": "resource_exhaustion",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "RES-011",
+      "category": "resource_exhaustion",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "RES-012",
+      "category": "resource_exhaustion",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "NET-001",
+      "category": "ssrf_network_exfil",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "NET-002",
+      "category": "ssrf_network_exfil",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "NET-003",
+      "category": "ssrf_network_exfil",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "NET-004",
+      "category": "ssrf_network_exfil",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "NET-005",
+      "category": "ssrf_network_exfil",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "NET-006",
+      "category": "ssrf_network_exfil",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "NET-007",
+      "category": "ssrf_network_exfil",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "NET-008",
+      "category": "ssrf_network_exfil",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "NET-009",
+      "category": "ssrf_network_exfil",
+      "status": "not_implemented",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "AIT-001",
+      "category": "ai_targeted_instructions",
+      "status": "partial_live",
+      "positive_pass": true,
+      "benign_pass": true
+    },
+    {
+      "rule_id": "AIT-002",
+      "category": "ai_targeted_instructions",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "AIT-003",
+      "category": "ai_targeted_instructions",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "AIT-004",
+      "category": "ai_targeted_instructions",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "AIT-005",
+      "category": "ai_targeted_instructions",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "AIT-006",
+      "category": "ai_targeted_instructions",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "AIT-007",
+      "category": "ai_targeted_instructions",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "AIT-008",
+      "category": "ai_targeted_instructions",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    },
+    {
+      "rule_id": "AIT-009",
+      "category": "ai_targeted_instructions",
+      "status": "helper_only_not_live",
+      "positive_pass": null,
+      "benign_pass": null
+    }
+  ],
+  "all_nine_have_verified_live_rules": true,
+  "all_specification_rows_complete": false,
+  "coverage_caveat": "A positive/benign pair proves one supported pattern, not the full rule specification. All live entries remain partial until every specified trigger and guard is verified.",
+  "development_evaluation": {
+    "run_id": "a4d15c15-5815-42a0-ac30-c460adbe8eee",
+    "created_at": "2026-10-24T00:29:55.019194+00:00",
+    "engine_version": "0.5.0-scoring",
+    "dataset": "Public development set",
+    "dataset_sha256": "8c781a4ef61b0ba9813719b0dd8b14f51929cc3cf20de395de1f48aa420ab4fc",
+    "sample_count": 42,
+    "malicious_count": 30,
+    "benign_count": 12,
+    "cache": "bypassed",
+    "latency_scope": "Warm direct analyzer; excludes HTTP, rendering and queue wait. Nearest-rank percentiles.",
+    "machine": {
+      "architecture": "x86_64",
+      "logical_cpus": 12,
+      "python": "3.14.4"
+    },
+    "binary": {
+      "tp": 30,
+      "fp": 0,
+      "tn": 12,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0
+    },
+    "per_category": {
+      "secret_access": {
+        "tp": 4,
+        "fp": 2,
+        "tn": 36,
+        "fn": 0,
+        "precision": 0.666667,
+        "recall": 1.0,
+        "f1": 0.8,
+        "fpr": 0.052632,
+        "support": 4
+      },
+      "data_exfiltration": {
+        "tp": 3,
+        "fp": 2,
+        "tn": 37,
+        "fn": 0,
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.75,
+        "fpr": 0.051282,
+        "support": 3
+      },
+      "destructive_command": {
+        "tp": 5,
+        "fp": 2,
+        "tn": 35,
+        "fn": 0,
+        "precision": 0.714286,
+        "recall": 1.0,
+        "f1": 0.833333,
+        "fpr": 0.054054,
+        "support": 5
+      },
+      "persistence_or_privesc": {
+        "tp": 2,
+        "fp": 0,
+        "tn": 40,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr": 0.0,
+        "support": 2
+      },
+      "obfuscated_execution": {
+        "tp": 5,
+        "fp": 3,
+        "tn": 34,
+        "fn": 0,
+        "precision": 0.625,
+        "recall": 1.0,
+        "f1": 0.769231,
+        "fpr": 0.081081,
+        "support": 5
+      },
+      "dependency_risk": {
+        "tp": 3,
+        "fp": 0,
+        "tn": 39,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr": 0.0,
+        "support": 3
+      },
+      "resource_exhaustion": {
+        "tp": 3,
+        "fp": 0,
+        "tn": 39,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr": 0.0,
+        "support": 3
+      },
+      "ssrf_network_exfil": {
+        "tp": 3,
+        "fp": 0,
+        "tn": 39,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr": 0.0,
+        "support": 3
+      },
+      "ai_targeted_instructions": {
+        "tp": 4,
+        "fp": 0,
+        "tn": 38,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr": 0.0,
+        "support": 4
+      }
+    },
+    "latency_ms": {
+      "p50": 0.6137,
+      "p95": 1.1466,
+      "p99": 2.2272
+    },
+    "incomplete_count": 0,
+    "error_count": 0,
+    "results": [
+      {
+        "id": "cg_benign_0001",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.9691,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_data_exfiltration_0010",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "data_exfiltration"
+        ],
+        "predicted_categories": [
+          "data_exfiltration"
+        ],
+        "latency_ms": 1.1466,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 16: An ICMP command embeds data in its packet payload.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-EXF-003",
+              "category": "data_exfiltration",
+              "lines": [
+                16
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "data_exfiltration": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_data_exfiltration_0011",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "data_exfiltration"
+        ],
+        "predicted_categories": [
+          "data_exfiltration",
+          "secret_access"
+        ],
+        "latency_ms": 0.8462,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 9: The code enumerates the process environment, exposing potentially sensitive values. Line 16: Credential-derived data flows to an outbound network request.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-SEC-004",
+              "category": "secret_access",
+              "lines": [
+                9
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-EXF-001",
+              "category": "data_exfiltration",
+              "lines": [
+                16
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            },
+            {
+              "rule_id": "CG-EXF-001",
+              "category": "data_exfiltration",
+              "lines": [
+                15
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            }
+          ],
+          "category_scores": {
+            "data_exfiltration": 0.9974999999999999,
+            "secret_access": 0.76
+          },
+          "base": 0.9974999999999999,
+          "chain_bonuses": [
+            {
+              "rule_id": "CG-EXF-001",
+              "amount": 0.03,
+              "why": "The source-to-network rule established sensitive data flow."
+            }
+          ],
+          "chain_bonus": 0.03,
+          "critical_floor": 0.9,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 1.0,
+          "final_score": 1.0,
+          "threshold": 0.5,
+          "decision_basis": "critical_rule",
+          "critical_override": true,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0005",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.5973,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_data_exfiltration_0016",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "data_exfiltration"
+        ],
+        "predicted_categories": [
+          "data_exfiltration"
+        ],
+        "latency_ms": 2.2272,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 11: A database dump or interpolated SELECT can disclose unrestricted records.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-EXF-005",
+              "category": "data_exfiltration",
+              "lines": [
+                11
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "data_exfiltration": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_dependency_risk_0002",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "dependency_risk"
+        ],
+        "predicted_categories": [
+          "dependency_risk"
+        ],
+        "latency_ms": 0.8272,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 7: A runtime package name cannot be established as a reviewed constant. Line 10: An installed name is a close spelling variant of a bundled known package.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-DEP-006",
+              "category": "dependency_risk",
+              "lines": [
+                7
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-DEP-001",
+              "category": "dependency_risk",
+              "lines": [
+                10
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "dependency_risk": 0.9424
+          },
+          "base": 0.9424,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.9424,
+          "final_score": 0.94,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_dependency_risk_0009",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "dependency_risk"
+        ],
+        "predicted_categories": [
+          "dependency_risk"
+        ],
+        "latency_ms": 0.7055,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 12: Installation uses a remote source or overrides registry trust.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-DEP-002",
+              "category": "dependency_risk",
+              "lines": [
+                12
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "dependency_risk": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0006",
+        "language": "bash",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.8762,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_destructive_command_0002",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "destructive_command"
+        ],
+        "predicted_categories": [
+          "destructive_command",
+          "obfuscated_execution"
+        ],
+        "latency_ms": 0.5897,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 9: An uncontrolled command reaches a shell execution boundary. Line 9: Dynamic execution can interpret input as program instructions.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-DES-004",
+              "category": "destructive_command",
+              "lines": [
+                9
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-OBF-002",
+              "category": "obfuscated_execution",
+              "lines": [
+                9
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "destructive_command": 0.76,
+            "obfuscated_execution": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_destructive_command_0004",
+        "language": "sql",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "destructive_command"
+        ],
+        "predicted_categories": [
+          "destructive_command"
+        ],
+        "latency_ms": 0.5202,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 10: SQL modifies data without a WHERE scope or interpolates uncontrolled values.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-DES-003",
+              "category": "destructive_command",
+              "lines": [
+                10
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "destructive_command": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_destructive_command_0007",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "destructive_command"
+        ],
+        "predicted_categories": [
+          "destructive_command",
+          "obfuscated_execution"
+        ],
+        "latency_ms": 0.6848,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 8: An uncontrolled command reaches a shell execution boundary. Line 8: Dynamic execution can interpret input as program instructions.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-DES-004",
+              "category": "destructive_command",
+              "lines": [
+                8
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-OBF-002",
+              "category": "obfuscated_execution",
+              "lines": [
+                8
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "destructive_command": 0.76,
+            "obfuscated_execution": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0007",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.5514,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_destructive_command_0020",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "destructive_command"
+        ],
+        "predicted_categories": [
+          "destructive_command"
+        ],
+        "latency_ms": 0.7902,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 12: SQL modifies data without a WHERE scope or interpolates uncontrolled values.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-DES-003",
+              "category": "destructive_command",
+              "lines": [
+                12
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "destructive_command": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_destructive_command_0021",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "destructive_command"
+        ],
+        "predicted_categories": [
+          "destructive_command",
+          "obfuscated_execution"
+        ],
+        "latency_ms": 0.6416,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 13: Dynamic execution can interpret input as program instructions. Line 13: An uncontrolled command reaches a shell execution boundary.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-OBF-002",
+              "category": "obfuscated_execution",
+              "lines": [
+                13
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-DES-004",
+              "category": "destructive_command",
+              "lines": [
+                13
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "destructive_command": 0.76,
+            "obfuscated_execution": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_obfuscated_execution_0002",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "obfuscated_execution"
+        ],
+        "predicted_categories": [
+          "destructive_command",
+          "obfuscated_execution"
+        ],
+        "latency_ms": 0.5889,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 9: Dynamic execution can interpret input as program instructions. Line 13: Dynamic execution can interpret input as program instructions.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-OBF-002",
+              "category": "obfuscated_execution",
+              "lines": [
+                9
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-OBF-002",
+              "category": "obfuscated_execution",
+              "lines": [
+                13
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-DES-004",
+              "category": "destructive_command",
+              "lines": [
+                13
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "destructive_command": 0.76,
+            "obfuscated_execution": 0.9424
+          },
+          "base": 0.9424,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.9424,
+          "final_score": 0.94,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_obfuscated_execution_0004",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "obfuscated_execution"
+        ],
+        "predicted_categories": [
+          "obfuscated_execution"
+        ],
+        "latency_ms": 0.6137,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 3: A runtime-selected module or operation is loaded dynamically.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-OBF-003",
+              "category": "obfuscated_execution",
+              "lines": [
+                3
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "obfuscated_execution": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_obfuscated_execution_0013",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "obfuscated_execution"
+        ],
+        "predicted_categories": [
+          "obfuscated_execution"
+        ],
+        "latency_ms": 0.494,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 6: A runtime-selected module or operation is loaded dynamically. Line 11: Dynamic execution can interpret input as program instructions.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-OBF-003",
+              "category": "obfuscated_execution",
+              "lines": [
+                6
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-OBF-002",
+              "category": "obfuscated_execution",
+              "lines": [
+                11
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "obfuscated_execution": 0.9424
+          },
+          "base": 0.9424,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.9424,
+          "final_score": 0.94,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0008",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.5314,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_obfuscated_execution_0017",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "obfuscated_execution"
+        ],
+        "predicted_categories": [
+          "destructive_command",
+          "obfuscated_execution"
+        ],
+        "latency_ms": 0.6263,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 11: An uncontrolled command reaches a shell execution boundary. Line 11: Dynamic execution can interpret input as program instructions.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-DES-004",
+              "category": "destructive_command",
+              "lines": [
+                11
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-OBF-002",
+              "category": "obfuscated_execution",
+              "lines": [
+                11
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "destructive_command": 0.76,
+            "obfuscated_execution": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_obfuscated_execution_0018",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "obfuscated_execution"
+        ],
+        "predicted_categories": [
+          "obfuscated_execution"
+        ],
+        "latency_ms": 0.5908,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 10: Deserialization may invoke executable object reconstruction.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-OBF-006",
+              "category": "obfuscated_execution",
+              "lines": [
+                10
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "obfuscated_execution": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0009",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.5031,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_persistence_or_privesc_0005",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "persistence_or_privesc"
+        ],
+        "predicted_categories": [
+          "persistence_or_privesc"
+        ],
+        "latency_ms": 0.576,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 8: The operation writes privilege or startup configuration.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-PER-001",
+              "category": "persistence_or_privesc",
+              "lines": [
+                8
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            }
+          ],
+          "category_scores": {
+            "persistence_or_privesc": 0.95
+          },
+          "base": 0.95,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.9,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.95,
+          "final_score": 0.95,
+          "threshold": 0.5,
+          "decision_basis": "critical_rule",
+          "critical_override": true,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_persistence_or_privesc_0010",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "persistence_or_privesc"
+        ],
+        "predicted_categories": [
+          "persistence_or_privesc"
+        ],
+        "latency_ms": 0.6055,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 9: The operation writes privilege or startup configuration. Line 15: The operation writes privilege or startup configuration.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-PER-001",
+              "category": "persistence_or_privesc",
+              "lines": [
+                9
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            },
+            {
+              "rule_id": "CG-PER-001",
+              "category": "persistence_or_privesc",
+              "lines": [
+                15
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            }
+          ],
+          "category_scores": {
+            "persistence_or_privesc": 0.9974999999999999
+          },
+          "base": 0.9974999999999999,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.9,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.9974999999999999,
+          "final_score": 1.0,
+          "threshold": 0.5,
+          "decision_basis": "critical_rule",
+          "critical_override": true,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0010",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.6358,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_resource_exhaustion_0007",
+        "language": "bash",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "resource_exhaustion"
+        ],
+        "predicted_categories": [
+          "resource_exhaustion"
+        ],
+        "latency_ms": 0.7132,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 13: A zero-fill or repeated-output command has no size bound.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-RES-005",
+              "category": "resource_exhaustion",
+              "lines": [
+                13
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "resource_exhaustion": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_resource_exhaustion_0008",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "resource_exhaustion"
+        ],
+        "predicted_categories": [
+          "resource_exhaustion"
+        ],
+        "latency_ms": 0.5484,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 11: A large loop creates resource handles without a visible release.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-RES-006",
+              "category": "resource_exhaustion",
+              "lines": [
+                11
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "resource_exhaustion": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0011",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.571,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_secret_access_0001",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "secret_access"
+        ],
+        "predicted_categories": [
+          "data_exfiltration",
+          "secret_access"
+        ],
+        "latency_ms": 0.7651,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 9: The operation reads a credential store rather than ordinary application preferences. Line 17: Credential-derived data flows to an outbound network request.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-SEC-003",
+              "category": "secret_access",
+              "lines": [
+                9
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-EXF-001",
+              "category": "data_exfiltration",
+              "lines": [
+                17
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            }
+          ],
+          "category_scores": {
+            "data_exfiltration": 0.95,
+            "secret_access": 0.76
+          },
+          "base": 0.95,
+          "chain_bonuses": [
+            {
+              "rule_id": "CG-EXF-001",
+              "amount": 0.03,
+              "why": "The source-to-network rule established sensitive data flow."
+            }
+          ],
+          "chain_bonus": 0.03,
+          "critical_floor": 0.9,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.98,
+          "final_score": 0.98,
+          "threshold": 0.5,
+          "decision_basis": "critical_rule",
+          "critical_override": true,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_secret_access_0007",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "secret_access"
+        ],
+        "predicted_categories": [
+          "data_exfiltration",
+          "secret_access"
+        ],
+        "latency_ms": 0.6235,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 9: The operation reads a credential store rather than ordinary application preferences. Line 15: Credential-derived data flows to an outbound network request.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-SEC-003",
+              "category": "secret_access",
+              "lines": [
+                9
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-EXF-001",
+              "category": "data_exfiltration",
+              "lines": [
+                15
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            },
+            {
+              "rule_id": "CG-EXF-001",
+              "category": "data_exfiltration",
+              "lines": [
+                14
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            }
+          ],
+          "category_scores": {
+            "data_exfiltration": 0.9974999999999999,
+            "secret_access": 0.76
+          },
+          "base": 0.9974999999999999,
+          "chain_bonuses": [
+            {
+              "rule_id": "CG-EXF-001",
+              "amount": 0.03,
+              "why": "The source-to-network rule established sensitive data flow."
+            }
+          ],
+          "chain_bonus": 0.03,
+          "critical_floor": 0.9,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 1.0,
+          "final_score": 1.0,
+          "threshold": 0.5,
+          "decision_basis": "critical_rule",
+          "critical_override": true,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_secret_access_0013",
+        "language": "javascript",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "secret_access"
+        ],
+        "predicted_categories": [
+          "secret_access"
+        ],
+        "latency_ms": 1.0102,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 2: An executable value embeds a provider-format or high-entropy credential.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-SEC-001",
+              "category": "secret_access",
+              "lines": [
+                2
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "secret_access": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0012",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.7886,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0013",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.9437,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_secret_access_0021",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "secret_access"
+        ],
+        "predicted_categories": [
+          "secret_access"
+        ],
+        "latency_ms": 0.655,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 7: An executable value embeds a provider-format or high-entropy credential.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-SEC-001",
+              "category": "secret_access",
+              "lines": [
+                7
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "secret_access": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_ssrf_network_exfil_0007",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "ssrf_network_exfil"
+        ],
+        "predicted_categories": [
+          "ssrf_network_exfil"
+        ],
+        "latency_ms": 0.5076,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 9: The request uses a non-HTTP scheme capable of reaching other services.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-NET-003",
+              "category": "ssrf_network_exfil",
+              "lines": [
+                9
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "ssrf_network_exfil": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_ssrf_network_exfil_0010",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "ssrf_network_exfil"
+        ],
+        "predicted_categories": [
+          "ssrf_network_exfil"
+        ],
+        "latency_ms": 0.5117,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 13: The destination resolves statically to an internal or non-public address.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-NET-001",
+              "category": "ssrf_network_exfil",
+              "lines": [
+                13
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            }
+          ],
+          "category_scores": {
+            "ssrf_network_exfil": 0.95
+          },
+          "base": 0.95,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.9,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.95,
+          "final_score": 0.95,
+          "threshold": 0.5,
+          "decision_basis": "critical_rule",
+          "critical_override": true,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0014",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.5981,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_ai_targeted_instructions_0001",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "ai_targeted_instructions"
+        ],
+        "predicted_categories": [
+          "ai_targeted_instructions"
+        ],
+        "latency_ms": 0.5203,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 4: Untrusted text instructs an AI reader to override review or disclose protected context. Line 5: Untrusted text instructs an AI reader to override review or disclose protected context.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                4
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                5
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "ai_targeted_instructions": 0.9424
+          },
+          "base": 0.9424,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.9424,
+          "final_score": 0.94,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_ai_targeted_instructions_0002",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "ai_targeted_instructions"
+        ],
+        "predicted_categories": [
+          "ai_targeted_instructions"
+        ],
+        "latency_ms": 0.5209,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 6: Untrusted text instructs an AI reader to override review or disclose protected context.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                6
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "ai_targeted_instructions": 0.76
+          },
+          "base": 0.76,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.76,
+          "final_score": 0.76,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_benign_0015",
+        "language": "python",
+        "expected": "allow",
+        "predicted": "allow",
+        "expected_categories": [],
+        "predicted_categories": [],
+        "latency_ms": 0.4748,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "No blocking findings in the completed baseline checks.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [],
+          "category_scores": {},
+          "base": 0.0,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.0,
+          "final_score": 0.0,
+          "threshold": 0.5,
+          "decision_basis": "below_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_ai_targeted_instructions_0015",
+        "language": "yaml",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "ai_targeted_instructions"
+        ],
+        "predicted_categories": [
+          "ai_targeted_instructions"
+        ],
+        "latency_ms": 0.8672,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 11: Untrusted text instructs an AI reader to override review or disclose protected context. Line 12: Untrusted text instructs an AI reader to override review or disclose protected context.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                11
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                12
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                13
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "ai_targeted_instructions": 0.986176
+          },
+          "base": 0.986176,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.986176,
+          "final_score": 0.99,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_ai_targeted_instructions_0016",
+        "language": "markdown",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "ai_targeted_instructions"
+        ],
+        "predicted_categories": [
+          "ai_targeted_instructions"
+        ],
+        "latency_ms": 0.4521,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 8: Untrusted text instructs an AI reader to override review or disclose protected context. Line 9: Untrusted text instructs an AI reader to override review or disclose protected context.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                8
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                9
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                10
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-AIT-001",
+              "category": "ai_targeted_instructions",
+              "lines": [
+                11
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "ai_targeted_instructions": 0.99668224
+          },
+          "base": 0.99668224,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.0,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.99668224,
+          "final_score": 1.0,
+          "threshold": 0.5,
+          "decision_basis": "score_threshold",
+          "critical_override": false,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      },
+      {
+        "id": "cg_multi_0001",
+        "language": "python",
+        "expected": "block",
+        "predicted": "block",
+        "expected_categories": [
+          "dependency_risk",
+          "resource_exhaustion",
+          "ssrf_network_exfil"
+        ],
+        "predicted_categories": [
+          "dependency_risk",
+          "resource_exhaustion",
+          "secret_access",
+          "ssrf_network_exfil"
+        ],
+        "latency_ms": 1.3237,
+        "analysis_complete": true,
+        "error": false,
+        "reason": "Line 13: A runtime package name cannot be established as a reviewed constant. Line 23: The destination resolves statically to an internal or non-public address.",
+        "score_trace": {
+          "method": "severity-noisy-or-v1",
+          "calibrated_probability": false,
+          "formula": "finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)",
+          "severity_weights": {
+            "critical": 1.0,
+            "high": 0.8,
+            "medium": 0.5,
+            "low": 0.25,
+            "info": 0.05
+          },
+          "contributors": [
+            {
+              "rule_id": "CG-DEP-006",
+              "category": "dependency_risk",
+              "lines": [
+                13
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            },
+            {
+              "rule_id": "CG-NET-001",
+              "category": "ssrf_network_exfil",
+              "lines": [
+                23
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            },
+            {
+              "rule_id": "CG-SEC-007",
+              "category": "secret_access",
+              "lines": [
+                23
+              ],
+              "severity": "critical",
+              "confidence": 0.95,
+              "severity_weight": 1.0,
+              "contribution": 0.95
+            },
+            {
+              "rule_id": "CG-RES-001",
+              "category": "resource_exhaustion",
+              "lines": [
+                28
+              ],
+              "severity": "high",
+              "confidence": 0.95,
+              "severity_weight": 0.8,
+              "contribution": 0.76
+            }
+          ],
+          "category_scores": {
+            "dependency_risk": 0.76,
+            "resource_exhaustion": 0.76,
+            "secret_access": 0.95,
+            "ssrf_network_exfil": 0.95
+          },
+          "base": 0.95,
+          "chain_bonuses": [],
+          "chain_bonus": 0,
+          "critical_floor": 0.9,
+          "ml_adjustment": 0.0,
+          "ml_status": "disabled; no trained model adopted",
+          "unrounded_score": 0.95,
+          "final_score": 0.95,
+          "threshold": 0.5,
+          "decision_basis": "critical_rule",
+          "critical_override": true,
+          "analysis_complete": true,
+          "policy": "Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.",
+          "confidence_basis": "Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.",
+          "threshold_status": "PRD default 0.50; development sweep reported separately; no sealed-set calibration.",
+          "limitations": "Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices."
+        }
+      }
+    ],
+    "notes": "Development baseline, not a held-out or official score. Operational blocks count in binary metrics; category metrics measure actual findings. No sample code is executed."
+  },
+  "development_threshold_sweep": [
+    {
+      "threshold": 0.25,
+      "tp": 30,
+      "fp": 0,
+      "tn": 12,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0
+    },
+    {
+      "threshold": 0.35,
+      "tp": 30,
+      "fp": 0,
+      "tn": 12,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0
+    },
+    {
+      "threshold": 0.45,
+      "tp": 30,
+      "fp": 0,
+      "tn": 12,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0
+    },
+    {
+      "threshold": 0.5,
+      "tp": 30,
+      "fp": 0,
+      "tn": 12,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0
+    },
+    {
+      "threshold": 0.6,
+      "tp": 30,
+      "fp": 0,
+      "tn": 12,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0
+    },
+    {
+      "threshold": 0.7,
+      "tp": 30,
+      "fp": 0,
+      "tn": 12,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0
+    },
+    {
+      "threshold": 0.8,
+      "tp": 13,
+      "fp": 0,
+      "tn": 12,
+      "fn": 17,
+      "precision": 1.0,
+      "recall": 0.433333,
+      "f1": 0.604651,
+      "fpr": 0.0
+    },
+    {
+      "threshold": 0.9,
+      "tp": 13,
+      "fp": 0,
+      "tn": 12,
+      "fn": 17,
+      "precision": 1.0,
+      "recall": 0.433333,
+      "f1": 0.604651,
+      "fpr": 0.0
+    },
+    {
+      "threshold": 0.95,
+      "tp": 9,
+      "fp": 0,
+      "tn": 12,
+      "fn": 21,
+      "precision": 1.0,
+      "recall": 0.3,
+      "f1": 0.461538,
+      "fpr": 0.0
+    }
+  ],
+  "threshold_decision": "Retain PRD default 0.50. This sweep is diagnostic; no held-out threshold selection or sealed evaluation has occurred.",
+  "official_judging": "Private hidden-set formula is unknown. This report computes development metrics only."
+}

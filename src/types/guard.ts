@@ -17,7 +17,7 @@ export interface ThreatCategoryMeta {
   id: ThreatCategory;
   name: string;
   description: string;
-  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
   cwe?: string;
 }
 
@@ -76,6 +76,7 @@ export interface GuardResponse {
   analysis_complete?: boolean;
   cache_status?: string;
   score_trace?: Record<string, unknown>;
+  decision_cards?: DecisionCard[];
   metadata?: {
     detector_version: string;
     parser_status: 'SUCCESS' | 'PARTIAL' | 'FALLBACK';
@@ -83,6 +84,21 @@ export interface GuardResponse {
     timestamp: string;
     is_mock: boolean;
   };
+}
+
+export interface DecisionCard {
+  decision: string;
+  why: string;
+  rule_id: string;
+  severity: string | null;
+  confidence: number | null;
+  evidence: { lines: number[]; redacted_snippet: string };
+  guards_checked: { guard: string; result: boolean }[];
+  guard_evidence_status?: string;
+  alternatives_considered: string[];
+  alternative_status?: string;
+  references: string[];
+  remediation: string;
 }
 
 export interface BatchItem {

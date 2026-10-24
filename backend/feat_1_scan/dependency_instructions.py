@@ -152,11 +152,11 @@ def _text(text, line, add, deadline, risky=False, workflow=False, tool=False):
             add('AIT-008', line)
 
 
-def inspect(tree, code, add, deadline):
+def inspect(tree, code, add, deadline, nodes=None, comments=None):
     """Analyze one already-parsed Python AST; caller handles raised deadlines."""
     aliases, constants, calls, classes = {}, {}, [], {}
     texts = []
-    nodes = list(ast.walk(tree))
+    nodes = list(ast.walk(tree)) if nodes is None else nodes
     if len(nodes) > 12000:
         raise TimeoutError('node limit')
     for index, node in enumerate(nodes):
@@ -197,10 +197,11 @@ def inspect(tree, code, add, deadline):
                                     if operation_name.startswith(('subprocess.', 'requests.', 'httpx.', 'urllib.request.')) or operation_name in ('os.system', 'os.popen', 'exec', 'eval'):
                                         add('DEP-004', operation.lineno)
     risky_lines = [n.lineno for n in calls if _name(n.func, aliases) in ('eval', 'exec', 'os.system', 'os.popen', 'pickle.loads')]
-    try:
-        comments = [(t.start[0], t.string) for t in tokenize.generate_tokens(io.StringIO(code).readline) if t.type == tokenize.COMMENT]
-    except (tokenize.TokenError, IndentationError):
-        comments = []
+    if comments is None:
+        try:
+            comments = [(t.start[0], t.string) for t in tokenize.generate_tokens(io.StringIO(code).readline) if t.type == tokenize.COMMENT]
+        except (tokenize.TokenError, IndentationError):
+            comments = []
     for i, (line, text) in enumerate(comments):
         group = ' '.join(t for n, t in comments[i:i+4] if n <= line+3)
         texts.append((line, group, False))
