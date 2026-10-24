@@ -15,7 +15,9 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -112,6 +114,13 @@ def main():
     # --- Summary -------------------------------------------------------------
     clean(safe_marker, unsafe_marker)
     failed = [step for step, ok, _ in results if not ok]
+    (RUN_DIR / "last_result.json").write_text(json.dumps({
+        "ran_at": datetime.now(timezone.utc).isoformat(),
+        "mode": mode,
+        "passed": not failed,
+        "checks": [{"step": step, "ok": ok, "detail": detail} for step, ok, detail in results],
+        "controlled_pair": "placeholder (organizer pair not yet supplied)",
+    }, indent=2), encoding="utf-8")
     print("\n" + "-" * 64)
     if failed:
         print(f"RESULT: FAIL ({len(failed)} check(s) failed: {', '.join(failed)})")

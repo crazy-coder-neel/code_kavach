@@ -197,7 +197,7 @@ async def guard(request: Request):
 async def batch_guard(request: Request):
     try:
         body = await read_json(request, MAX_BATCH_BYTES)
-        items = body.get('items')
+        items = body.get('items') if body.get('items') is not None else body.get('snippets', body.get('codes'))
         if not isinstance(items, list) or not 1 <= len(items) <= 500:
             raise IntakeError('Provide between 1 and 500 batch items.', 400)
     except IntakeError as error:
@@ -313,3 +313,15 @@ async def submit_feedback(request: Request):
 @app.get('/v1/feedback')
 def feedback_summary():
     return feedback.summary()
+
+
+@app.get('/v1/docs/decisions')
+def design_decisions():
+    from feat_7_governance.docs import decisions
+    return decisions()
+
+
+@app.get('/v1/demo/intercept')
+def latest_intercept_result():
+    from feat_7_governance.docs import intercept_result
+    return intercept_result()

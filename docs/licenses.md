@@ -14,7 +14,9 @@ The machine-readable [inventory](licenses.json) records installed versions, decl
 | Vite / Tailwind / associated plugins / tsx / type packages | Frontend tooling | MIT; installed metadata | Existing development dependencies |
 | TypeScript | Type checks | Apache-2.0; installed metadata | Existing development dependency |
 | HTTPX | Contract tests | BSD-3-Clause; installed metadata | Existing test dependency, now in requirements-dev.txt |
+| scikit-learn / joblib | Classical ML classifier (CPU inference) | BSD-3-Clause; installed metadata | Added for Layer 2 multi-label CPU classifier (model size 99.4 KB) |
+| NumPy / SciPy | Numerical routines for scikit-learn | BSD-3-Clause; installed metadata | Transitive dependency for ML feature transformation |
 | GitHub checkout/setup-node/setup-python/upload-artifact actions | Hosted CI | Source not independently reviewed in this run | Workflow prepared; hosted execution not run |
 | Bun / setup-bun action | Lockfile installation in hosted CI | Source not independently reviewed in this run | Existing package manager; hosted execution not run |
 
-No pretrained model, third-party security detector, public training corpus, SQL/shell parser package, or Supabase client has been added. The organizer-provided dataset is retained unchanged; its licence is not inferred.
+No external pretrained foundation model weights, third-party security detector SaaS, or external LLM APIs are used anywhere. A compact 99.4 KB multi-label scikit-learn model was trained locally on the provided dev set and paired fixtures for CPU inference. The organizer-provided dataset is retained unchanged; its licence is not inferred.

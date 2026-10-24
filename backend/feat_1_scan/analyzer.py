@@ -9,6 +9,10 @@ from feat_1_scan.signals import (SECRET_NAME, SECRET_PATH, PERSIST_PATH, secret_
     network_risk, command_findings, text_injection, package_risk)
 from feat_2_results.results import assemble, finding
 from feat_1_scan import dependency_instructions as supplemental
+try:
+    from feat_1_scan.ml_detector import get_detector
+except ImportError:
+    get_detector = None
 
 MAX_BYTES = 64 * 1024
 _INVISIBLE = re.compile(r'[\u200b-\u200f\u202a-\u202e\u2060-\u206f]')
@@ -70,6 +74,18 @@ REASONS = {
  'INJ-001': 'An XML parser explicitly enables external entity resolution.',
 }
 REASONS.update(supplemental.REASONS)
+
+
+def _finish_assemble(found, language, complete=True, code=''):
+    ml_res = None
+    if get_detector is not None:
+        try:
+            detector = get_detector()
+            if detector.is_available:
+                ml_res = detector.predict(code, found)
+        except Exception:
+            ml_res = None
+    return assemble(found, language, complete=complete, ml_result=ml_res)
 
 
 def analyze(code, _depth=0, _deadline=None):
@@ -448,7 +464,7 @@ def analyze(code, _depth=0, _deadline=None):
                             rule = item['rule_id'].removeprefix('CG-')
                             if rule in REASONS:
                                 add(rule,node)
-        return assemble(found,'python')
+        return _finish_assemble(found, 'python', complete=True, code=code)
     except (TimeoutError,RecursionError,MemoryError):
         return assemble(found,'python',complete=False)
 
@@ -523,4 +539,4 @@ def non_python(code,add,found,deadline):
                     if rule:
                         add(rule,i)
     # Known language scanners are lexical approximations, documented in coverage.
-    return assemble(found,language,complete=language!='unknown')
+    return _finish_assemble(found, language, complete=language != 'unknown', code=code)

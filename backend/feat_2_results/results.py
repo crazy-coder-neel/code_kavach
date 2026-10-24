@@ -114,15 +114,20 @@ def finding(category, lines, evidence, reason):
             'fix': suggested_fix(category, reason)}
 
 
-def assemble(findings, language, complete=True):
+def assemble(findings, language, complete=True, ml_result=None):
     categories = sorted({f['category'] for f in findings})
     lines = sorted({line for f in findings for line in f['lines']})
     for item in findings:
         item['severity'] = severity(item['rule_id'])
-    verdict, risk, score_trace = aggregate(findings, complete)
+    verdict, risk, score_trace = aggregate(findings, complete, ml_result=ml_result)
     reason = ' '.join(f"Line {f['lines'][0]}: {f['why']}" for f in findings[:2])
     if not complete:
         reason = 'Blocked because this input could not be fully checked by the initial analyzer. ' + reason
+    elif not reason and verdict == 'block' and ml_result and ml_result.get('predicted_categories'):
+        cats_str = ', '.join(ml_result['predicted_categories'])
+        reason = f'Blocked by classical ML classifier: detected anomalous patterns associated with {cats_str}.'
+        if not categories:
+            categories = sorted(ml_result['predicted_categories'])
     return {'verdict': verdict,
             'risk_score': round(risk, 2), 'categories': categories,
             'code_language': language,

@@ -19,7 +19,7 @@ def severity(rule):
             else 'medium' if rule in MEDIUM else 'high')
 
 
-def aggregate(findings, complete=True):
+def aggregate(findings, complete=True, ml_result=None):
     contributors, seen = [], set()
     for finding in findings:
         key = (finding['rule_id'], tuple(sorted(set(finding['lines']))))
@@ -47,22 +47,48 @@ def aggregate(findings, complete=True):
     bonus = sum(item['amount'] for item in bonuses)
     critical = any(f['severity'] == 'critical' and f['confidence'] >= .9 for f in contributors)
     floor = .9 if critical else 0.0
-    raw_score = min(1.0, max(floor, base + bonus))
+
+    # ML bounded adjustment layer (PRD §7.5 & §7.7)
+    ml_adjustment = 0.0
+    ml_status = 'disabled; no trained model adopted'
+    ml_probability = 0.0
+    ml_category_probs = {}
+    model_signals = []
+
+    if ml_result and ml_result.get('available'):
+        ml_prob = ml_result.get('malicious_prob', 0.0)
+        ml_probability = ml_prob
+        ml_category_probs = ml_result.get('category_probs', {})
+        model_signals = ml_result.get('top_signals', [])
+        ml_status = f'active: classical-multilabel-lr-v1 (p_malicious={ml_prob:.2f})'
+        # Bounded adjustment: if ML indicates elevated risk and static rules are below threshold
+        if ml_prob >= 0.70 and base < BLOCK_THRESHOLD and not critical:
+            ml_adjustment = round(min(0.20, (ml_prob - 0.5) * 0.4), 2)
+
+    raw_score = min(1.0, max(floor, base + bonus + ml_adjustment))
     # The published two-decimal score is the value compared to the threshold.
     score = round(raw_score, 2)
     basis = ('incomplete_analysis' if not complete else 'critical_rule' if critical
              else 'score_threshold' if score >= BLOCK_THRESHOLD else 'below_threshold')
     verdict = 'block' if not complete or critical or score >= BLOCK_THRESHOLD else 'allow'
-    return verdict, score, {
+
+    trace = {
         'method': METHOD, 'calibrated_probability': False,
         'formula': 'finding = severity_weight * confidence; category = 1 - product(1 - finding); score = round(clamp(max(critical_floor, max(category) + chain_bonus + ml_adjustment), 0, 1), 2)',
         'severity_weights': WEIGHTS, 'contributors': contributors,
         'category_scores': category_scores, 'base': base, 'chain_bonuses': bonuses,
-        'chain_bonus': bonus, 'critical_floor': floor, 'ml_adjustment': 0.0,
-        'ml_status': 'disabled; no trained model adopted', 'unrounded_score': raw_score,
+        'chain_bonus': bonus, 'critical_floor': floor, 'ml_adjustment': ml_adjustment,
+        'ml_status': ml_status, 'unrounded_score': raw_score,
         'final_score': score, 'threshold': BLOCK_THRESHOLD, 'decision_basis': basis,
         'critical_override': critical, 'analysis_complete': complete,
         'policy': 'Block on incomplete analysis, a critical finding with confidence >= 0.9, or published score >= threshold.',
         'confidence_basis': 'Fixed rule-match confidence (0.95 by default), not measured accuracy or a learned probability.',
         'threshold_status': 'PRD default 0.50; development sweep reported separately; no sealed-set calibration.',
         'limitations': 'Correlated findings can inflate noisy-OR. Identical rule/line findings are deduplicated; separate lines can still correlate. Weights, floors and bonuses are engineering policy choices.'}
+
+    if ml_result and ml_result.get('available'):
+        trace['ml_probability'] = ml_probability
+        trace['ml_category_probs'] = ml_category_probs
+        trace['model_signals'] = model_signals
+
+    return verdict, score, trace
