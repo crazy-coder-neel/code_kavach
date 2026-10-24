@@ -30,6 +30,7 @@ export function normalizeGuardResponse(data: any): GuardResponse {
     cache_status: data.cache_status,
     score_trace: data.score_trace,
     decision_cards: data.decision_cards,
+    runtime_trace: data.runtime_trace,
     metadata: {
       detector_version: data.engine_version || 'unknown',
       parser_status: data.analysis_complete === true ? 'SUCCESS' : 'FALLBACK',

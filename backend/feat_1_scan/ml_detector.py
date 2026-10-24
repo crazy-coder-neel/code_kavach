@@ -33,6 +33,7 @@ CATEGORIES = [
 ]
 
 MODEL_PATH = Path(__file__).parent / 'models' / 'classifier.joblib'
+M2_MODEL_PATH = Path(__file__).parent / 'models' / 'm2_injection.joblib'
 
 KEYWORD_PATTERNS = [
     ('subproc', re.compile(r'\b(subprocess|os\.system|popen|spawn)\b', re.I)),
@@ -106,16 +107,47 @@ class MLDetector:
 
     def __init__(self, model_file: Optional[Path] = None):
         self.model_path = model_file or MODEL_PATH
+        self.m2_path = M2_MODEL_PATH
         self.bundle = None
+        self.m2_bundle = None
         self._load()
 
     def _load(self):
-        if not _SKLEARN_AVAILABLE or not self.model_path.exists():
+        if not _SKLEARN_AVAILABLE:
             return
+        if self.model_path.exists():
+            try:
+                self.bundle = joblib.load(self.model_path)
+            except Exception:
+                self.bundle = None
+        if self.m2_path.exists():
+            try:
+                self.m2_bundle = joblib.load(self.m2_path)
+            except Exception:
+                self.m2_bundle = None
+
+    def predict_injection(self, text: str) -> Dict[str, Any]:
+        """M2 CG-Inj text classifier for prompt-injection detection on extracted text."""
+        if not self.m2_bundle or not isinstance(text, str) or not text.strip():
+            return {'available': False, 'is_injection': False, 'confidence': 0.0, 'signals': []}
+        clean = text.strip()
+        # Prompt injection in code requires meaningful prose length
+        if len(clean.split()) < 3 or len(clean) < 15:
+            return {'available': True, 'is_injection': False, 'confidence': 0.0, 'signals': []}
         try:
-            self.bundle = joblib.load(self.model_path)
+            vec = self.m2_bundle['vectorizer']
+            clf = self.m2_bundle['classifier']
+            X = vec.transform([clean])
+            prob = float(clf.predict_proba(X)[0][1])
+            is_inj = prob >= 0.75
+            return {
+                'available': True,
+                'is_injection': is_inj,
+                'confidence': round(prob, 4),
+                'signals': ['m2_injection_classifier'] if is_inj else []
+            }
         except Exception:
-            self.bundle = None
+            return {'available': False, 'is_injection': False, 'confidence': 0.0, 'signals': []}
 
     @property
     def is_available(self) -> bool:

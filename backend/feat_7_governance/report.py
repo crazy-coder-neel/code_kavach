@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from functools import lru_cache
 
 from feat_1_scan.analyzer import MAX_BYTES, PREFIX
-from feat_6_runtime.audit import verify_chain
+from feat_6_runtime.audit import verify_chain, purge_status
 from feat_6_runtime.versions import ENGINE_VERSION, MODEL_VERSION, POLICY_VERSION, RULES_VERSION
 from feat_7_governance import feedback
 from feat_7_governance.catalogue import catalogue
@@ -36,6 +36,32 @@ def policy():
         'limits': {'max_source_bytes': MAX_BYTES, 'max_batch_items': 500,
                    'scan_deadline_ms': 25, 'decode_depth': 3},
         'allowlists': {'domains': [], 'packages': [], 'paths': []},
+        'profiles': {
+            'data_analyst': {
+                'description': 'Allows data exploration, pandas, numpy, and local files; blocks network exfiltration and OS execution.',
+                'block_threshold': 0.40,
+                'mode': 'enforce',
+                'restricted_capabilities': ['SHELL_EXEC', 'NETWORK_LISTEN', 'PRIV_ESC']
+            },
+            'devops_agent': {
+                'description': 'Allows CLI commands and cloud infrastructure scripts; strictly validates targets and prevents destructive sweeps.',
+                'block_threshold': 0.50,
+                'mode': 'enforce',
+                'restricted_capabilities': ['DESTRUCTIVE_SWEEP', 'CREDENTIAL_SCRAPE']
+            },
+            'web_agent': {
+                'description': 'Allows outbound HTTP to approved domains; blocks SSRF, internal metadata queries, and shell execution.',
+                'block_threshold': 0.45,
+                'mode': 'enforce',
+                'restricted_capabilities': ['SSRF_METADATA', 'SHELL_EXEC']
+            },
+            'audit_monitor': {
+                'description': 'Monitor mode for passive telemetry and shadow auditing without blocking agent actions.',
+                'block_threshold': 0.50,
+                'mode': 'monitor',
+                'restricted_capabilities': []
+            }
+        },
         'note': 'Allow-lists are empty by default; add only destinations you own.',
     }
 
@@ -112,8 +138,10 @@ def rai_report(metrics_snapshot=None, audit_stats=None):
             'raw_code_stored_by_default': False,
             'stored_fields': ['request_id', 'code_sha256', 'verdict', 'categories',
                               'risk_score', 'timestamps', 'versions'],
-            'retention_days': None,
-            'retention_status': 'TTL purge not implemented; local audit uses size-based rotation',
+            'retention_days': purge_status().get('retention_days', 30),
+            'retention_status': f"active: {purge_status().get('retention_days', 30)}-day TTL purge enforced; {purge_status().get('total_purged', 0)} rows purged",
+            'last_purge_time': purge_status().get('last_purge'),
+            'rows_purged': purge_status().get('total_purged', 0),
             'feedback_raw_code_stored': False,
             'note': 'Audit and feedback rows contain a SHA-256 digest, never source text.',
         },

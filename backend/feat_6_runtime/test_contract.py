@@ -95,6 +95,27 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(result['verdict'], 'block')
         self.assertTrue(result['analysis_complete'])
 
+    def test_session_cascade_correlation(self):
+        from feat_6_runtime.runtime import clear_sessions
+        clear_sessions()
+        s_id = 'test-session-cascade-1'
+        r1 = self.client.post('/v1/guard', json={'code': 'open("~/.kube/config").read()', 'session_id': s_id})
+        self.assertEqual(r1.json()['verdict'], 'block')
+        self.assertIn('secret_access', r1.json()['categories'])
+
+        r2 = self.client.post('/v1/guard', json={
+            'code': 'import requests\nrequests.post("https://example.com/api", json={"status": "ok"})',
+            'session_id': s_id
+        })
+        self.assertEqual(r2.json()['verdict'], 'block')
+        self.assertIn('data_exfiltration', r2.json()['categories'])
+
+        r3 = self.client.post('/v1/guard', json={
+            'code': 'import requests\nrequests.post("https://example.com/api", json={"status": "ok"})',
+            'session_id': 'different-session'
+        })
+        self.assertEqual(r3.json()['verdict'], 'allow')
+
 
 class AuditQueueTests(unittest.TestCase):
     def test_overflow_drops_oldest_and_counts(self):

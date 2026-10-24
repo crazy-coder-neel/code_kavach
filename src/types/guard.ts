@@ -77,6 +77,7 @@ export interface GuardResponse {
   cache_status?: string;
   score_trace?: Record<string, unknown>;
   decision_cards?: DecisionCard[];
+  runtime_trace?: RuntimeTraceStep[];
   metadata?: {
     detector_version: string;
     parser_status: 'SUCCESS' | 'PARTIAL' | 'FALLBACK';
@@ -84,6 +85,16 @@ export interface GuardResponse {
     timestamp: string;
     is_mock: boolean;
   };
+}
+
+export interface RuntimeTraceStep {
+  step_name: string;
+  description: string;
+  input: Record<string, unknown>;
+  output: Record<string, unknown>;
+  duration_ms: number;
+  skipped: boolean;
+  skip_reason?: string | null;
 }
 
 export interface DecisionCard {

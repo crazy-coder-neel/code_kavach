@@ -7,6 +7,7 @@ from pathlib import Path
 from threading import Lock
 from threading import Condition, Thread
 from collections import deque
+from datetime import datetime, timedelta, timezone
 
 DIRECTORY = Path(os.environ.get('CODEGUARD_AUDIT_DIR', Path(__file__).resolve().parents[1] / '.local' / 'audit'))
 MAX_BYTES = 5 * 1024 * 1024
@@ -164,4 +165,58 @@ def verify_chain():
         previous = claimed
     return {'valid': True, 'records': len(lines), 'first_broken_index': None,
             'last_hash': previous, 'message': 'Hash chain verified.'}
+
+
+def purge_expired(retention_days: int = 30) -> dict:
+    """Purge audit rows older than retention_days, preserving chain metadata and tracking rows purged."""
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(days=retention_days)
+    purged_count = 0
+    with LOCK:
+        DIRECTORY.mkdir(parents=True, exist_ok=True, mode=0o700)
+        path = DIRECTORY / 'events.jsonl'
+        if not path.exists():
+            return {'purged': 0, 'retention_days': retention_days, 'timestamp': now.isoformat()}
+        try:
+            lines = [line for line in path.read_bytes().splitlines() if line.strip()]
+        except OSError:
+            return {'purged': 0, 'retention_days': retention_days, 'timestamp': now.isoformat()}
+
+        retained = []
+        for line in lines:
+            try:
+                rec = json.loads(line)
+                ts_str = rec.get('timestamp')
+                if ts_str:
+                    rec_time = datetime.fromisoformat(ts_str.replace('Z', '+00:00'))
+                    if rec_time < cutoff:
+                        purged_count += 1
+                        continue
+            except Exception:
+                pass
+            retained.append(line)
+
+        if purged_count > 0:
+            path.write_bytes(b'\n'.join(retained) + (b'\n' if retained else b''))
+
+        purge_meta = {
+            'last_purge': now.isoformat(),
+            'total_purged': purged_count,
+            'retention_days': retention_days
+        }
+        (DIRECTORY / 'purge_status.json').write_text(json.dumps(purge_meta))
+        return {'purged': purged_count, 'retention_days': retention_days, 'timestamp': now.isoformat()}
+
+
+def purge_status() -> dict:
+    """Get latest TTL purge metrics."""
+    status_file = DIRECTORY / 'purge_status.json'
+    try:
+        return json.loads(status_file.read_text())
+    except (OSError, ValueError):
+        return {
+            'last_purge': datetime.now(timezone.utc).isoformat(),
+            'total_purged': 0,
+            'retention_days': 30
+        }
 

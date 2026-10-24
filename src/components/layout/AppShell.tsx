@@ -114,6 +114,7 @@ export const AppShell: React.FC = () => {
     { title: 'Open API Playground', shortcut: 'G P', action: () => navigate('/app/playground') },
     { title: 'Developer Integrations', shortcut: 'G I', action: () => navigate('/app/integrations') },
     { title: 'Responsible AI & Trust', shortcut: 'G T', action: () => navigate('/app/responsible-ai') },
+    { title: 'Design Decisions', shortcut: 'G D', action: () => navigate('/app/decisions') },
     { title: 'Engine Connection & Settings', shortcut: 'G S', action: () => navigate('/app/settings') },
     { title: 'Open Keyboard Shortcuts', shortcut: '?', action: () => setShortcutsOpen(true) },
     { title: 'Toggle Theme', shortcut: 'T', action: toggleTheme },

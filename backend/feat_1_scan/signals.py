@@ -22,8 +22,57 @@ PROVIDER = re.compile(r'''(?<![\w])(?:
   | SG\.[A-Za-z0-9_\-]{16,}\.[A-Za-z0-9_\-]{16,}  # SendGrid
   | ya29\.[A-Za-z0-9_\-]{20,}                   # Google OAuth
   | SK[0-9a-fA-F]{32}                           # Twilio
+  | AccountKey=[A-Za-z0-9+/=]{20,}              # Azure Storage Account Key
 )(?![\w])''', re.X)
 JWT = re.compile(r'(?<![\w])eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}')
+SSN_PATTERN = re.compile(r'(?<!\d)(?!000|666|9\d\d)\d{3}-(?!00)\d{2}-(?!0000)\d{4}(?!\d)')
+AWS_ARN = re.compile(r'arn:aws[a-zA-Z-]*(?::[a-zA-Z0-9-]*){3}:\d{12}:[a-zA-Z0-9-_\/]+')
+DATABASE_URI = re.compile(r'\b(?:postgres|postgresql|mysql|mongodb(?:\+srv)?|redis|sqlite)://[A-Za-z0-9_\-\.]+:[^@\s]+@[A-Za-z0-9_\-\.]+')
+CREDIT_CARD_CANDIDATE = re.compile(r'(?<!\d)(?:4\d{3}|5[1-5]\d{2}|6011|3[47]\d{2})[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{1,4}(?!\d)')
+_INJECTION_HINTS = re.compile(
+    r'\b(?:ignore|system|assistant|prompt|instruction|instructions|rule|rules|override|'
+    r'bypass|disregard|forget|unrestricted|reveal|secret|secrets|token|tokens|credential|'
+    r'credentials|compliant|safe|approved|admin|mode|skip)\b',
+    re.I
+)
+
+
+def is_luhn_valid(number: str) -> bool:
+    digits = [int(d) for d in re.sub(r'[\s-]', '', number) if d.isdigit()]
+    if len(digits) < 13 or len(digits) > 19:
+        return False
+    checksum = 0
+    reverse = digits[::-1]
+    for idx, d in enumerate(reverse):
+        if idx % 2 == 1:
+            doubled = d * 2
+            checksum += (doubled - 9) if doubled > 9 else doubled
+        else:
+            checksum += d
+    return checksum % 10 == 0
+
+
+def detect_pii(text: str):
+    """Detect unmasked PII elements (SSN, Luhn-valid card numbers, database URIs, ARNs)."""
+    findings = []
+    for match in SSN_PATTERN.finditer(text):
+        val = match.group(0)
+        if not re.search(r'000-00-0000|123-45-6789|YOUR_|EXAMPLE', val, re.I):
+            findings.append({'type': 'SSN', 'match': val[:3] + '-XX-XXXX'})
+
+    for match in CREDIT_CARD_CANDIDATE.finditer(text):
+        card_str = match.group(0)
+        if is_luhn_valid(card_str):
+            clean = re.sub(r'[\s-]', '', card_str)
+            findings.append({'type': 'PaymentCard', 'match': clean[:4] + '************' + clean[-4:]})
+
+    for match in DATABASE_URI.finditer(text):
+        findings.append({'type': 'DatabaseURI', 'match': 'db://***:***@host'})
+
+    for match in AWS_ARN.finditer(text):
+        findings.append({'type': 'AWS_ARN', 'match': match.group(0)})
+
+    return findings
 SECRET_PATH = re.compile(r'(?:\.aws/credentials|\.docker/config\.json|\.kube/config|\.npmrc|\.pypirc|\.netrc|\.git-credentials|\.config/gcloud|\.azure/|(?:^|/)\.env(?:$|\.)|/etc/shadow|id_rsa|id_ed25519|\.(?:pem|p12|pfx|kdbx)$|Login Data|wallet\.dat|logins\.json|/proc/(?:self|\d+)/environ)', re.I)
 PERSIST_PATH = re.compile(r'(?:/etc/(?:sudoers|cron|systemd|init\.d|ld\.so\.preload|pam\.d)|/var/spool/cron|authorized_keys|sshd_config|\.(?:bashrc|profile|zshrc)|rc\.local|sitecustomize\.py|usercustomize\.py|\.pth$|\.git/hooks/|LaunchAgents/)', re.I)
 SECRET_NAME = re.compile(r'key|token|secret|password|credential', re.I)
@@ -191,4 +240,19 @@ def text_injection(text):
     if re.search(r'[\u200b-\u200f\u202a-\u202e\u2060-\u206f]', text):
         return True
     addressed = re.search(r'\b(?:ai|agent|assistant|reviewer|bot|model|llm|tool|copilot)\b', lowered)
-    return bool(addressed and re.search(r'approve[\s\S]{0,150}regardless|skip static analysis|(?:print|send|reveal)[\s\S]{0,60}(?:credentials|secrets|keys)|report[\s\S]{0,50}compliant|before (?:answering|responding)[\s\S]{0,80}(?:read|send|call)', lowered))
+    if bool(addressed and re.search(r'approve[\s\S]{0,150}regardless|skip static analysis|(?:print|send|reveal)[\s\S]{0,60}(?:credentials|secrets|keys)|report[\s\S]{0,50}compliant|before (?:answering|responding)[\s\S]{0,80}(?:read|send|call)', lowered)):
+        return True
+
+    # Secondary check: M2 CG-Inj ML classifier (fast prefilter for directive keywords)
+    if _INJECTION_HINTS.search(lowered) and len(lowered.split()) >= 3 and len(lowered) >= 15:
+        try:
+            from feat_1_scan.ml_detector import get_detector
+            detector = get_detector()
+            if detector and detector.m2_bundle:
+                inj_res = detector.predict_injection(text)
+                if inj_res.get('is_injection'):
+                    return True
+        except Exception:
+            pass
+
+    return False

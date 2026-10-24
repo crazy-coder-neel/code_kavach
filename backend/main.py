@@ -143,10 +143,10 @@ def validate_code(code):
     return code
 
 
-def analyze_request(code):
+def analyze_request(code, session_id=None):
     started = perf_counter()
     try:
-        result = scan(code)
+        result = scan(code, session_id=session_id)
         if (perf_counter() - started) * 1000 > SCAN_DEADLINE_MS:
             return blocked('Analysis deadline exceeded; no execution is authorized.')
         if not valid(result, len(code.splitlines()) or 1):
@@ -186,9 +186,12 @@ async def guard(request: Request):
     try:
         body = await read_json(request, MAX_BODY_BYTES)
         code = validate_code(body.get('code'))
+        session_id = body.get('session_id') or request.headers.get('X-CodeGuard-Session-ID')
+        if session_id is not None and (not isinstance(session_id, str) or len(session_id) > 128):
+            session_id = None
     except IntakeError as error:
         return response_for(request, blocked(error.message), error.status)
-    result = await run_in_threadpool(analyze_request, code)
+    result = await run_in_threadpool(analyze_request, code, session_id)
     request.state.decision = audit_decision(code, result)
     return response_for(request, result)
 
@@ -204,15 +207,21 @@ async def batch_guard(request: Request):
         return response_for(request, blocked(error.message), error.status)
     results, decisions = [], []
     degraded = False
-    for item in items:
+    for idx, item in enumerate(items):
         item_id = item.get('id') if isinstance(item, dict) else None
-        if not isinstance(item_id, str) or not 1 <= len(item_id) <= 128:
+        if item_id is None and isinstance(item, dict) and 'code' in item:
+            item_id = str(idx)
+        elif item_id is None and isinstance(item, str):
+            item = {'code': item}
+            item_id = str(idx)
+        elif not isinstance(item_id, str) or not 1 <= len(item_id) <= 128:
             item_id = None
         try:
             if item_id is None:
                 raise IntakeError('Batch item requires a string id of at most 128 characters.', 400)
             code = validate_code(item.get('code'))
-            result = await run_in_threadpool(analyze_request, code)
+            item_session = item.get('session_id') if isinstance(item, dict) else None
+            result = await run_in_threadpool(analyze_request, code, item_session)
             decisions.append(audit_decision(code, result))
         except IntakeError as error:
             result = blocked(error.message)

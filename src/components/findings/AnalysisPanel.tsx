@@ -30,7 +30,7 @@ export const AnalysisPanel: React.FC<AnalysisPanelProps> = ({
   onRescan,
   onClear,
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'findings' | 'flow' | 'technical' | 'scoring'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'findings' | 'flow' | 'technical' | 'scoring' | 'pipeline'>('overview');
   const [copiedSummary, setCopiedSummary] = useState(false);
   const [copiedJson, setCopiedJson] = useState(false);
 
@@ -217,6 +217,21 @@ export const AnalysisPanel: React.FC<AnalysisPanelProps> = ({
           {flows.length > 0 && (
             <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">
               {flows.length}
+            </span>
+          )}
+        </button>
+        <button
+          onClick={() => setActiveTab('pipeline')}
+          className={`py-2 px-3 border-b-2 flex items-center gap-1.5 transition-colors ${
+            activeTab === 'pipeline'
+              ? 'border-[var(--primary)] text-[var(--text-primary)] font-semibold'
+              : 'border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+          }`}
+        >
+          <span>Pipeline Trace</span>
+          {response.runtime_trace && (
+            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]">
+              {response.runtime_trace.length}
             </span>
           )}
         </button>
@@ -428,6 +443,80 @@ export const AnalysisPanel: React.FC<AnalysisPanelProps> = ({
             ) : (
               <div className="p-6 rounded-lg bg-[var(--surface-secondary)] border border-[var(--border)] text-xs text-[var(--text-secondary)] text-center">
                 No active source-to-sink data leaks identified in the current AST scope.
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'pipeline' && (
+          <div className="space-y-3">
+            <div className="p-3 rounded-lg bg-[var(--surface-secondary)] border border-[var(--border)] text-xs">
+              <div className="font-semibold text-[var(--text-primary)] mb-1 flex items-center justify-between">
+                <span>Deterministic 17-Step CPU Execution Pipeline</span>
+                <span className="font-mono text-[11px] text-[var(--text-muted)]">
+                  {response.runtime_trace ? `${response.runtime_trace.filter(s => !s.skipped).length}/17 Executed` : '17 Steps'}
+                </span>
+              </div>
+              <p className="text-[var(--text-secondary)] text-[11px] leading-relaxed">
+                Every request traverses an ordered sequence of structural, taint, pattern, and ML filters under a strict 25ms server deadline. Zero external LLM calls.
+              </p>
+            </div>
+
+            {response.runtime_trace && response.runtime_trace.length > 0 ? (
+              <div className="space-y-2">
+                {response.runtime_trace.map((step, idx) => (
+                  <div
+                    key={step.step_name}
+                    className={`p-3 rounded-lg border text-xs transition-colors ${
+                      step.skipped
+                        ? 'bg-[var(--surface-secondary)]/50 border-[var(--border)] opacity-60'
+                        : 'bg-[var(--surface-card)] border-[var(--border)] hover:border-[var(--border-strong)]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-secondary)]">
+                          {(idx + 1).toString().padStart(2, '0')}
+                        </span>
+                        <span className="font-semibold text-[var(--text-primary)] font-mono">
+                          {step.step_name}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {step.skipped ? (
+                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-medium">
+                            SKIPPED
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-mono font-medium text-[var(--text-secondary)]">
+                            {step.duration_ms.toFixed(3)} ms
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-[var(--text-secondary)] mt-1.5 leading-relaxed">
+                      {step.description}
+                    </p>
+                    {step.skipped && step.skip_reason && (
+                      <p className="text-[10px] font-mono text-amber-600 dark:text-amber-400 mt-1 italic">
+                        ↳ Reason: {step.skip_reason}
+                      </p>
+                    )}
+                    {Object.keys(step.output).length > 0 && !step.skipped && (
+                      <div className="mt-2 pt-2 border-t border-[var(--border)] flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-mono text-[var(--text-muted)]">
+                        {Object.entries(step.output).map(([k, v]) => (
+                          <span key={k}>
+                            <span className="text-[var(--text-secondary)]">{k}:</span> {typeof v === 'object' ? JSON.stringify(v) : String(v)}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-6 rounded-lg bg-[var(--surface-secondary)] border border-[var(--border)] text-xs text-[var(--text-secondary)] text-center font-mono">
+                Pipeline execution trace available via detailed scanning mode (?detail=full).
               </div>
             )}
           </div>
