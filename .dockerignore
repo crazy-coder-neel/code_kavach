@@ -1,0 +1,12 @@
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.local
+**/.env
+**/.env.*
+.git
+node_modules
+dist
+rough_images
+perf
+docs

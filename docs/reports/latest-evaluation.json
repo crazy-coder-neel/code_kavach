@@ -1,0 +1,1547 @@
+{
+  "run_id": "7ae988be-dd40-4be7-961a-78deb3f57eda",
+  "created_at": "2026-10-23T23:42:17.088339+00:00",
+  "engine_version": "0.3.1-phase1",
+  "dataset": "Public development set",
+  "dataset_sha256": "8c781a4ef61b0ba9813719b0dd8b14f51929cc3cf20de395de1f48aa420ab4fc",
+  "sample_count": 42,
+  "malicious_count": 30,
+  "benign_count": 12,
+  "cache": "bypassed",
+  "latency_scope": "Warm direct analyzer; excludes HTTP, rendering and queue wait. Nearest-rank percentiles.",
+  "machine": {
+    "architecture": "x86_64",
+    "logical_cpus": 12,
+    "python": "3.14.4"
+  },
+  "binary": {
+    "tp": 21,
+    "fp": 2,
+    "tn": 10,
+    "fn": 9,
+    "precision": 0.913043,
+    "recall": 0.7,
+    "f1": 0.792453,
+    "fpr": 0.166667
+  },
+  "per_category": {
+    "secret_access": {
+      "tp": 1,
+      "fp": 0,
+      "tn": 38,
+      "fn": 3,
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1": 0.4,
+      "fpr": 0.0,
+      "support": 4
+    },
+    "data_exfiltration": {
+      "tp": 0,
+      "fp": 0,
+      "tn": 39,
+      "fn": 3,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0,
+      "fpr": 0.0,
+      "support": 3
+    },
+    "destructive_command": {
+      "tp": 3,
+      "fp": 4,
+      "tn": 33,
+      "fn": 2,
+      "precision": 0.428571,
+      "recall": 0.6,
+      "f1": 0.5,
+      "fpr": 0.108108,
+      "support": 5
+    },
+    "persistence_or_privesc": {
+      "tp": 2,
+      "fp": 0,
+      "tn": 40,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0,
+      "support": 2
+    },
+    "obfuscated_execution": {
+      "tp": 3,
+      "fp": 1,
+      "tn": 36,
+      "fn": 2,
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1": 0.666667,
+      "fpr": 0.027027,
+      "support": 5
+    },
+    "dependency_risk": {
+      "tp": 0,
+      "fp": 0,
+      "tn": 39,
+      "fn": 3,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0,
+      "fpr": 0.0,
+      "support": 3
+    },
+    "resource_exhaustion": {
+      "tp": 1,
+      "fp": 0,
+      "tn": 39,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.333333,
+      "f1": 0.5,
+      "fpr": 0.0,
+      "support": 3
+    },
+    "ssrf_network_exfil": {
+      "tp": 3,
+      "fp": 0,
+      "tn": 39,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "fpr": 0.0,
+      "support": 3
+    },
+    "ai_targeted_instructions": {
+      "tp": 2,
+      "fp": 0,
+      "tn": 38,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.666667,
+      "fpr": 0.0,
+      "support": 4
+    }
+  },
+  "latency_ms": {
+    "p50": 0.1992,
+    "p95": 0.332,
+    "p99": 0.4558
+  },
+  "incomplete_count": 6,
+  "error_count": 0,
+  "results": [
+    {
+      "id": "cg_benign_0001",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "block",
+      "expected_categories": [],
+      "predicted_categories": [
+        "destructive_command"
+      ],
+      "latency_ms": 0.3269,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 12: The SQL text is dynamic and this baseline cannot verify safe parameterization.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "destructive_command"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "category": "destructive_command",
+            "lines": [
+              12
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_data_exfiltration_0010",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "data_exfiltration"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.3965,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_data_exfiltration_0011",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "data_exfiltration"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.2715,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0005",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.224,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_data_exfiltration_0016",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "data_exfiltration"
+      ],
+      "predicted_categories": [
+        "destructive_command"
+      ],
+      "latency_ms": 0.2465,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 11: The SQL text is dynamic and this baseline cannot verify safe parameterization.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "destructive_command"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "category": "destructive_command",
+            "lines": [
+              11
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_dependency_risk_0002",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "dependency_risk"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.2171,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_dependency_risk_0009",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "dependency_risk"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.1748,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0006",
+      "language": "bash",
+      "expected": "allow",
+      "predicted": "block",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.332,
+      "analysis_complete": false,
+      "error": false,
+      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "incomplete_analysis",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_destructive_command_0002",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "destructive_command"
+      ],
+      "predicted_categories": [
+        "destructive_command"
+      ],
+      "latency_ms": 0.224,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 9: A shell execution boundary accepts code or commands requiring explicit validation.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "destructive_command"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "category": "destructive_command",
+            "lines": [
+              9
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_destructive_command_0004",
+      "language": "sql",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "destructive_command"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.1132,
+      "analysis_complete": false,
+      "error": false,
+      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "incomplete_analysis",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_destructive_command_0007",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "destructive_command"
+      ],
+      "predicted_categories": [
+        "destructive_command"
+      ],
+      "latency_ms": 0.256,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 8: A shell execution boundary accepts code or commands requiring explicit validation.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "destructive_command"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "category": "destructive_command",
+            "lines": [
+              8
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0007",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.2321,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_destructive_command_0020",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "destructive_command"
+      ],
+      "predicted_categories": [
+        "destructive_command"
+      ],
+      "latency_ms": 0.262,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 12: The SQL text is dynamic and this baseline cannot verify safe parameterization.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "destructive_command"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "category": "destructive_command",
+            "lines": [
+              12
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_destructive_command_0021",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "destructive_command"
+      ],
+      "predicted_categories": [
+        "obfuscated_execution"
+      ],
+      "latency_ms": 0.197,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 13: Dynamic execution or unsafe deserialization can run untrusted code.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "obfuscated_execution"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "category": "obfuscated_execution",
+            "lines": [
+              13
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_obfuscated_execution_0002",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "obfuscated_execution"
+      ],
+      "predicted_categories": [
+        "obfuscated_execution"
+      ],
+      "latency_ms": 0.2175,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 9: Dynamic execution or unsafe deserialization can run untrusted code. Line 13: Dynamic execution or unsafe deserialization can run untrusted code.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "obfuscated_execution"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "category": "obfuscated_execution",
+            "lines": [
+              9
+            ]
+          },
+          {
+            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "category": "obfuscated_execution",
+            "lines": [
+              13
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_obfuscated_execution_0004",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "obfuscated_execution"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.188,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_obfuscated_execution_0013",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "obfuscated_execution"
+      ],
+      "predicted_categories": [
+        "obfuscated_execution"
+      ],
+      "latency_ms": 0.1676,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 11: Dynamic execution or unsafe deserialization can run untrusted code.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "obfuscated_execution"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "category": "obfuscated_execution",
+            "lines": [
+              11
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0008",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.1948,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_obfuscated_execution_0017",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "obfuscated_execution"
+      ],
+      "predicted_categories": [
+        "destructive_command"
+      ],
+      "latency_ms": 0.1882,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 11: A shell execution boundary accepts code or commands requiring explicit validation.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "destructive_command"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "category": "destructive_command",
+            "lines": [
+              11
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_obfuscated_execution_0018",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "obfuscated_execution"
+      ],
+      "predicted_categories": [
+        "obfuscated_execution"
+      ],
+      "latency_ms": 0.192,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 10: Dynamic execution or unsafe deserialization can run untrusted code.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "obfuscated_execution"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "category": "obfuscated_execution",
+            "lines": [
+              10
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0009",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.1632,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_persistence_or_privesc_0005",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "persistence_or_privesc"
+      ],
+      "predicted_categories": [
+        "destructive_command",
+        "persistence_or_privesc"
+      ],
+      "latency_ms": 0.1578,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 8: The call modifies system privilege or startup configuration. Line 12: A shell execution boundary accepts code or commands requiring explicit validation.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.04,
+        "cap": 0.98,
+        "final_score": 0.84,
+        "distinct_categories": [
+          "destructive_command",
+          "persistence_or_privesc"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-PERSISTENCE_OR_PRIVESC",
+            "category": "persistence_or_privesc",
+            "lines": [
+              8
+            ]
+          },
+          {
+            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "category": "destructive_command",
+            "lines": [
+              12
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_persistence_or_privesc_0010",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "persistence_or_privesc"
+      ],
+      "predicted_categories": [
+        "persistence_or_privesc"
+      ],
+      "latency_ms": 0.2115,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 9: The call modifies system privilege or startup configuration. Line 15: The call modifies system privilege or startup configuration.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "persistence_or_privesc"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-PERSISTENCE_OR_PRIVESC",
+            "category": "persistence_or_privesc",
+            "lines": [
+              9
+            ]
+          },
+          {
+            "rule_id": "CG-PERSISTENCE_OR_PRIVESC",
+            "category": "persistence_or_privesc",
+            "lines": [
+              15
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0010",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.2276,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_resource_exhaustion_0007",
+      "language": "bash",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "resource_exhaustion"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.0832,
+      "analysis_complete": false,
+      "error": false,
+      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "incomplete_analysis",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_resource_exhaustion_0008",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "resource_exhaustion"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.1624,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0011",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.2107,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_secret_access_0001",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "secret_access"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.2395,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_secret_access_0007",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "secret_access"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.1992,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_secret_access_0013",
+      "language": "javascript",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "secret_access"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.0872,
+      "analysis_complete": false,
+      "error": false,
+      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "incomplete_analysis",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0012",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.2458,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0013",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.2696,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_secret_access_0021",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "secret_access"
+      ],
+      "predicted_categories": [
+        "secret_access"
+      ],
+      "latency_ms": 0.2385,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 6: A credential-like variable contains an embedded literal. Review whether it is a real credential. Line 7: A credential-like variable contains an embedded literal. Review whether it is a real credential.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "secret_access"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-SECRET_ACCESS",
+            "category": "secret_access",
+            "lines": [
+              6
+            ]
+          },
+          {
+            "rule_id": "CG-SECRET_ACCESS",
+            "category": "secret_access",
+            "lines": [
+              7
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_ssrf_network_exfil_0007",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "ssrf_network_exfil"
+      ],
+      "predicted_categories": [
+        "ssrf_network_exfil"
+      ],
+      "latency_ms": 0.2125,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 9: The request targets an internal, metadata, or non-public network destination.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "ssrf_network_exfil"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-SSRF_NETWORK_EXFIL",
+            "category": "ssrf_network_exfil",
+            "lines": [
+              9
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_ssrf_network_exfil_0010",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "ssrf_network_exfil"
+      ],
+      "predicted_categories": [
+        "ssrf_network_exfil"
+      ],
+      "latency_ms": 0.1735,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 13: The request targets an internal, metadata, or non-public network destination.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "ssrf_network_exfil"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-SSRF_NETWORK_EXFIL",
+            "category": "ssrf_network_exfil",
+            "lines": [
+              13
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0014",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.1831,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_ai_targeted_instructions_0001",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "ai_targeted_instructions"
+      ],
+      "predicted_categories": [
+        "ai_targeted_instructions"
+      ],
+      "latency_ms": 0.1814,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 5: Text attempts to override an AI reader\u2019s instructions or reveal protected context.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "ai_targeted_instructions"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-AI_TARGETED_INSTRUCTIONS",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              5
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_ai_targeted_instructions_0002",
+      "language": "python",
+      "expected": "block",
+      "predicted": "allow",
+      "expected_categories": [
+        "ai_targeted_instructions"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.1743,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0015",
+      "language": "python",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "latency_ms": 0.1598,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_ai_targeted_instructions_0015",
+      "language": "yaml",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "ai_targeted_instructions"
+      ],
+      "predicted_categories": [],
+      "latency_ms": 0.0887,
+      "analysis_complete": false,
+      "error": false,
+      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "incomplete_analysis",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_ai_targeted_instructions_0016",
+      "language": "markdown",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "ai_targeted_instructions"
+      ],
+      "predicted_categories": [
+        "ai_targeted_instructions"
+      ],
+      "latency_ms": 0.0785,
+      "analysis_complete": false,
+      "error": false,
+      "reason": "Blocked because this input could not be fully checked by the initial analyzer. Line 11: Text attempts to override an AI reader\u2019s instructions or reveal protected context.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "ai_targeted_instructions"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-AI_TARGETED_INSTRUCTIONS",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              11
+            ]
+          }
+        ],
+        "decision_basis": "incomplete_analysis",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_multi_0001",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "dependency_risk",
+        "resource_exhaustion",
+        "ssrf_network_exfil"
+      ],
+      "predicted_categories": [
+        "resource_exhaustion",
+        "ssrf_network_exfil"
+      ],
+      "latency_ms": 0.4558,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 23: The request targets an internal, metadata, or non-public network destination. Line 28: An unconditional loop has no visible termination path.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.04,
+        "cap": 0.98,
+        "final_score": 0.84,
+        "distinct_categories": [
+          "resource_exhaustion",
+          "ssrf_network_exfil"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-SSRF_NETWORK_EXFIL",
+            "category": "ssrf_network_exfil",
+            "lines": [
+              23
+            ]
+          },
+          {
+            "rule_id": "CG-RESOURCE_EXHAUSTION",
+            "category": "resource_exhaustion",
+            "lines": [
+              28
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    }
+  ],
+  "notes": "Development baseline, not a held-out or official score. Operational blocks count in binary metrics; category metrics measure actual findings. No sample code is executed."
+}

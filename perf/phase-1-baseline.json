@@ -1,0 +1,87 @@
+{
+  "created_at": "2026-10-23T23:44:14.890374+00:00",
+  "engine_version": "0.3.1-phase1",
+  "python": "3.14.4",
+  "machine": "x86_64",
+  "iterations": 300,
+  "method": "nearest-rank; sequential; 10 warmups per bucket",
+  "buckets": {
+    "small": {
+      "bytes": 238,
+      "timings_ms": {
+        "analyzer_uncached": {
+          "p50": 0.022678,
+          "p95": 0.031028,
+          "p99": 0.045415
+        },
+        "runtime_cached": {
+          "p50": 0.006997,
+          "p95": 0.007522,
+          "p99": 0.009994
+        },
+        "http_cached_end_to_end": {
+          "p50": 1.714115,
+          "p95": 2.568713,
+          "p99": 3.135732
+        },
+        "http_cached_server": {
+          "p50": 0.716,
+          "p95": 1.173,
+          "p99": 1.383
+        }
+      }
+    },
+    "medium": {
+      "bytes": 2043,
+      "timings_ms": {
+        "analyzer_uncached": {
+          "p50": 0.047316,
+          "p95": 0.104761,
+          "p99": 0.196874
+        },
+        "runtime_cached": {
+          "p50": 0.00821,
+          "p95": 0.009432,
+          "p99": 0.01263
+        },
+        "http_cached_end_to_end": {
+          "p50": 1.623884,
+          "p95": 2.728731,
+          "p99": 4.028994
+        },
+        "http_cached_server": {
+          "p50": 0.693,
+          "p95": 1.193,
+          "p99": 2.244
+        }
+      }
+    },
+    "large": {
+      "bytes": 4095,
+      "timings_ms": {
+        "analyzer_uncached": {
+          "p50": 0.084019,
+          "p95": 0.160302,
+          "p99": 0.211677
+        },
+        "runtime_cached": {
+          "p50": 0.009573,
+          "p95": 0.012002,
+          "p99": 0.016669
+        },
+        "http_cached_end_to_end": {
+          "p50": 1.399427,
+          "p95": 2.017984,
+          "p99": 2.484053
+        },
+        "http_cached_server": {
+          "p50": 0.613,
+          "p95": 0.962,
+          "p99": 1.478
+        }
+      }
+    }
+  },
+  "http_url": "http://127.0.0.1:8011",
+  "limitations": "Harmless padding size baseline, not representative detection/load testing. Cached paths reuse identical input. Uncached analyzer excludes HTTP. Deadline only checked after scan in Phase 1."
+}
