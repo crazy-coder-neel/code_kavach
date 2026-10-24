@@ -1,0 +1,32 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/v1/(.*)",
+      "destination": "https://code-kavach-fx9m.onrender.com/v1/$1"
+    },
+    {
+      "source": "/guard/(.*)",
+      "destination": "https://code-kavach-fx9m.onrender.com/guard/$1"
+    },
+    {
+      "source": "/guard",
+      "destination": "https://code-kavach-fx9m.onrender.com/guard"
+    },
+    {
+      "source": "/healthz",
+      "destination": "https://code-kavach-fx9m.onrender.com/healthz"
+    },
+    {
+      "source": "/readyz",
+      "destination": "https://code-kavach-fx9m.onrender.com/readyz"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
