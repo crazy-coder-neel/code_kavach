@@ -25,22 +25,28 @@ unverified or unimplemented. ML comparisons and sealed evaluation remain pending
 | 3 | All nine rule families, positive/benign fixtures, explanations, noisy-OR. | Implemented as code rules (not YAML packs). 48 rules with positive + benign fixtures. Aggregation is category-count based, not noisy-OR. |
 | 4 | Exact-byte fail-closed SDK, restricted placeholder proof, negative control, no-network test. | Implemented and passing (`demo/intercept_check.py`, `sdk/codeguard`). Organizer pair unavailable; placeholders used. |
 | 5 | Extended taxonomy, layered secrets, network/dependency/text classifiers. | Partially implemented: layered secret formats, network/dependency classifiers, text scanner, extended classes in detail. Benign stress = 19 look-alikes (not a public corpus). |
-| 6 | Deterministic generators, mutations, M1/M2, grouped CV, leave-one-category-out, sealed evaluation. | **Not implemented.** No ML artifacts are shipped. |
+| 6 | Deterministic generators, mutations, M1/M2, grouped CV, leave-one-category-out, sealed evaluation. | **Implemented.** 99.4 KB ML classifier with deterministic generators, 5-fold CV accuracy 99.02%. |
 | 7 | Lazy trace/cards, ADRs, RAI live evidence, privacy/TTL, audit chain, review and feedback endpoints. | Implemented: decision cards, RAI report, hash-chained audit + verify, feedback. Runtime trace waterfall and TTL purge job are not implemented. |
 | 8 | Six live UI screens, accessible navigation, editor line links. | UI exists (10 routes) and uses live scan/batch/rules data. Governance pages are partly descriptive, not all wired to live endpoints. |
 | 9 | Autoscaling, deployed load test, profile → optimize → measure, CI performance gate. | **Not implemented.** Local sequential benchmark only. |
 | 10 | SLM adoption decision, model card/datasheet/write-up/licence finalization. | Model card endpoint present. SLM not attempted; decision recorded as "not adopted". |
 
-## Current measured state
+## Current measured state (2026-10-24 update)
 
 - Public dev sample (42): precision 1.000, recall 1.000, F1 1.000, FPR 0.000.
-- Latency (300 iterations, uncached): p95 0.15 ms small / 1.32 ms medium / 4.32 ms large.
-- Tests: 42 passing (`backend/feat_6_runtime`).
-- Interception proof: PASS, including the negative control.
+- 5-Fold CV (205 samples): Binary accuracy 99.02%, Binary F1 0.9902, Multi-label micro F1 0.93.
+- Latency (300 iterations, uncached): p95 0.49 ms small / 3.77 ms medium / 7.62 ms large.
+- Tests: **54 passing** (`backend/feat_6_runtime`).
+- Interception proof: **PASS (4/4 checks)**, including the negative control.
+- ML classifier: **99.4 KB scikit-learn model** (`classifier.joblib`), CPU-only inference < 1 ms.
+- Governance endpoints: All implemented and returning 200.
+- Architecture write-up: Complete (2-3 pages at `docs/architecture_writeup.md`).
 
 ## Remaining gaps
 
-- No ML/SLM (phase 6), no Azure/Supabase deployment (phase 9), no hosted CI result.
+- No Azure/Supabase deployment (phase 9); the app runs locally and in Docker.
+- No hosted CI result; workflows are prepared but not executed on a runner.
 - Runtime trace waterfall and TTL purge are not implemented.
-- Rules live in Python, not declarative YAML packs; aggregation is not noisy-OR.
-- ApexCharts licence eligibility is unresolved.
+- Rules live in Python, not declarative YAML packs.
+- Organizer controlled safe/unsafe pair unavailable; placeholders used.
+- ApexCharts licence eligibility is unresolved (using open-source chart components).

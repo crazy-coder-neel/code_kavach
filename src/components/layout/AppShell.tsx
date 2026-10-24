@@ -18,6 +18,7 @@ import {
   ShieldAlert,
   Puzzle,
   Keyboard,
+  FileText,
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
 import { ShortcutsDialog } from './ShortcutsDialog';
@@ -100,6 +101,7 @@ export const AppShell: React.FC = () => {
     { to: '/app/playground', label: 'API Playground', icon: Terminal },
     { to: '/app/integrations', label: 'Integrations', icon: Puzzle },
     { to: '/app/responsible-ai', label: 'Responsible AI', icon: BookOpenCheck },
+    { to: '/app/decisions', label: 'Design Decisions', icon: FileText },
     { to: '/app/settings', label: 'Settings', icon: Settings },
   ];
 

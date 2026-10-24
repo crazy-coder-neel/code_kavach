@@ -72,6 +72,21 @@ def load_dataset():
     for k, code in BENIGN.items():
         dataset.append({'code': code, 'categories': [], 'is_malicious': False, 'source': f'benign_{k}'})
 
+    # 5. Deterministic synthetic templates (offline, zero LLM)
+    try:
+        from feat_3_ml.generators import generate_dataset
+        syn_samples = generate_dataset(samples_per_category=5, benign_samples=15)
+        for s in syn_samples:
+            cats = [s['category']] if s['category'] != 'benign' else []
+            dataset.append({
+                'code': s['code'],
+                'categories': cats,
+                'is_malicious': s['label'] == 1,
+                'source': f"syn_{s['template_id']}"
+            })
+    except ImportError:
+        pass
+
     return dataset
 
 

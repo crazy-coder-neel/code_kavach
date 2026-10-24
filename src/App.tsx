@@ -11,6 +11,7 @@ import { RulesPage } from './pages/RulesPage';
 import { PlaygroundPage } from './pages/PlaygroundPage';
 import { IntegrationsPage } from './pages/IntegrationsPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { DecisionsPage } from './pages/DecisionsPage';
 
 import { ThemeProvider } from './lib/theme/ThemeContext';
 
@@ -33,6 +34,7 @@ export function App() {
             <Route path="playground" element={<PlaygroundPage />} />
             <Route path="integrations" element={<IntegrationsPage />} />
             <Route path="responsible-ai" element={<ResponsibleAIPage />} />
+            <Route path="decisions" element={<DecisionsPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
 
