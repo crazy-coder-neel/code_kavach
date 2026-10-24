@@ -1,7 +1,7 @@
 {
-  "run_id": "7ae988be-dd40-4be7-961a-78deb3f57eda",
-  "created_at": "2026-10-23T23:42:17.088339+00:00",
-  "engine_version": "0.3.1-phase1",
+  "run_id": "6ad06a1f-aedf-4794-96cf-a31984db214b",
+  "created_at": "2026-10-24T00:20:02.859948+00:00",
+  "engine_version": "0.4.0-rules",
   "dataset": "Public development set",
   "dataset_sha256": "8c781a4ef61b0ba9813719b0dd8b14f51929cc3cf20de395de1f48aa420ab4fc",
   "sample_count": 42,
@@ -15,47 +15,47 @@
     "python": "3.14.4"
   },
   "binary": {
-    "tp": 21,
-    "fp": 2,
-    "tn": 10,
-    "fn": 9,
-    "precision": 0.913043,
-    "recall": 0.7,
-    "f1": 0.792453,
-    "fpr": 0.166667
+    "tp": 30,
+    "fp": 0,
+    "tn": 12,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "fpr": 0.0
   },
   "per_category": {
     "secret_access": {
-      "tp": 1,
-      "fp": 0,
-      "tn": 38,
-      "fn": 3,
-      "precision": 1.0,
-      "recall": 0.25,
-      "f1": 0.4,
-      "fpr": 0.0,
+      "tp": 4,
+      "fp": 2,
+      "tn": 36,
+      "fn": 0,
+      "precision": 0.666667,
+      "recall": 1.0,
+      "f1": 0.8,
+      "fpr": 0.052632,
       "support": 4
     },
     "data_exfiltration": {
-      "tp": 0,
-      "fp": 0,
-      "tn": 39,
-      "fn": 3,
-      "precision": null,
-      "recall": 0.0,
-      "f1": 0.0,
-      "fpr": 0.0,
+      "tp": 3,
+      "fp": 2,
+      "tn": 37,
+      "fn": 0,
+      "precision": 0.6,
+      "recall": 1.0,
+      "f1": 0.75,
+      "fpr": 0.051282,
       "support": 3
     },
     "destructive_command": {
-      "tp": 3,
-      "fp": 4,
-      "tn": 33,
-      "fn": 2,
-      "precision": 0.428571,
-      "recall": 0.6,
-      "f1": 0.5,
-      "fpr": 0.108108,
+      "tp": 5,
+      "fp": 2,
+      "tn": 35,
+      "fn": 0,
+      "precision": 0.714286,
+      "recall": 1.0,
+      "f1": 0.833333,
+      "fpr": 0.054054,
       "support": 5
     },
     "persistence_or_privesc": {
@@ -70,35 +70,35 @@
       "support": 2
     },
     "obfuscated_execution": {
-      "tp": 3,
-      "fp": 1,
-      "tn": 36,
-      "fn": 2,
-      "precision": 0.75,
-      "recall": 0.6,
-      "f1": 0.666667,
-      "fpr": 0.027027,
+      "tp": 5,
+      "fp": 3,
+      "tn": 34,
+      "fn": 0,
+      "precision": 0.625,
+      "recall": 1.0,
+      "f1": 0.769231,
+      "fpr": 0.081081,
       "support": 5
     },
     "dependency_risk": {
-      "tp": 0,
+      "tp": 3,
       "fp": 0,
       "tn": 39,
-      "fn": 3,
-      "precision": null,
-      "recall": 0.0,
-      "f1": 0.0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
       "fpr": 0.0,
       "support": 3
     },
     "resource_exhaustion": {
-      "tp": 1,
+      "tp": 3,
       "fp": 0,
       "tn": 39,
-      "fn": 2,
+      "fn": 0,
       "precision": 1.0,
-      "recall": 0.333333,
-      "f1": 0.5,
+      "recall": 1.0,
+      "f1": 1.0,
       "fpr": 0.0,
       "support": 3
     },
@@ -114,38 +114,66 @@
       "support": 3
     },
     "ai_targeted_instructions": {
-      "tp": 2,
+      "tp": 4,
       "fp": 0,
       "tn": 38,
-      "fn": 2,
+      "fn": 0,
       "precision": 1.0,
-      "recall": 0.5,
-      "f1": 0.666667,
+      "recall": 1.0,
+      "f1": 1.0,
       "fpr": 0.0,
       "support": 4
     }
   },
   "latency_ms": {
-    "p50": 0.1992,
-    "p95": 0.332,
-    "p99": 0.4558
+    "p50": 0.5575,
+    "p95": 1.2739,
+    "p99": 2.9211
   },
-  "incomplete_count": 6,
+  "incomplete_count": 0,
   "error_count": 0,
   "results": [
     {
       "id": "cg_benign_0001",
       "language": "python",
       "expected": "allow",
-      "predicted": "block",
+      "predicted": "allow",
       "expected_categories": [],
-      "predicted_categories": [
-        "destructive_command"
-      ],
-      "latency_ms": 0.3269,
+      "predicted_categories": [],
+      "latency_ms": 2.1537,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 12: The SQL text is dynamic and this baseline cannot verify safe parameterization.",
+      "reason": "No blocking findings in the completed baseline checks.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.0,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.0,
+        "distinct_categories": [],
+        "contributors": [],
+        "decision_basis": "no_findings",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_data_exfiltration_0010",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "data_exfiltration"
+      ],
+      "predicted_categories": [
+        "data_exfiltration"
+      ],
+      "latency_ms": 2.9211,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 16: An ICMP command embeds data in its packet payload.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -155,14 +183,14 @@
         "cap": 0.98,
         "final_score": 0.8,
         "distinct_categories": [
-          "destructive_command"
+          "data_exfiltration"
         ],
         "contributors": [
           {
-            "rule_id": "CG-DESTRUCTIVE_COMMAND",
-            "category": "destructive_command",
+            "rule_id": "CG-EXF-003",
+            "category": "data_exfiltration",
             "lines": [
-              12
+              16
             ]
           }
         ],
@@ -172,57 +200,57 @@
       }
     },
     {
-      "id": "cg_data_exfiltration_0010",
-      "language": "python",
-      "expected": "block",
-      "predicted": "allow",
-      "expected_categories": [
-        "data_exfiltration"
-      ],
-      "predicted_categories": [],
-      "latency_ms": 0.3965,
-      "analysis_complete": true,
-      "error": false,
-      "reason": "No blocking findings in the completed baseline checks.",
-      "score_trace": {
-        "method": "baseline-category-count-v1",
-        "calibrated_probability": false,
-        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
-        "category_bonus": 0.0,
-        "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "no_findings",
-        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
-        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
-      }
-    },
-    {
       "id": "cg_data_exfiltration_0011",
       "language": "python",
       "expected": "block",
-      "predicted": "allow",
+      "predicted": "block",
       "expected_categories": [
         "data_exfiltration"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.2715,
+      "predicted_categories": [
+        "data_exfiltration",
+        "secret_access"
+      ],
+      "latency_ms": 0.8401,
       "analysis_complete": true,
       "error": false,
-      "reason": "No blocking findings in the completed baseline checks.",
+      "reason": "Line 9: The code enumerates the process environment, exposing potentially sensitive values. Line 16: Credential-derived data flows to an outbound network request.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
-        "category_bonus": 0.0,
+        "base": 0.8,
+        "category_bonus": 0.04,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "no_findings",
+        "final_score": 0.84,
+        "distinct_categories": [
+          "data_exfiltration",
+          "secret_access"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-SEC-004",
+            "category": "secret_access",
+            "lines": [
+              9
+            ]
+          },
+          {
+            "rule_id": "CG-EXF-001",
+            "category": "data_exfiltration",
+            "lines": [
+              16
+            ]
+          },
+          {
+            "rule_id": "CG-EXF-001",
+            "category": "data_exfiltration",
+            "lines": [
+              15
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -234,7 +262,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.224,
+      "latency_ms": 0.6133,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -262,12 +290,12 @@
         "data_exfiltration"
       ],
       "predicted_categories": [
-        "destructive_command"
+        "data_exfiltration"
       ],
-      "latency_ms": 0.2465,
+      "latency_ms": 0.6943,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 11: The SQL text is dynamic and this baseline cannot verify safe parameterization.",
+      "reason": "Line 11: A database dump or interpolated SELECT can disclose unrestricted records.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -277,12 +305,12 @@
         "cap": 0.98,
         "final_score": 0.8,
         "distinct_categories": [
-          "destructive_command"
+          "data_exfiltration"
         ],
         "contributors": [
           {
-            "rule_id": "CG-DESTRUCTIVE_COMMAND",
-            "category": "destructive_command",
+            "rule_id": "CG-EXF-005",
+            "category": "data_exfiltration",
             "lines": [
               11
             ]
@@ -297,26 +325,45 @@
       "id": "cg_dependency_risk_0002",
       "language": "python",
       "expected": "block",
-      "predicted": "allow",
+      "predicted": "block",
       "expected_categories": [
         "dependency_risk"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.2171,
+      "predicted_categories": [
+        "dependency_risk"
+      ],
+      "latency_ms": 0.8002,
       "analysis_complete": true,
       "error": false,
-      "reason": "No blocking findings in the completed baseline checks.",
+      "reason": "Line 7: A runtime package name cannot be established as a reviewed constant. Line 10: An installed name is a close spelling variant of a bundled known package.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
+        "base": 0.8,
         "category_bonus": 0.0,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "no_findings",
+        "final_score": 0.8,
+        "distinct_categories": [
+          "dependency_risk"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DEP-006",
+            "category": "dependency_risk",
+            "lines": [
+              7
+            ]
+          },
+          {
+            "rule_id": "CG-DEP-001",
+            "category": "dependency_risk",
+            "lines": [
+              10
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -325,12 +372,50 @@
       "id": "cg_dependency_risk_0009",
       "language": "python",
       "expected": "block",
-      "predicted": "allow",
+      "predicted": "block",
       "expected_categories": [
         "dependency_risk"
       ],
+      "predicted_categories": [
+        "dependency_risk"
+      ],
+      "latency_ms": 0.6388,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 12: Installation uses a remote source or overrides registry trust.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.0,
+        "cap": 0.98,
+        "final_score": 0.8,
+        "distinct_categories": [
+          "dependency_risk"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DEP-002",
+            "category": "dependency_risk",
+            "lines": [
+              12
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_benign_0006",
+      "language": "bash",
+      "expected": "allow",
+      "predicted": "allow",
+      "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.1748,
+      "latency_ms": 0.9979,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -345,32 +430,6 @@
         "distinct_categories": [],
         "contributors": [],
         "decision_basis": "no_findings",
-        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
-        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
-      }
-    },
-    {
-      "id": "cg_benign_0006",
-      "language": "bash",
-      "expected": "allow",
-      "predicted": "block",
-      "expected_categories": [],
-      "predicted_categories": [],
-      "latency_ms": 0.332,
-      "analysis_complete": false,
-      "error": false,
-      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
-      "score_trace": {
-        "method": "baseline-category-count-v1",
-        "calibrated_probability": false,
-        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
-        "category_bonus": 0.0,
-        "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "incomplete_analysis",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -384,27 +443,36 @@
         "destructive_command"
       ],
       "predicted_categories": [
-        "destructive_command"
+        "destructive_command",
+        "obfuscated_execution"
       ],
-      "latency_ms": 0.224,
+      "latency_ms": 0.5165,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 9: A shell execution boundary accepts code or commands requiring explicit validation.",
+      "reason": "Line 9: An uncontrolled command reaches a shell execution boundary. Line 9: Dynamic execution can interpret input as program instructions.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
         "base": 0.8,
-        "category_bonus": 0.0,
+        "category_bonus": 0.04,
         "cap": 0.98,
-        "final_score": 0.8,
+        "final_score": 0.84,
         "distinct_categories": [
-          "destructive_command"
+          "destructive_command",
+          "obfuscated_execution"
         ],
         "contributors": [
           {
-            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "rule_id": "CG-DES-004",
             "category": "destructive_command",
+            "lines": [
+              9
+            ]
+          },
+          {
+            "rule_id": "CG-OBF-002",
+            "category": "obfuscated_execution",
             "lines": [
               9
             ]
@@ -423,41 +491,13 @@
       "expected_categories": [
         "destructive_command"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.1132,
-      "analysis_complete": false,
-      "error": false,
-      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
-      "score_trace": {
-        "method": "baseline-category-count-v1",
-        "calibrated_probability": false,
-        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
-        "category_bonus": 0.0,
-        "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "incomplete_analysis",
-        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
-        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
-      }
-    },
-    {
-      "id": "cg_destructive_command_0007",
-      "language": "python",
-      "expected": "block",
-      "predicted": "block",
-      "expected_categories": [
-        "destructive_command"
-      ],
       "predicted_categories": [
         "destructive_command"
       ],
-      "latency_ms": 0.256,
+      "latency_ms": 0.4608,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 8: A shell execution boundary accepts code or commands requiring explicit validation.",
+      "reason": "Line 10: SQL modifies data without a WHERE scope or interpolates uncontrolled values.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -471,8 +511,57 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "rule_id": "CG-DES-003",
             "category": "destructive_command",
+            "lines": [
+              10
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
+        "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
+        "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
+      }
+    },
+    {
+      "id": "cg_destructive_command_0007",
+      "language": "python",
+      "expected": "block",
+      "predicted": "block",
+      "expected_categories": [
+        "destructive_command"
+      ],
+      "predicted_categories": [
+        "destructive_command",
+        "obfuscated_execution"
+      ],
+      "latency_ms": 0.6377,
+      "analysis_complete": true,
+      "error": false,
+      "reason": "Line 8: An uncontrolled command reaches a shell execution boundary. Line 8: Dynamic execution can interpret input as program instructions.",
+      "score_trace": {
+        "method": "baseline-category-count-v1",
+        "calibrated_probability": false,
+        "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
+        "base": 0.8,
+        "category_bonus": 0.04,
+        "cap": 0.98,
+        "final_score": 0.84,
+        "distinct_categories": [
+          "destructive_command",
+          "obfuscated_execution"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-DES-004",
+            "category": "destructive_command",
+            "lines": [
+              8
+            ]
+          },
+          {
+            "rule_id": "CG-OBF-002",
+            "category": "obfuscated_execution",
             "lines": [
               8
             ]
@@ -490,7 +579,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.2321,
+      "latency_ms": 0.4869,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -520,10 +609,10 @@
       "predicted_categories": [
         "destructive_command"
       ],
-      "latency_ms": 0.262,
+      "latency_ms": 0.6652,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 12: The SQL text is dynamic and this baseline cannot verify safe parameterization.",
+      "reason": "Line 12: SQL modifies data without a WHERE scope or interpolates uncontrolled values.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -537,7 +626,7 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "rule_id": "CG-DES-003",
             "category": "destructive_command",
             "lines": [
               12
@@ -558,27 +647,36 @@
         "destructive_command"
       ],
       "predicted_categories": [
+        "destructive_command",
         "obfuscated_execution"
       ],
-      "latency_ms": 0.197,
+      "latency_ms": 0.5537,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 13: Dynamic execution or unsafe deserialization can run untrusted code.",
+      "reason": "Line 13: Dynamic execution can interpret input as program instructions. Line 13: An uncontrolled command reaches a shell execution boundary.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
         "base": 0.8,
-        "category_bonus": 0.0,
+        "category_bonus": 0.04,
         "cap": 0.98,
-        "final_score": 0.8,
+        "final_score": 0.84,
         "distinct_categories": [
+          "destructive_command",
           "obfuscated_execution"
         ],
         "contributors": [
           {
-            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "rule_id": "CG-OBF-002",
             "category": "obfuscated_execution",
+            "lines": [
+              13
+            ]
+          },
+          {
+            "rule_id": "CG-DES-004",
+            "category": "destructive_command",
             "lines": [
               13
             ]
@@ -598,34 +696,43 @@
         "obfuscated_execution"
       ],
       "predicted_categories": [
+        "destructive_command",
         "obfuscated_execution"
       ],
-      "latency_ms": 0.2175,
+      "latency_ms": 0.5394,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 9: Dynamic execution or unsafe deserialization can run untrusted code. Line 13: Dynamic execution or unsafe deserialization can run untrusted code.",
+      "reason": "Line 9: Dynamic execution can interpret input as program instructions. Line 13: Dynamic execution can interpret input as program instructions.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
         "base": 0.8,
-        "category_bonus": 0.0,
+        "category_bonus": 0.04,
         "cap": 0.98,
-        "final_score": 0.8,
+        "final_score": 0.84,
         "distinct_categories": [
+          "destructive_command",
           "obfuscated_execution"
         ],
         "contributors": [
           {
-            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "rule_id": "CG-OBF-002",
             "category": "obfuscated_execution",
             "lines": [
               9
             ]
           },
           {
-            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "rule_id": "CG-OBF-002",
             "category": "obfuscated_execution",
+            "lines": [
+              13
+            ]
+          },
+          {
+            "rule_id": "CG-DES-004",
+            "category": "destructive_command",
             "lines": [
               13
             ]
@@ -640,26 +747,38 @@
       "id": "cg_obfuscated_execution_0004",
       "language": "python",
       "expected": "block",
-      "predicted": "allow",
+      "predicted": "block",
       "expected_categories": [
         "obfuscated_execution"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.188,
+      "predicted_categories": [
+        "obfuscated_execution"
+      ],
+      "latency_ms": 0.5562,
       "analysis_complete": true,
       "error": false,
-      "reason": "No blocking findings in the completed baseline checks.",
+      "reason": "Line 3: A runtime-selected module or operation is loaded dynamically.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
+        "base": 0.8,
         "category_bonus": 0.0,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "no_findings",
+        "final_score": 0.8,
+        "distinct_categories": [
+          "obfuscated_execution"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-OBF-003",
+            "category": "obfuscated_execution",
+            "lines": [
+              3
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -675,10 +794,10 @@
       "predicted_categories": [
         "obfuscated_execution"
       ],
-      "latency_ms": 0.1676,
+      "latency_ms": 0.453,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 11: Dynamic execution or unsafe deserialization can run untrusted code.",
+      "reason": "Line 6: A runtime-selected module or operation is loaded dynamically. Line 11: Dynamic execution can interpret input as program instructions.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -692,7 +811,14 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "rule_id": "CG-OBF-003",
+            "category": "obfuscated_execution",
+            "lines": [
+              6
+            ]
+          },
+          {
+            "rule_id": "CG-OBF-002",
             "category": "obfuscated_execution",
             "lines": [
               11
@@ -711,7 +837,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.1948,
+      "latency_ms": 0.4714,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -739,27 +865,36 @@
         "obfuscated_execution"
       ],
       "predicted_categories": [
-        "destructive_command"
+        "destructive_command",
+        "obfuscated_execution"
       ],
-      "latency_ms": 0.1882,
+      "latency_ms": 0.5409,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 11: A shell execution boundary accepts code or commands requiring explicit validation.",
+      "reason": "Line 11: An uncontrolled command reaches a shell execution boundary. Line 11: Dynamic execution can interpret input as program instructions.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
         "base": 0.8,
-        "category_bonus": 0.0,
+        "category_bonus": 0.04,
         "cap": 0.98,
-        "final_score": 0.8,
+        "final_score": 0.84,
         "distinct_categories": [
-          "destructive_command"
+          "destructive_command",
+          "obfuscated_execution"
         ],
         "contributors": [
           {
-            "rule_id": "CG-DESTRUCTIVE_COMMAND",
+            "rule_id": "CG-DES-004",
             "category": "destructive_command",
+            "lines": [
+              11
+            ]
+          },
+          {
+            "rule_id": "CG-OBF-002",
+            "category": "obfuscated_execution",
             "lines": [
               11
             ]
@@ -781,10 +916,10 @@
       "predicted_categories": [
         "obfuscated_execution"
       ],
-      "latency_ms": 0.192,
+      "latency_ms": 0.5828,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 10: Dynamic execution or unsafe deserialization can run untrusted code.",
+      "reason": "Line 10: Deserialization may invoke executable object reconstruction.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -798,7 +933,7 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-OBFUSCATED_EXECUTION",
+            "rule_id": "CG-OBF-006",
             "category": "obfuscated_execution",
             "lines": [
               10
@@ -817,7 +952,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.1632,
+      "latency_ms": 0.456,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -845,38 +980,29 @@
         "persistence_or_privesc"
       ],
       "predicted_categories": [
-        "destructive_command",
         "persistence_or_privesc"
       ],
-      "latency_ms": 0.1578,
+      "latency_ms": 0.5412,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 8: The call modifies system privilege or startup configuration. Line 12: A shell execution boundary accepts code or commands requiring explicit validation.",
+      "reason": "Line 8: The operation writes privilege or startup configuration.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
         "base": 0.8,
-        "category_bonus": 0.04,
+        "category_bonus": 0.0,
         "cap": 0.98,
-        "final_score": 0.84,
+        "final_score": 0.8,
         "distinct_categories": [
-          "destructive_command",
           "persistence_or_privesc"
         ],
         "contributors": [
           {
-            "rule_id": "CG-PERSISTENCE_OR_PRIVESC",
+            "rule_id": "CG-PER-001",
             "category": "persistence_or_privesc",
             "lines": [
               8
-            ]
-          },
-          {
-            "rule_id": "CG-DESTRUCTIVE_COMMAND",
-            "category": "destructive_command",
-            "lines": [
-              12
             ]
           }
         ],
@@ -896,10 +1022,10 @@
       "predicted_categories": [
         "persistence_or_privesc"
       ],
-      "latency_ms": 0.2115,
+      "latency_ms": 0.545,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 9: The call modifies system privilege or startup configuration. Line 15: The call modifies system privilege or startup configuration.",
+      "reason": "Line 9: The operation writes privilege or startup configuration. Line 15: The operation writes privilege or startup configuration.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -913,14 +1039,14 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-PERSISTENCE_OR_PRIVESC",
+            "rule_id": "CG-PER-001",
             "category": "persistence_or_privesc",
             "lines": [
               9
             ]
           },
           {
-            "rule_id": "CG-PERSISTENCE_OR_PRIVESC",
+            "rule_id": "CG-PER-001",
             "category": "persistence_or_privesc",
             "lines": [
               15
@@ -939,7 +1065,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.2276,
+      "latency_ms": 0.6015,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -966,22 +1092,34 @@
       "expected_categories": [
         "resource_exhaustion"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.0832,
-      "analysis_complete": false,
+      "predicted_categories": [
+        "resource_exhaustion"
+      ],
+      "latency_ms": 0.7192,
+      "analysis_complete": true,
       "error": false,
-      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
+      "reason": "Line 13: A zero-fill or repeated-output command has no size bound.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
+        "base": 0.8,
         "category_bonus": 0.0,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "incomplete_analysis",
+        "final_score": 0.8,
+        "distinct_categories": [
+          "resource_exhaustion"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-RES-005",
+            "category": "resource_exhaustion",
+            "lines": [
+              13
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -990,26 +1128,38 @@
       "id": "cg_resource_exhaustion_0008",
       "language": "python",
       "expected": "block",
-      "predicted": "allow",
+      "predicted": "block",
       "expected_categories": [
         "resource_exhaustion"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.1624,
+      "predicted_categories": [
+        "resource_exhaustion"
+      ],
+      "latency_ms": 0.4802,
       "analysis_complete": true,
       "error": false,
-      "reason": "No blocking findings in the completed baseline checks.",
+      "reason": "Line 11: A large loop creates resource handles without a visible release.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
+        "base": 0.8,
         "category_bonus": 0.0,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "no_findings",
+        "final_score": 0.8,
+        "distinct_categories": [
+          "resource_exhaustion"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-RES-006",
+            "category": "resource_exhaustion",
+            "lines": [
+              11
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -1021,7 +1171,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.2107,
+      "latency_ms": 0.5662,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1044,26 +1194,47 @@
       "id": "cg_secret_access_0001",
       "language": "python",
       "expected": "block",
-      "predicted": "allow",
+      "predicted": "block",
       "expected_categories": [
         "secret_access"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.2395,
+      "predicted_categories": [
+        "data_exfiltration",
+        "secret_access"
+      ],
+      "latency_ms": 0.694,
       "analysis_complete": true,
       "error": false,
-      "reason": "No blocking findings in the completed baseline checks.",
+      "reason": "Line 9: The operation reads a credential store rather than ordinary application preferences. Line 17: Credential-derived data flows to an outbound network request.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
-        "category_bonus": 0.0,
+        "base": 0.8,
+        "category_bonus": 0.04,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "no_findings",
+        "final_score": 0.84,
+        "distinct_categories": [
+          "data_exfiltration",
+          "secret_access"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-SEC-003",
+            "category": "secret_access",
+            "lines": [
+              9
+            ]
+          },
+          {
+            "rule_id": "CG-EXF-001",
+            "category": "data_exfiltration",
+            "lines": [
+              17
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -1072,26 +1243,54 @@
       "id": "cg_secret_access_0007",
       "language": "python",
       "expected": "block",
-      "predicted": "allow",
+      "predicted": "block",
       "expected_categories": [
         "secret_access"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.1992,
+      "predicted_categories": [
+        "data_exfiltration",
+        "secret_access"
+      ],
+      "latency_ms": 0.5575,
       "analysis_complete": true,
       "error": false,
-      "reason": "No blocking findings in the completed baseline checks.",
+      "reason": "Line 9: The operation reads a credential store rather than ordinary application preferences. Line 15: Credential-derived data flows to an outbound network request.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
-        "category_bonus": 0.0,
+        "base": 0.8,
+        "category_bonus": 0.04,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "no_findings",
+        "final_score": 0.84,
+        "distinct_categories": [
+          "data_exfiltration",
+          "secret_access"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-SEC-003",
+            "category": "secret_access",
+            "lines": [
+              9
+            ]
+          },
+          {
+            "rule_id": "CG-EXF-001",
+            "category": "data_exfiltration",
+            "lines": [
+              15
+            ]
+          },
+          {
+            "rule_id": "CG-EXF-001",
+            "category": "data_exfiltration",
+            "lines": [
+              14
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -1104,22 +1303,34 @@
       "expected_categories": [
         "secret_access"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.0872,
-      "analysis_complete": false,
+      "predicted_categories": [
+        "secret_access"
+      ],
+      "latency_ms": 0.8962,
+      "analysis_complete": true,
       "error": false,
-      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
+      "reason": "Line 2: An executable value embeds a provider-format or high-entropy credential.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
+        "base": 0.8,
         "category_bonus": 0.0,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "incomplete_analysis",
+        "final_score": 0.8,
+        "distinct_categories": [
+          "secret_access"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-SEC-001",
+            "category": "secret_access",
+            "lines": [
+              2
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -1131,7 +1342,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.2458,
+      "latency_ms": 0.7182,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1157,7 +1368,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.2696,
+      "latency_ms": 0.8663,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1187,10 +1398,10 @@
       "predicted_categories": [
         "secret_access"
       ],
-      "latency_ms": 0.2385,
+      "latency_ms": 0.6336,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 6: A credential-like variable contains an embedded literal. Review whether it is a real credential. Line 7: A credential-like variable contains an embedded literal. Review whether it is a real credential.",
+      "reason": "Line 7: An executable value embeds a provider-format or high-entropy credential.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -1204,14 +1415,7 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-SECRET_ACCESS",
-            "category": "secret_access",
-            "lines": [
-              6
-            ]
-          },
-          {
-            "rule_id": "CG-SECRET_ACCESS",
+            "rule_id": "CG-SEC-001",
             "category": "secret_access",
             "lines": [
               7
@@ -1234,10 +1438,10 @@
       "predicted_categories": [
         "ssrf_network_exfil"
       ],
-      "latency_ms": 0.2125,
+      "latency_ms": 0.4729,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 9: The request targets an internal, metadata, or non-public network destination.",
+      "reason": "Line 9: The request uses a non-HTTP scheme capable of reaching other services.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -1251,7 +1455,7 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-SSRF_NETWORK_EXFIL",
+            "rule_id": "CG-NET-003",
             "category": "ssrf_network_exfil",
             "lines": [
               9
@@ -1274,10 +1478,10 @@
       "predicted_categories": [
         "ssrf_network_exfil"
       ],
-      "latency_ms": 0.1735,
+      "latency_ms": 0.5008,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 13: The request targets an internal, metadata, or non-public network destination.",
+      "reason": "Line 13: The destination resolves statically to an internal or non-public address.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -1291,7 +1495,7 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-SSRF_NETWORK_EXFIL",
+            "rule_id": "CG-NET-001",
             "category": "ssrf_network_exfil",
             "lines": [
               13
@@ -1310,7 +1514,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.1831,
+      "latency_ms": 0.549,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1340,10 +1544,10 @@
       "predicted_categories": [
         "ai_targeted_instructions"
       ],
-      "latency_ms": 0.1814,
+      "latency_ms": 0.4868,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 5: Text attempts to override an AI reader\u2019s instructions or reveal protected context.",
+      "reason": "Line 4: Untrusted text instructs an AI reader to override review or disclose protected context. Line 5: Untrusted text instructs an AI reader to override review or disclose protected context.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -1357,7 +1561,14 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-AI_TARGETED_INSTRUCTIONS",
+            "rule_id": "CG-AIT-001",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              4
+            ]
+          },
+          {
+            "rule_id": "CG-AIT-001",
             "category": "ai_targeted_instructions",
             "lines": [
               5
@@ -1373,26 +1584,38 @@
       "id": "cg_ai_targeted_instructions_0002",
       "language": "python",
       "expected": "block",
-      "predicted": "allow",
+      "predicted": "block",
       "expected_categories": [
         "ai_targeted_instructions"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.1743,
+      "predicted_categories": [
+        "ai_targeted_instructions"
+      ],
+      "latency_ms": 0.4706,
       "analysis_complete": true,
       "error": false,
-      "reason": "No blocking findings in the completed baseline checks.",
+      "reason": "Line 6: Untrusted text instructs an AI reader to override review or disclose protected context.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
+        "base": 0.8,
         "category_bonus": 0.0,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "no_findings",
+        "final_score": 0.8,
+        "distinct_categories": [
+          "ai_targeted_instructions"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-AIT-001",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              6
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -1404,7 +1627,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 0.1598,
+      "latency_ms": 0.4507,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1431,22 +1654,48 @@
       "expected_categories": [
         "ai_targeted_instructions"
       ],
-      "predicted_categories": [],
-      "latency_ms": 0.0887,
-      "analysis_complete": false,
+      "predicted_categories": [
+        "ai_targeted_instructions"
+      ],
+      "latency_ms": 1.0638,
+      "analysis_complete": true,
       "error": false,
-      "reason": "Blocked because this input could not be fully checked by the initial analyzer. ",
+      "reason": "Line 11: Untrusted text instructs an AI reader to override review or disclose protected context. Line 12: Untrusted text instructs an AI reader to override review or disclose protected context.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
-        "base": 0.0,
+        "base": 0.8,
         "category_bonus": 0.0,
         "cap": 0.98,
-        "final_score": 0.0,
-        "distinct_categories": [],
-        "contributors": [],
-        "decision_basis": "incomplete_analysis",
+        "final_score": 0.8,
+        "distinct_categories": [
+          "ai_targeted_instructions"
+        ],
+        "contributors": [
+          {
+            "rule_id": "CG-AIT-001",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              11
+            ]
+          },
+          {
+            "rule_id": "CG-AIT-001",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              12
+            ]
+          },
+          {
+            "rule_id": "CG-AIT-001",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              13
+            ]
+          }
+        ],
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -1462,10 +1711,10 @@
       "predicted_categories": [
         "ai_targeted_instructions"
       ],
-      "latency_ms": 0.0785,
-      "analysis_complete": false,
+      "latency_ms": 0.4225,
+      "analysis_complete": true,
       "error": false,
-      "reason": "Blocked because this input could not be fully checked by the initial analyzer. Line 11: Text attempts to override an AI reader\u2019s instructions or reveal protected context.",
+      "reason": "Line 8: Untrusted text instructs an AI reader to override review or disclose protected context. Line 9: Untrusted text instructs an AI reader to override review or disclose protected context.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
@@ -1479,14 +1728,35 @@
         ],
         "contributors": [
           {
-            "rule_id": "CG-AI_TARGETED_INSTRUCTIONS",
+            "rule_id": "CG-AIT-001",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              8
+            ]
+          },
+          {
+            "rule_id": "CG-AIT-001",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              9
+            ]
+          },
+          {
+            "rule_id": "CG-AIT-001",
+            "category": "ai_targeted_instructions",
+            "lines": [
+              10
+            ]
+          },
+          {
+            "rule_id": "CG-AIT-001",
             "category": "ai_targeted_instructions",
             "lines": [
               11
             ]
           }
         ],
-        "decision_basis": "incomplete_analysis",
+        "decision_basis": "findings_present",
         "policy": "Block on any baseline finding or incomplete analysis. Score does not independently authorize execution.",
         "limitations": "Hand-set heuristic weights; not trained, calibrated or validated as an attack probability. Multiple findings in one category do not add category bonuses."
       }
@@ -1502,35 +1772,53 @@
         "ssrf_network_exfil"
       ],
       "predicted_categories": [
+        "dependency_risk",
         "resource_exhaustion",
+        "secret_access",
         "ssrf_network_exfil"
       ],
-      "latency_ms": 0.4558,
+      "latency_ms": 1.2739,
       "analysis_complete": true,
       "error": false,
-      "reason": "Line 23: The request targets an internal, metadata, or non-public network destination. Line 28: An unconditional loop has no visible termination path.",
+      "reason": "Line 13: A runtime package name cannot be established as a reviewed constant. Line 23: The destination resolves statically to an internal or non-public address.",
       "score_trace": {
         "method": "baseline-category-count-v1",
         "calibrated_probability": false,
         "formula": "0 with no findings; otherwise min(0.98, 0.80 + 0.04 * (distinct_categories - 1))",
         "base": 0.8,
-        "category_bonus": 0.04,
+        "category_bonus": 0.12,
         "cap": 0.98,
-        "final_score": 0.84,
+        "final_score": 0.92,
         "distinct_categories": [
+          "dependency_risk",
           "resource_exhaustion",
+          "secret_access",
           "ssrf_network_exfil"
         ],
         "contributors": [
           {
-            "rule_id": "CG-SSRF_NETWORK_EXFIL",
+            "rule_id": "CG-DEP-006",
+            "category": "dependency_risk",
+            "lines": [
+              13
+            ]
+          },
+          {
+            "rule_id": "CG-NET-001",
             "category": "ssrf_network_exfil",
             "lines": [
               23
             ]
           },
           {
-            "rule_id": "CG-RESOURCE_EXHAUSTION",
+            "rule_id": "CG-SEC-007",
+            "category": "secret_access",
+            "lines": [
+              23
+            ]
+          },
+          {
+            "rule_id": "CG-RES-001",
             "category": "resource_exhaustion",
             "lines": [
               28

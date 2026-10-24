@@ -39,6 +39,10 @@ def detect(code):
     def add(rule, node):
         found.add(rule)
     deadline = perf_counter()+1
+    if code.startswith('name:') or '\njobs:' in code or '\non:' in code:
+        # YAML manifests can parse as Python annotations; route them explicitly.
+        inspect_text(code, 'yaml', add, deadline)
+        return found
     try:
         tree=ast.parse(code)
     except SyntaxError:

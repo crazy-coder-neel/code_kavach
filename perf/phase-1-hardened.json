@@ -1,0 +1,57 @@
+{
+  "created_at": "2026-10-24T00:13:06.606609+00:00",
+  "engine_version": "0.4.0-rules",
+  "python": "3.14.4",
+  "machine": "x86_64",
+  "iterations": 300,
+  "method": "nearest-rank; sequential; 10 warmups per bucket",
+  "buckets": {
+    "small": {
+      "bytes": 238,
+      "timings_ms": {
+        "analyzer_uncached": {
+          "p50": 0.133812,
+          "p95": 0.149547,
+          "p99": 0.225691
+        },
+        "runtime_cached": {
+          "p50": 0.007707,
+          "p95": 0.008187,
+          "p99": 0.009633
+        }
+      }
+    },
+    "medium": {
+      "bytes": 2043,
+      "timings_ms": {
+        "analyzer_uncached": {
+          "p50": 1.098818,
+          "p95": 1.318313,
+          "p99": 1.987476
+        },
+        "runtime_cached": {
+          "p50": 0.008216,
+          "p95": 0.011949,
+          "p99": 0.014036
+        }
+      }
+    },
+    "large": {
+      "bytes": 4095,
+      "timings_ms": {
+        "analyzer_uncached": {
+          "p50": 2.166425,
+          "p95": 4.318618,
+          "p99": 4.947558
+        },
+        "runtime_cached": {
+          "p50": 0.009684,
+          "p95": 0.010061,
+          "p99": 0.011045
+        }
+      }
+    }
+  },
+  "http_url": null,
+  "limitations": "Harmless padding size baseline, not representative detection/load testing. Cached paths reuse identical input. Uncached analyzer excludes HTTP. Deadline only checked after scan in Phase 1."
+}

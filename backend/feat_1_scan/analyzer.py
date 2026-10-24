@@ -10,6 +10,7 @@ from feat_1_scan.signals import (SECRET_NAME, SECRET_PATH, PERSIST_PATH, secret_
 from feat_2_results.results import assemble, finding
 
 MAX_BYTES = 64 * 1024
+_INVISIBLE = re.compile(r'[\u200b-\u200f\u202a-\u202e\u2060-\u206f]')
 PREFIX = dict(SEC='secret_access', EXF='data_exfiltration', DES='destructive_command',
     PER='persistence_or_privesc', OBF='obfuscated_execution', DEP='dependency_risk',
     RES='resource_exhaustion', NET='ssrf_network_exfil', AIT='ai_targeted_instructions',
@@ -42,18 +43,22 @@ REASONS = {
  'OBF-006': 'Deserialization may invoke executable object reconstruction.',
  'OBF-007': 'Introspection reaches interpreter internals used to escape restricted execution.',
  'OBF-009': 'A pipeline decodes or downloads content directly into a shell.',
+ 'OBF-011': 'Invisible or bidirectional control characters can disguise the real source.',
  'OBF-012': 'A dynamically supplied template is interpreted as template code.',
  'DEP-001': 'An installed name is a close spelling variant of a bundled known package.',
  'DEP-002': 'Installation uses a remote source or overrides registry trust.',
  'DEP-003': 'A remote installer is executed directly by a shell.',
+ 'DEP-004': 'A package install hook can run arbitrary code during installation.',
  'DEP-006': 'A runtime package name cannot be established as a reviewed constant.',
  'RES-001': 'An unconditional loop has no visible exit or bounded blocking operation.',
+ 'RES-002': 'An unbounded loop creates processes, threads or handles without a limit.',
  'RES-003': 'The command recursively spawns processes.',
  'RES-004': 'A literal allocation exceeds the configured 100 million element limit.',
  'RES-005': 'A zero-fill or repeated-output command has no size bound.',
  'RES-006': 'A large loop creates resource handles without a visible release.',
  'RES-007': 'The command runs a cryptocurrency miner.',
  'RES-008': 'The interpreter recursion limit is raised to an unsafe value.',
+ 'PER-010': 'World-writable permissions are applied to a sensitive system path.',
  'NET-001': 'The destination resolves statically to an internal or non-public address.',
  'NET-002': 'The URL uses malformed or ambiguous addressing.',
  'NET-003': 'The request uses a non-HTTP scheme capable of reaching other services.',
@@ -90,6 +95,10 @@ def analyze(code, _depth=0, _deadline=None):
         if text_injection(text):
             add('AIT-001', line)
 
+    for index, line_text in enumerate(code.splitlines(), 1):
+        if _INVISIBLE.search(line_text):
+            add('OBF-011', index)
+
     try:
         tree = ast.parse(code.lstrip('\ufeff'))
     except (SyntaxError, ValueError, RecursionError):
@@ -113,6 +122,7 @@ def analyze(code, _depth=0, _deadline=None):
             self.origins = {}
             self.count = 0
             self.depth = 0
+            self.loop_depth = 0
 
         def visit(self, node):
             self.count += 1
@@ -156,6 +166,8 @@ def analyze(code, _depth=0, _deadline=None):
                 left, right = val(node.left), val(node.right)
                 if isinstance(node.op, ast.Add) and isinstance(left, str) and isinstance(right, str) and len(left)+len(right)<=MAX_BYTES:
                     return left+right
+                if isinstance(node.op, ast.Div) and isinstance(left, str) and isinstance(right, str) and len(left)+len(right)<=MAX_BYTES:
+                    return left.rstrip('/') + '/' + right.lstrip('/')
                 if type(left) is int and type(right) is int:
                     if isinstance(node.op, ast.Pow) and 0<=right<=32 and abs(left)<=100000:
                         return min(left**right, 10**12)
@@ -174,6 +186,8 @@ def analyze(code, _depth=0, _deadline=None):
                 args = [val(a) for a in node.args]
                 if name in ('os.path.expanduser', 'pathlib.Path', 'Path', 'str') and args:
                     return args[0]
+                if name in ('Path.home', 'pathlib.Path.home'):
+                    return '~'
                 if name == 'os.path.join' and all(isinstance(a, str) for a in args):
                     return '/'.join(args)
                 if isinstance(node.func, ast.Attribute):
@@ -276,14 +290,27 @@ def analyze(code, _depth=0, _deadline=None):
             if isinstance(node.target,ast.Name) and isinstance(values,list):
                 # Preserve a collection of possible constants at a loop variable.
                 self.constants[node.target.id] = values
-            self.generic_visit(node)
+            self.loop_depth += 1
+            try:
+                self.generic_visit(node)
+            finally:
+                self.loop_depth -= 1
 
         def visit_While(self,node):
             exits = [n for n in ast.walk(node) if isinstance(n,(ast.Break,ast.Return,ast.Raise))]
             waits = [n for n in ast.walk(node) if isinstance(n,ast.Call) and self.name(n.func) in ('time.sleep','asyncio.sleep')]
             if self.value(node.test) in (True,1) and not exits and not waits:
                 add('RES-001',node)
-            self.generic_visit(node)
+                resources = [n for n in ast.walk(node) if isinstance(n, ast.Call)
+                             and (self.name(n.func).startswith(('subprocess.', 'socket.', 'threading.', 'multiprocessing.'))
+                                  or self.name(n.func) in ('open', 'os.fork'))]
+                if resources:
+                    add('RES-002', node)
+            self.loop_depth += 1
+            try:
+                self.generic_visit(node)
+            finally:
+                self.loop_depth -= 1
 
         def visit_BinOp(self,node):
             if isinstance(node.op,ast.Mult):
@@ -308,6 +335,8 @@ def analyze(code, _depth=0, _deadline=None):
                     add('DES-004',node)
                 if node.args and isinstance(node.args[0],ast.Call) and any(x in self.name(node.args[0].func) for x in ('decode','fromhex','decompress')):
                     add('OBF-001',node)
+            if name == 'os.fork' and self.loop_depth:
+                add('RES-003',node)
             if name in ('__import__','importlib.import_module') and first is None:
                 add('OBF-003',node)
             if name in ('pickle.loads','pickle.load','shelve.open','dill.loads','dill.load','marshal.loads','jsonpickle.decode') or (name=='yaml.load' and not any(self.name(k.value).endswith('SafeLoader') for k in node.keywords)) or (name=='numpy.load' and kwargs.get('allow_pickle') is True) or (name=='torch.load' and kwargs.get('weights_only') is not True):
@@ -321,6 +350,8 @@ def analyze(code, _depth=0, _deadline=None):
                     if isinstance(node.func,ast.Attribute) and isinstance(node.func.value,ast.Name) and node.func.value.id in self.aliases:
                         add('OBF-002',node)
             if command:
+                if name.startswith('subprocess.') and first is None and not shell:
+                    add('DES-004',node)
                 for rule in command_findings(first):
                     add(rule,node)
                 if isinstance(first,list) and 'install' in first and any(isinstance(t,str) and 'pip' in t for t in first):

@@ -71,11 +71,42 @@ def suggested_fix(category, reason):
     return {**fix, 'automatic': False, 'language': 'python' if fix['example'] else None}
 
 
+GUARDS = {
+    'secret_access': ['executable assignment vs comment/docstring', 'placeholder and templating check',
+                      'provider-format or entropy check', 'public-key/certificate exclusion'],
+    'data_exfiltration': ['destination allow-list', 'payload sensitivity check', 'constant vs tainted argument'],
+    'destructive_command': ['narrow constant path under temp dir', 'parameterised SQL with WHERE',
+                            'structured arguments without a shell'],
+    'persistence_or_privesc': ['read-only vs write mode', 'privileged path set', 'scoped single resource'],
+    'obfuscated_execution': ['literal vs dynamic argument', 'safe loader / literal_eval',
+                             'allow-list validated name'],
+    'dependency_risk': ['exact known-package match', 'pinned version', 'official registry source'],
+    'resource_exhaustion': ['reachable break/return/raise', 'bounded blocking wait', 'explicit size cap'],
+    'ssrf_network_exfil': ['parsed host vs allow-list', 'private/metadata range check', 'scheme check'],
+    'ai_targeted_instructions': ['addressee + override verb both present', 'descriptive/quoted context',
+                                 'comment or prose only, never code tokens'],
+}
+ALTERNATIVES = {
+    'secret_access': ['benign: value is only a placeholder', 'benign: prose mentions a credential without using it'],
+    'data_exfiltration': ['benign: destination is allow-listed and payload non-sensitive'],
+    'destructive_command': ['benign: constant narrow path inside a temp directory', 'benign: parameterised SQL with scope'],
+    'persistence_or_privesc': ['benign: read-only command such as crontab -l'],
+    'obfuscated_execution': ['benign: ast.literal_eval', 'benign: validated allow-list before setattr'],
+    'dependency_risk': ['benign: pinned, correctly spelt official package'],
+    'resource_exhaustion': ['benign: bounded worker pool with join'],
+    'ssrf_network_exfil': ['benign: allow-listed external partner API'],
+    'ai_targeted_instructions': ['benign: security-policy text that describes injection'],
+}
+
+
 def finding(category, lines, evidence, reason):
     title, remediation = MESSAGES[category]
     return {'category': category, 'severity': 'high', 'lines': sorted(set(lines)),
             'title': title, 'why': reason, 'remediation': remediation,
             'evidence': evidence, 'rule_id': 'CG-' + category.upper(),
+            'decision': 'block', 'impact': title + '.',
+            'guards_checked': GUARDS[category],
+            'alternatives_considered': ALTERNATIVES[category],
             'fix': suggested_fix(category, reason)}
 
 

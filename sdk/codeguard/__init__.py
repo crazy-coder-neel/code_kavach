@@ -60,7 +60,7 @@ def _valid(payload):
     if isinstance(score, bool) or not isinstance(score, (int, float)) or not 0 <= score <= 1:
         return False
     categories = payload.get("categories")
-    if not isinstance(categories, list) or not all(c in CATEGORIES for c in categories):
+    if not isinstance(categories, list) or not all(isinstance(c, str) and c in CATEGORIES for c in categories):
         return False
     return isinstance(payload.get("code_language"), str) and bool(payload.get("code_language"))
 
@@ -83,6 +83,8 @@ class Guard:
         payload = self._scan_http(code) if self.base_url else self._scan_local(code)
         if not _valid(payload):
             raise BlockedByCodeGuard("Invalid or unverifiable detector response; no execution is authorized.")
+        if payload.get("degraded") or payload.get("analysis_complete") is False:
+            raise BlockedByCodeGuard("Incomplete detector response; no execution is authorized.", payload)
         if payload.get("verdict") == "block":
             raise BlockedByCodeGuard("CodeGuard blocked this snippet.", payload)
         return payload
@@ -166,22 +168,27 @@ _default_executor = GuardedExecutor()
 def guarded_execute(code, executor=None, guard_client=None, on_error="block"):
     """Scan *code*, then run the exact scanned bytes only if allowed.
 
-    ``on_error='allow'`` is a deliberate, discouraged opt-in; the default fails
-    closed so a detector outage can never authorize execution.
+    Detector failures never authorize execution. Only ``on_error='block'`` is
+    accepted; the former fail-open setting is rejected.
     """
     guard_client = guard_client or _default_guard
     executor = executor or _default_executor
-    digest = hashlib.sha256(code.encode("utf-8")).hexdigest()
+    if on_error != "block":
+        raise BlockedByCodeGuard("Only fail-closed execution is supported.")
     try:
+        if not isinstance(code, str):
+            raise BlockedByCodeGuard("Source must be a string.")
+        digest = hashlib.sha256(code.encode("utf-8")).hexdigest()
         verdict = guard_client.scan(code)
+        if (not _valid(verdict) or verdict["verdict"] != "allow"
+                or verdict.get("degraded") or verdict.get("analysis_complete") is False):
+            raise BlockedByCodeGuard("No complete allow verdict; no execution is authorized.")
+        if verdict.get("code_hash") and verdict["code_hash"] != digest:
+            raise BlockedByCodeGuard("Verdict does not match the scanned bytes; no execution is authorized.")
     except BlockedByCodeGuard:
         raise
     except Exception as error:  # unexpected error -> never permission
-        if on_error == "allow":
-            return executor(code)
         raise BlockedByCodeGuard(f"Guard error ({type(error).__name__}); no execution is authorized.") from error
-    if verdict.get("code_hash") and verdict["code_hash"] != digest:
-        raise BlockedByCodeGuard("Verdict does not match the scanned bytes; no execution is authorized.")
     return executor(code)
 
 

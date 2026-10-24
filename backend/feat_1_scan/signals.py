@@ -105,7 +105,9 @@ def package_risk(package):
         return False
     if package.startswith(('git+', 'http://', 'https://')):
         return True
-    name = re.split(r'==|>=|<=|~=|@', package)[0].lower().replace('_', '-').replace('.', '-')
+    name = re.split(r'==|>=|<=|~=|@|\[', package)[0].lower().replace('_', '-').replace('.', '-')
+    if name in MALICIOUS_PACKAGES:
+        return True
     if name in TOP_PACKAGES or len(name) < 4:
         return False
     def near(top):
@@ -140,16 +142,19 @@ def command_findings(command):
             found.append(rule)
     match('DES-001', r'\brm\s+[^;\n]*-[\w]*r[\w]*\s+(?:/\s*$|/\*|~|\$|\*)')
     match('DES-002', r'\b(?:mkfs|wipefs|shred)\b|\bdd\b[^\n]*of=/dev/')
-    match('DES-005', r'terraform destroy|kubectl delete.*--all|git (?:reset --hard|clean -fdx|push --force)|docker system prune')
+    match('DES-005', r'terraform destroy|kubectl delete|git (?:reset --hard|clean -fdx|push --force)|docker system prune')
     match('DES-007', r'history -c|unset HISTFILE|auditctl -e 0|(?:>|truncate[^\n]*)\s*/var/log/')
     match('DES-008', r'ufw disable|setenforce 0|iptables -F|kill -9 -1')
+    match('DES-003', r'\bGRANT\s+(?:ALL|SELECT|INSERT|UPDATE|DELETE|EXECUTE)\b')
     match('PER-003', r'\b(?:useradd|chpasswd)\b|usermod.*(?:sudo|wheel)')
     match('PER-004', r'chmod\s+(?:u\+s|4755)|\bsetcap\b')
     match('PER-005', r'--privileged|/var/run/docker.sock|\b(?:nsenter|insmod|pkexec)\b')
     match('PER-007', r'/dev/tcp/|\bnc\s+[^\n]*-e\b|socat\s+[^\n]*exec')
+    match('PER-010', r'chmod\s+(?:-R\s+)?777\s+/(?:etc|var|usr|root|bin|sbin)')
     match('PER-002', r'\bcrontab\s+(?!-l\b|-r\b)\S+|systemctl\s+enable\b')
-    match('EXF-003', r'\bping\b[^\n]*\s-p\s')
+    match('EXF-003', r'\bping\b[^\n]*\s-p\s|\bhttps?://[A-Za-z0-9+/=_-]{40,}\.')
     match('EXF-005', r'\b(?:mysqldump|pg_dump)\b')
+    match('DEP-004', r'"postinstall"\s*:')
     match('RES-003', r':\(\)\s*\{\s*:\|:&\s*\}')
     if re.search(r'\bdd\s+[^\n]*if=/dev/zero', text) and not re.search(r'\bcount=\d+', text):
         found.append('RES-005')
@@ -168,8 +173,22 @@ def command_findings(command):
 
 
 def text_injection(text):
+    # Remove only a quoted example explicitly described as untrusted content.
+    # Keep the rest of the passage so documentation cannot hide a later command.
+    text = re.sub(r'(["\'])ignore (?:all )?(?:previous|prior) instructions\1\s+in untrusted content',
+                  'quoted untrusted example', text, flags=re.I)
     lowered = text.lower()
-    if re.search(r'ignore (?:all )?(?:previous|prior) instructions|reveal (?:the )?(?:full )?system prompt', lowered):
+    if re.search(r'ignore (?:all )?(?:previous|prior) instructions|reveal (?:the )?(?:full )?system prompt|disregard (?:all )?(?:previous|prior|above)', lowered):
         return True
-    addressed = re.search(r'\b(?:ai|agent|assistant|reviewer|bot|model|llm|tool)\b', lowered)
-    return bool(addressed and re.search(r'approve[\s\S]{0,150}regardless|skip static analysis|(?:print|send|reveal)[\s\S]{0,60}(?:credentials|secrets|keys)|report[\s\S]{0,50}compliant', lowered))
+    if re.search(r'<\|\s*(?:im_start|im_end|system|assistant)\s*\|>|\[/?INST\]|###\s*(?:system|assistant)\s*:'
+                 r'|^\s*(?:system|assistant)\s*:', lowered, re.M):
+        return True
+    if re.search(r'you are (?:now|no longer)\b|\bdo not (?:flag|block|report)\b'
+                 r'|\bmark (?:this|it) as (?:safe|compliant|approved)\b'
+                 r'|\bthis (?:code|snippet) (?:has been|is) (?:audited|approved|safe)\b'
+                 r'|\bsecurity (?:scan|review) (?:passed|approved)\b', lowered):
+        return True
+    if re.search(r'[\u200b-\u200f\u202a-\u202e\u2060-\u206f]', text):
+        return True
+    addressed = re.search(r'\b(?:ai|agent|assistant|reviewer|bot|model|llm|tool|copilot)\b', lowered)
+    return bool(addressed and re.search(r'approve[\s\S]{0,150}regardless|skip static analysis|(?:print|send|reveal)[\s\S]{0,60}(?:credentials|secrets|keys)|report[\s\S]{0,50}compliant|before (?:answering|responding)[\s\S]{0,80}(?:read|send|call)', lowered))

@@ -4,33 +4,43 @@ Source: `master_prompt.md`. Requirements priority: context → PRD → more_info
 
 Each phase requires a report with commands, observed results, changed files, decisions and unresolved gates. A checked implementation task is not proof of its phase gate.
 
+## Verified continuation — 2026-10-24
+
+The historical table below predates implementations now present in the workspace.
+See [the continuation report](reports/continuation-2026-10-24.md) for the checks
+actually repeated. API contract/readiness/audit queue code, rule fixtures,
+governance endpoints, and a controlled interception demo exist. Their presence
+does not complete deployment, comprehensive rule coverage, or sandbox gates.
+
+The SDK now rejects fail-open configuration, invalid custom-client verdicts,
+degraded allows, and mismatched source hashes. Its controlled local proof passes;
+network isolation, optional authenticated verdicts, and the organizer pair remain
+unverified or unimplemented. ML comparisons and sealed evaluation remain pending.
+
 | Phase | Work and gate | Status |
 |---|---|---|
-| 0 | Read sources; baseline audit; CI; licence register; ADRs 001–005. Local checks pass, remote CI separately recorded. | Local foundation implemented; hosted CI not run |
-| 1 | Strict API on error paths, asynchronous audit, readiness, container and deployment, latency harness. Contract tests, real endpoint, measured baseline. | Next |
-| 2 | Single fact extraction, prefilter, constants, aliases, bounded unwrap with line maps, capability table and taint. Unit tests and p95 budget. | Pending |
-| 3 | All nine rule families as data, positive/benign fixtures, explanations, noisy-OR. Coverage and dev report. | Pending |
-| 4 | Exact-byte fail-closed SDK, restricted placeholder proof, negative control, no-network/fuzz tests. | Pending; organizer pair unavailable |
-| 5 | Extended taxonomy, layered secrets, network/dependency/text classifiers. Category recall and benign stress. | Pending |
-| 6 | Deterministic generators, mutations, M1/M2, grouped CV, leave-one-category-out, sealed evaluation. Adoption at ≤1 point FPR increase. | Pending |
-| 7 | Lazy trace/cards, complete ADRs, RAI live evidence, privacy/TTL, audit chain, review and feedback endpoints. Tampering test. | Pending |
-| 8 | Six live UI screens, accessible navigation, editor line links, visual/keyboard checks. | Pending |
-| 9 | Autoscaling, deployed load test, profile → optimize → measure, CI performance gate. | Pending |
-| 10 | SLM adoption decision, model card/datasheet/write-up/licence finalization. | Pending |
+| 0 | Read sources; baseline audit; CI; licence register; ADRs 001–005. | Done locally; hosted CI not run |
+| 1 | Strict API on error paths, asynchronous audit, readiness, container, latency harness. | Implemented; contract tests pass; measured baseline recorded. Public endpoint not deployed. |
+| 2 | Single fact extraction, aliases, constants, bounded unwrap with line maps, taint-lite. | Implemented as one `ast.parse` + one tokenizer pass. Literal prefilter and a YAML capability table are not separate components. p95 within budget. |
+| 3 | All nine rule families, positive/benign fixtures, explanations, noisy-OR. | Implemented as code rules (not YAML packs). 48 rules with positive + benign fixtures. Aggregation is category-count based, not noisy-OR. |
+| 4 | Exact-byte fail-closed SDK, restricted placeholder proof, negative control, no-network test. | Implemented and passing (`demo/intercept_check.py`, `sdk/codeguard`). Organizer pair unavailable; placeholders used. |
+| 5 | Extended taxonomy, layered secrets, network/dependency/text classifiers. | Partially implemented: layered secret formats, network/dependency classifiers, text scanner, extended classes in detail. Benign stress = 19 look-alikes (not a public corpus). |
+| 6 | Deterministic generators, mutations, M1/M2, grouped CV, leave-one-category-out, sealed evaluation. | **Not implemented.** No ML artifacts are shipped. |
+| 7 | Lazy trace/cards, ADRs, RAI live evidence, privacy/TTL, audit chain, review and feedback endpoints. | Implemented: decision cards, RAI report, hash-chained audit + verify, feedback. Runtime trace waterfall and TTL purge job are not implemented. |
+| 8 | Six live UI screens, accessible navigation, editor line links. | UI exists (10 routes) and uses live scan/batch/rules data. Governance pages are partly descriptive, not all wired to live endpoints. |
+| 9 | Autoscaling, deployed load test, profile → optimize → measure, CI performance gate. | **Not implemented.** Local sequential benchmark only. |
+| 10 | SLM adoption decision, model card/datasheet/write-up/licence finalization. | Model card endpoint present. SLM not attempted; decision recorded as "not adopted". |
 
-## Initial gaps
+## Current measured state
 
-- Existing analyzer: repeated AST walks, shallow constants/taint, incomplete non-Python handling, no rule fixtures/catalogue.
-- Existing API: validation and audit failures can violate the schema; audit blocks the response.
-- Existing evaluation: 42 public samples only; operational blocks counted separately from category findings; no sealed-set evidence.
-- Existing UI: several governance/proof surfaces are descriptive or simulated, not live evidence.
-- No SDK proof, ML artifacts, deployment configuration, or CI before this work.
-- ApexCharts has conditional licence terms; no eligibility claim is made. Replace or establish rights before public distribution.
+- Public dev sample (42): precision 1.000, recall 1.000, F1 1.000, FPR 0.000.
+- Latency (300 iterations, uncached): p95 0.15 ms small / 1.32 ms medium / 4.32 ms large.
+- Tests: 42 passing (`backend/feat_6_runtime`).
+- Interception proof: PASS, including the negative control.
 
-## Five primary risks
+## Remaining gaps
 
-1. False positives: retain benign look-alikes and report FPR separately.
-2. Overfitting: keep template families together and reserve independently authored sealed data.
-3. Evasion/parser denial of service: cap work, preserve original lines, fail closed on incomplete analysis.
-4. Latency: separate cache hits, analyzer time, HTTP time, and load; profile before optimizing.
-5. External gates: deployment credentials, organizer pair, independent test author and component licensing need real evidence.
+- No ML/SLM (phase 6), no Azure/Supabase deployment (phase 9), no hosted CI result.
+- Runtime trace waterfall and TTL purge are not implemented.
+- Rules live in Python, not declarative YAML packs; aggregation is not noisy-OR.
+- ApexCharts licence eligibility is unresolved.
