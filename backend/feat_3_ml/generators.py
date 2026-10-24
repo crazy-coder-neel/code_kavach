@@ -17,7 +17,7 @@ FUNCS = ['run', 'main', 'handle', 'process', 'execute', 'task']
 PKGS = ['reqeusts', 'colourama', 'urlib3', 'numpyy', 'djanga', 'python3-dateutil', 'tenserflow']
 PATHS = ['~/.aws/credentials', '~/.docker/config.json', '~/.kube/config', '~/.netrc', '~/.ssh/id_rsa', '/etc/shadow']
 FAKE_KEYS = ['AKIAIOSFODNN7EXAMPLE', 'xoxb-test-placeholder-slack-key',
-             'ghp_abcdefghijklmnopqrstuvwxyz0123456789', 'sk_test_placeholder_stripe_key']
+             'ghp_test_placeholder_github_token', 'sk_test_placeholder_stripe_key']
 
 
 def _last(lst: List[str]) -> str:
