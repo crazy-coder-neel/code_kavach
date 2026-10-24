@@ -10,6 +10,11 @@ __pycache__/
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.cert
+*.secret
+*.token
 backend/.local/
-
 demo/.runtime/
+.idea/

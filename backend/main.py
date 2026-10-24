@@ -9,6 +9,7 @@ from time import perf_counter
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse
 from starlette.concurrency import run_in_threadpool
 from feat_1_scan.analyzer import MAX_BYTES
@@ -48,6 +49,13 @@ async def lifespan(app):
 
 
 app = FastAPI(title='CodeGuard', version=ENGINE_VERSION, lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
 app.state.ready = False
 app.state.audit = AuditQueue()
 app.state.metrics = Metrics()
@@ -224,9 +232,11 @@ def audit_decision(code, result):
             'categories': result['categories'], 'degraded': result.get('degraded', False)}
 
 
+@app.get('/')
+@app.get('/health')
 @app.get('/healthz')
 def health():
-    return {'status': 'alive', 'engine_version': ENGINE_VERSION, 'mode': 'local baseline', 'llm_calls': 0}
+    return {'status': 'alive', 'ready': app.state.ready, 'engine_version': ENGINE_VERSION, 'mode': 'local baseline', 'llm_calls': 0}
 
 
 @app.get('/readyz')
@@ -241,6 +251,7 @@ def metrics():
         for key, value in app.state.audit.stats().items()), media_type='text/plain; version=0.0.4')
 
 
+@app.post('/guard')
 @app.post('/v1/guard')
 async def guard(request: Request):
     try:
@@ -270,6 +281,8 @@ def get_latest_live_scan():
     return getattr(app.state, 'latest_live_scan', None) or {'active': False}
 
 
+@app.post('/batch')
+@app.post('/guard/batch')
 @app.post('/v1/guard/batch')
 async def batch_guard(request: Request):
     try:

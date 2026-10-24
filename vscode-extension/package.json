@@ -4,6 +4,10 @@
   "description": "Deterministic Pre-Execution Safety Firewall for AI-Generated Code",
   "version": "1.0.0",
   "publisher": "codeguard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codeguard/codeguard"
+  },
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -30,6 +34,10 @@
         "icon": "$(shield)"
       },
       {
+        "command": "codeguard.showStatusDetails",
+        "title": "CodeGuard: Show Safety Gate Details"
+      },
+      {
         "command": "codeguard.toggleSync",
         "title": "CodeGuard: Toggle Live Dashboard Sync"
       }
@@ -47,10 +55,25 @@
           "default": true,
           "description": "Automatically scan files when saved"
         },
+        "codeguard.scanWhileTyping": {
+          "type": "boolean",
+          "default": true,
+          "description": "Scan and alert on security issues in real-time as you type or paste"
+        },
+        "codeguard.typingDebounceMs": {
+          "type": "number",
+          "default": 400,
+          "description": "Debounce delay in milliseconds before scanning typed code"
+        },
         "codeguard.highlightLines": {
           "type": "boolean",
           "default": true,
           "description": "Highlight vulnerable lines with red background"
+        },
+        "codeguard.showPopups": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show real-time alert popups when API keys or security risks are detected"
         }
       }
     }
