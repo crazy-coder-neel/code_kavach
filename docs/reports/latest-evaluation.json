@@ -1,6 +1,6 @@
 {
-  "run_id": "fc1d2fb2-0656-44af-9b4e-86dc39b32aaa",
-  "created_at": "2026-10-24T02:37:35.410187+00:00",
+  "run_id": "69ff62ab-b48b-4f5a-981c-a2163e1d7cfc",
+  "created_at": "2026-10-24T02:38:17.620370+00:00",
   "engine_version": "0.5.0-scoring",
   "dataset": "Public development set",
   "dataset_sha256": "8c781a4ef61b0ba9813719b0dd8b14f51929cc3cf20de395de1f48aa420ab4fc",
@@ -126,9 +126,9 @@
     }
   },
   "latency_ms": {
-    "p50": 2.9316,
-    "p95": 4.2741,
-    "p99": 5.4718
+    "p50": 2.8413,
+    "p95": 4.1779,
+    "p99": 5.4846
   },
   "incomplete_count": 0,
   "error_count": 0,
@@ -140,7 +140,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 4.0727,
+      "latency_ms": 3.9188,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -201,7 +201,7 @@
       "predicted_categories": [
         "data_exfiltration"
       ],
-      "latency_ms": 4.2741,
+      "latency_ms": 4.3429,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 16: An ICMP command embeds data in its packet payload.",
@@ -278,7 +278,7 @@
         "data_exfiltration",
         "secret_access"
       ],
-      "latency_ms": 3.0715,
+      "latency_ms": 3.0256,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 9: The code enumerates the process environment, exposing potentially sensitive values. Line 16: Credential-derived data flows to an outbound network request.",
@@ -378,7 +378,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.8269,
+      "latency_ms": 2.7987,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -437,7 +437,7 @@
       "predicted_categories": [
         "data_exfiltration"
       ],
-      "latency_ms": 3.0675,
+      "latency_ms": 2.9907,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 11: A database dump or interpolated SELECT can disclose unrestricted records.",
@@ -512,7 +512,7 @@
       "predicted_categories": [
         "dependency_risk"
       ],
-      "latency_ms": 2.988,
+      "latency_ms": 3.0527,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 7: A runtime package name cannot be established as a reviewed constant. Line 10: An installed name is a close spelling variant of a bundled known package.",
@@ -609,7 +609,7 @@
       "predicted_categories": [
         "dependency_risk"
       ],
-      "latency_ms": 2.9284,
+      "latency_ms": 2.9019,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 12: Installation uses a remote source or overrides registry trust.",
@@ -680,7 +680,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.9316,
+      "latency_ms": 2.7627,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -742,7 +742,7 @@
         "destructive_command",
         "obfuscated_execution"
       ],
-      "latency_ms": 2.9333,
+      "latency_ms": 2.8413,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 9: An uncontrolled command reaches a shell execution boundary. Line 9: Dynamic execution can interpret input as program instructions.",
@@ -830,7 +830,7 @@
       "predicted_categories": [
         "destructive_command"
       ],
-      "latency_ms": 2.5288,
+      "latency_ms": 2.3685,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 10: SQL modifies data without a WHERE scope or interpolates uncontrolled values.",
@@ -904,7 +904,7 @@
         "destructive_command",
         "obfuscated_execution"
       ],
-      "latency_ms": 2.9952,
+      "latency_ms": 2.9078,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 8: An uncontrolled command reaches a shell execution boundary. Line 8: Dynamic execution can interpret input as program instructions.",
@@ -988,7 +988,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.8127,
+      "latency_ms": 2.6517,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1047,7 +1047,7 @@
       "predicted_categories": [
         "destructive_command"
       ],
-      "latency_ms": 3.2201,
+      "latency_ms": 3.1892,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 12: SQL modifies data without a WHERE scope or interpolates uncontrolled values.",
@@ -1121,7 +1121,7 @@
         "destructive_command",
         "obfuscated_execution"
       ],
-      "latency_ms": 2.8335,
+      "latency_ms": 2.855,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 13: Dynamic execution can interpret input as program instructions. Line 13: An uncontrolled command reaches a shell execution boundary.",
@@ -1209,7 +1209,7 @@
         "destructive_command",
         "obfuscated_execution"
       ],
-      "latency_ms": 2.7342,
+      "latency_ms": 2.6216,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 9: Dynamic execution can interpret input as program instructions. Line 13: Dynamic execution can interpret input as program instructions.",
@@ -1307,7 +1307,7 @@
       "predicted_categories": [
         "obfuscated_execution"
       ],
-      "latency_ms": 2.8001,
+      "latency_ms": 2.6343,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 3: A runtime-selected module or operation is loaded dynamically.",
@@ -1382,7 +1382,7 @@
       "predicted_categories": [
         "obfuscated_execution"
       ],
-      "latency_ms": 2.7743,
+      "latency_ms": 2.638,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 6: A runtime-selected module or operation is loaded dynamically. Line 11: Dynamic execution can interpret input as program instructions.",
@@ -1464,7 +1464,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.6981,
+      "latency_ms": 2.623,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1524,7 +1524,7 @@
         "destructive_command",
         "obfuscated_execution"
       ],
-      "latency_ms": 3.0877,
+      "latency_ms": 2.81,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 11: An uncontrolled command reaches a shell execution boundary. Line 11: Dynamic execution can interpret input as program instructions.",
@@ -1609,7 +1609,7 @@
       "predicted_categories": [
         "obfuscated_execution"
       ],
-      "latency_ms": 2.9996,
+      "latency_ms": 2.9228,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 10: Deserialization may invoke executable object reconstruction.",
@@ -1678,7 +1678,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.691,
+      "latency_ms": 2.713,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1737,7 +1737,7 @@
       "predicted_categories": [
         "persistence_or_privesc"
       ],
-      "latency_ms": 2.8027,
+      "latency_ms": 2.9019,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 8: The operation writes privilege or startup configuration.",
@@ -1813,7 +1813,7 @@
       "predicted_categories": [
         "persistence_or_privesc"
       ],
-      "latency_ms": 2.7413,
+      "latency_ms": 2.7424,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 9: The operation writes privilege or startup configuration. Line 15: The operation writes privilege or startup configuration.",
@@ -1895,7 +1895,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.9595,
+      "latency_ms": 2.8297,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -1957,7 +1957,7 @@
       "predicted_categories": [
         "resource_exhaustion"
       ],
-      "latency_ms": 2.462,
+      "latency_ms": 2.4811,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 13: A zero-fill or repeated-output command has no size bound.",
@@ -2030,7 +2030,7 @@
       "predicted_categories": [
         "resource_exhaustion"
       ],
-      "latency_ms": 2.4994,
+      "latency_ms": 2.5059,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 11: A large loop creates resource handles without a visible release.",
@@ -2101,7 +2101,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.8332,
+      "latency_ms": 2.8435,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -2161,7 +2161,7 @@
         "data_exfiltration",
         "secret_access"
       ],
-      "latency_ms": 3.0246,
+      "latency_ms": 2.9448,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 9: The operation reads a credential store rather than ordinary application preferences. Line 17: Credential-derived data flows to an outbound network request.",
@@ -2256,7 +2256,7 @@
         "data_exfiltration",
         "secret_access"
       ],
-      "latency_ms": 2.8496,
+      "latency_ms": 2.7869,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 9: The operation reads a credential store rather than ordinary application preferences. Line 15: Credential-derived data flows to an outbound network request.",
@@ -2358,7 +2358,7 @@
       "predicted_categories": [
         "secret_access"
       ],
-      "latency_ms": 2.8207,
+      "latency_ms": 2.8083,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 2: An executable value embeds a provider-format or high-entropy credential.",
@@ -2429,7 +2429,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.9713,
+      "latency_ms": 2.9271,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -2484,7 +2484,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 5.4718,
+      "latency_ms": 5.4846,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -2545,7 +2545,7 @@
       "predicted_categories": [
         "secret_access"
       ],
-      "latency_ms": 3.0797,
+      "latency_ms": 3.0487,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 7: An executable value embeds a provider-format or high-entropy credential.",
@@ -2620,7 +2620,7 @@
       "predicted_categories": [
         "ssrf_network_exfil"
       ],
-      "latency_ms": 2.5867,
+      "latency_ms": 2.5683,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 9: The request uses a non-HTTP scheme capable of reaching other services.",
@@ -2695,7 +2695,7 @@
       "predicted_categories": [
         "ssrf_network_exfil"
       ],
-      "latency_ms": 2.7176,
+      "latency_ms": 2.6801,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 13: The destination resolves statically to an internal or non-public address.",
@@ -2766,7 +2766,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 2.8296,
+      "latency_ms": 2.8584,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -2825,7 +2825,7 @@
       "predicted_categories": [
         "ai_targeted_instructions"
       ],
-      "latency_ms": 3.0081,
+      "latency_ms": 2.9568,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 4: Untrusted text instructs an AI reader to override review or disclose protected context. Line 5: Untrusted text instructs an AI reader to override review or disclose protected context.",
@@ -2931,7 +2931,7 @@
       "predicted_categories": [
         "ai_targeted_instructions"
       ],
-      "latency_ms": 3.9323,
+      "latency_ms": 2.8384,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 6: Untrusted text instructs an AI reader to override review or disclose protected context. Line 6: Untrusted text directs an AI reader to disclose protected context or credentials.",
@@ -3024,7 +3024,7 @@
       "predicted": "allow",
       "expected_categories": [],
       "predicted_categories": [],
-      "latency_ms": 3.7861,
+      "latency_ms": 2.6979,
       "analysis_complete": true,
       "error": false,
       "reason": "No blocking findings in the completed baseline checks.",
@@ -3084,7 +3084,7 @@
         "ai_targeted_instructions",
         "dependency_risk"
       ],
-      "latency_ms": 4.7147,
+      "latency_ms": 3.2068,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 11: A workflow comment tells a reviewer bot to approve independently of scan results. Line 12: A workflow comment tells a reviewer bot to approve independently of scan results.",
@@ -3226,7 +3226,7 @@
       "predicted_categories": [
         "ai_targeted_instructions"
       ],
-      "latency_ms": 3.4402,
+      "latency_ms": 3.1354,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 8: Untrusted text instructs an AI reader to override review or disclose protected context. Line 9: Untrusted text instructs an AI reader to override review or disclose protected context.",
@@ -3337,7 +3337,7 @@
         "secret_access",
         "ssrf_network_exfil"
       ],
-      "latency_ms": 4.2407,
+      "latency_ms": 4.1779,
       "analysis_complete": true,
       "error": false,
       "reason": "Line 13: A runtime package name cannot be established as a reviewed constant. Line 23: The destination resolves statically to an internal or non-public address.",
